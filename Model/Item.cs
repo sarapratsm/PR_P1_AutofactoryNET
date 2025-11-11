@@ -22,7 +22,7 @@ namespace Model
         {
             this.Codi = codi;
             this.Nom = nom;
-            this.Desc = desc;
+            this.Descripcio = desc;
             this.Stock = stock;
             this.Foto = foto;
             this.Tipus = tipus;
@@ -30,7 +30,7 @@ namespace Model
 
         public string Codi { get => codi; private set => codi = value; }
         public string Nom { get => nom; private set => nom = value; }
-        public string Desc { get => descripcio; private set => descripcio = value; }
+        public string Descripcio { get => descripcio; private set => descripcio = value; }
         public int Stock { get => stock; set => stock = value; } // Deixem 'set' públic per a Stock
         public byte[] Foto { get => foto; private set => foto = value; }
         public char Tipus { get => tipus; private set => tipus = value; }

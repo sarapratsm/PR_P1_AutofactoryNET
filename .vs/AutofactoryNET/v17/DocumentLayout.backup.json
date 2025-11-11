@@ -1,42 +1,70 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "E:\\DAM2\\Projecte\\AutofactoryNET\\",
+  "WorkspaceRootPath": "D:\\DAM2\\Projecte\\AutofactoryNET\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|e:\\dam2\\projecte\\autofactorynet\\dao\\daoproveidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|solutionrelative:dao\\daoproveidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{46C1A28D-E9B6-41C4-8863-CAF9B5AC52C6}|ProvesBD\\ProvesBD.csproj|d:\\dam2\\projecte\\autofactorynet\\provesbd\\daoproductetest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{46C1A28D-E9B6-41C4-8863-CAF9B5AC52C6}|ProvesBD\\ProvesBD.csproj|solutionrelative:provesbd\\daoproductetest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|e:\\dam2\\projecte\\autofactorynet\\dao\\mydbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|solutionrelative:dao\\mydbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{46C1A28D-E9B6-41C4-8863-CAF9B5AC52C6}|ProvesBD\\ProvesBD.csproj|d:\\dam2\\projecte\\autofactorynet\\provesbd\\daocomponentetest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{46C1A28D-E9B6-41C4-8863-CAF9B5AC52C6}|ProvesBD\\ProvesBD.csproj|solutionrelative:provesbd\\daocomponentetest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|e:\\dam2\\projecte\\autofactorynet\\dao\\daoproducte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|d:\\dam2\\projecte\\autofactorynet\\dao\\daoproducte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|solutionrelative:dao\\daoproducte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|e:\\dam2\\projecte\\autofactorynet\\dao\\daocomponente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|d:\\dam2\\projecte\\autofactorynet\\dao\\daocomponente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|solutionrelative:dao\\daocomponente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D9540313-E544-4A01-B1AF-D13B0758990C}|Persistencia\\IDAO.csproj|e:\\dam2\\projecte\\autofactorynet\\persistencia\\idaoproveidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D9540313-E544-4A01-B1AF-D13B0758990C}|Persistencia\\IDAO.csproj|solutionrelative:persistencia\\idaoproveidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8066A65F-7898-4E22-97AA-8CE603CEA770}|Model\\Model.csproj|d:\\dam2\\projecte\\autofactorynet\\model\\producte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8066A65F-7898-4E22-97AA-8CE603CEA770}|Model\\Model.csproj|solutionrelative:model\\producte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D9540313-E544-4A01-B1AF-D13B0758990C}|Persistencia\\IDAO.csproj|e:\\dam2\\projecte\\autofactorynet\\persistencia\\idaoproducte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D9540313-E544-4A01-B1AF-D13B0758990C}|Persistencia\\IDAO.csproj|solutionrelative:persistencia\\idaoproducte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D9540313-E544-4A01-B1AF-D13B0758990C}|Persistencia\\IDAO.csproj|e:\\dam2\\projecte\\autofactorynet\\persistencia\\idaocomponente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D9540313-E544-4A01-B1AF-D13B0758990C}|Persistencia\\IDAO.csproj|solutionrelative:persistencia\\idaocomponente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{46C1A28D-E9B6-41C4-8863-CAF9B5AC52C6}|ProvesBD\\ProvesBD.csproj|e:\\dam2\\projecte\\autofactorynet\\provesbd\\daoproveidortest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{46C1A28D-E9B6-41C4-8863-CAF9B5AC52C6}|ProvesBD\\ProvesBD.csproj|d:\\dam2\\projecte\\autofactorynet\\provesbd\\daoproveidortest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{46C1A28D-E9B6-41C4-8863-CAF9B5AC52C6}|ProvesBD\\ProvesBD.csproj|solutionrelative:provesbd\\daoproveidortest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|e:\\dam2\\projecte\\autofactorynet\\dao\\oraclefactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|d:\\dam2\\projecte\\autofactorynet\\dao\\daoproveidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|solutionrelative:dao\\daoproveidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D9540313-E544-4A01-B1AF-D13B0758990C}|Persistencia\\IDAO.csproj|d:\\dam2\\projecte\\autofactorynet\\persistencia\\idaoproveidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D9540313-E544-4A01-B1AF-D13B0758990C}|Persistencia\\IDAO.csproj|solutionrelative:persistencia\\idaoproveidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8066A65F-7898-4E22-97AA-8CE603CEA770}|Model\\Model.csproj|d:\\dam2\\projecte\\autofactorynet\\model\\item.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8066A65F-7898-4E22-97AA-8CE603CEA770}|Model\\Model.csproj|solutionrelative:model\\item.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|d:\\dam2\\projecte\\autofactorynet\\dao\\mydbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|solutionrelative:dao\\mydbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|d:\\dam2\\projecte\\autofactorynet\\dao\\unitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|solutionrelative:dao\\unitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8066A65F-7898-4E22-97AA-8CE603CEA770}|Model\\Model.csproj|d:\\dam2\\projecte\\autofactorynet\\model\\municipi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8066A65F-7898-4E22-97AA-8CE603CEA770}|Model\\Model.csproj|solutionrelative:model\\municipi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|d:\\dam2\\projecte\\autofactorynet\\dao\\utils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|solutionrelative:dao\\utils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D9540313-E544-4A01-B1AF-D13B0758990C}|Persistencia\\IDAO.csproj|d:\\dam2\\projecte\\autofactorynet\\persistencia\\idaocomponente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D9540313-E544-4A01-B1AF-D13B0758990C}|Persistencia\\IDAO.csproj|solutionrelative:persistencia\\idaocomponente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|d:\\dam2\\projecte\\autofactorynet\\dao\\oraclefactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|solutionrelative:dao\\oraclefactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D9540313-E544-4A01-B1AF-D13B0758990C}|Persistencia\\IDAO.csproj|d:\\dam2\\projecte\\autofactorynet\\persistencia\\idaoproducte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D9540313-E544-4A01-B1AF-D13B0758990C}|Persistencia\\IDAO.csproj|solutionrelative:persistencia\\idaoproducte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,17 +74,112 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 5,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Producte.cs",
+              "DocumentMoniker": "D:\\DAM2\\Projecte\\AutofactoryNET\\Model\\Producte.cs",
+              "RelativeDocumentMoniker": "Model\\Producte.cs",
+              "ToolTip": "D:\\DAM2\\Projecte\\AutofactoryNET\\Model\\Producte.cs",
+              "RelativeToolTip": "Model\\Producte.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T09:59:30.506Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Municipi.cs",
+              "DocumentMoniker": "D:\\DAM2\\Projecte\\AutofactoryNET\\Model\\Municipi.cs",
+              "RelativeDocumentMoniker": "Model\\Municipi.cs",
+              "ToolTip": "D:\\DAM2\\Projecte\\AutofactoryNET\\Model\\Municipi.cs",
+              "RelativeToolTip": "Model\\Municipi.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T09:59:29.244Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Item.cs",
+              "DocumentMoniker": "D:\\DAM2\\Projecte\\AutofactoryNET\\Model\\Item.cs",
+              "RelativeDocumentMoniker": "Model\\Item.cs",
+              "ToolTip": "D:\\DAM2\\Projecte\\AutofactoryNET\\Model\\Item.cs",
+              "RelativeToolTip": "Model\\Item.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAUwB4AAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T09:59:27.011Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Utils.cs",
+              "DocumentMoniker": "D:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\Utils.cs",
+              "RelativeDocumentMoniker": "DAO\\Utils.cs",
+              "ToolTip": "D:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\Utils.cs",
+              "RelativeToolTip": "DAO\\Utils.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T09:54:46.103Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DaoProducteTest.cs",
+              "DocumentMoniker": "D:\\DAM2\\Projecte\\AutofactoryNET\\ProvesBD\\DaoProducteTest.cs",
+              "RelativeDocumentMoniker": "ProvesBD\\DaoProducteTest.cs",
+              "ToolTip": "D:\\DAM2\\Projecte\\AutofactoryNET\\ProvesBD\\DaoProducteTest.cs",
+              "RelativeToolTip": "ProvesBD\\DaoProducteTest.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAwwDIAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T09:50:26.555Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DaoComponenteTest.cs",
+              "DocumentMoniker": "D:\\DAM2\\Projecte\\AutofactoryNET\\ProvesBD\\DaoComponenteTest.cs",
+              "RelativeDocumentMoniker": "ProvesBD\\DaoComponenteTest.cs",
+              "ToolTip": "D:\\DAM2\\Projecte\\AutofactoryNET\\ProvesBD\\DaoComponenteTest.cs",
+              "RelativeToolTip": "ProvesBD\\DaoComponenteTest.cs",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAwwFUAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T09:45:48.185Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "UnitOfWork.cs",
+              "DocumentMoniker": "D:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\UnitOfWork.cs",
+              "RelativeDocumentMoniker": "DAO\\UnitOfWork.cs",
+              "ToolTip": "D:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\UnitOfWork.cs",
+              "RelativeToolTip": "DAO\\UnitOfWork.cs",
+              "ViewState": "AgIAAFkAAAAAAAAAAAAswA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T08:57:56.656Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "DAOComponente.cs",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\DAOComponente.cs",
+              "DocumentMoniker": "D:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\DAOComponente.cs",
               "RelativeDocumentMoniker": "DAO\\DAOComponente.cs",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\DAOComponente.cs",
+              "ToolTip": "D:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\DAOComponente.cs",
               "RelativeToolTip": "DAO\\DAOComponente.cs",
-              "ViewState": "AgIAAE4AAAAAAAAAAADgvxsAAAAcAAAAAAAAAA==",
+              "ViewState": "AgIAAG4BAAAAAAAAAAAQwHIBAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-10T20:10:25.945Z",
               "EditorCaption": ""
@@ -65,107 +188,107 @@
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "DAOProducte.cs",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\DAOProducte.cs",
+              "DocumentMoniker": "D:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\DAOProducte.cs",
               "RelativeDocumentMoniker": "DAO\\DAOProducte.cs",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\DAOProducte.cs",
+              "ToolTip": "D:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\DAOProducte.cs",
               "RelativeToolTip": "DAO\\DAOProducte.cs",
-              "ViewState": "AgIAACkAAAAAAAAAAAAkwC8AAAAcAAAAAAAAAA==",
+              "ViewState": "AgIAAFIAAAAAAAAAAAAcwA0BAABbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-10T20:02:55.73Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 6,
               "Title": "DAOProveidor.cs",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\DAOProveidor.cs",
+              "DocumentMoniker": "D:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\DAOProveidor.cs",
               "RelativeDocumentMoniker": "DAO\\DAOProveidor.cs",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\DAOProveidor.cs",
+              "ToolTip": "D:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\DAOProveidor.cs",
               "RelativeToolTip": "DAO\\DAOProveidor.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAswBAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAL8AAAAAAAAAAAAkwMoAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-10T12:37:17.404Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 9,
               "Title": "MyDBContext.cs",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\MyDBContext.cs",
+              "DocumentMoniker": "D:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\MyDBContext.cs",
               "RelativeDocumentMoniker": "DAO\\MyDBContext.cs",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\MyDBContext.cs",
+              "ToolTip": "D:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\MyDBContext.cs",
               "RelativeToolTip": "DAO\\MyDBContext.cs",
-              "ViewState": "AgIAACUAAAAAAAAAAAAwwCUAAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAABMAAAAAAAAAAAAowBwAAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-10T12:32:10.234Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "IDAOProveidor.cs",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\Persistencia\\IDAOProveidor.cs",
+              "DocumentMoniker": "D:\\DAM2\\Projecte\\AutofactoryNET\\Persistencia\\IDAOProveidor.cs",
               "RelativeDocumentMoniker": "Persistencia\\IDAOProveidor.cs",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\Persistencia\\IDAOProveidor.cs",
+              "ToolTip": "D:\\DAM2\\Projecte\\AutofactoryNET\\Persistencia\\IDAOProveidor.cs",
               "RelativeToolTip": "Persistencia\\IDAOProveidor.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABMAAAAAAAAAAAAQwBcAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-10T20:10:17.97Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 13,
               "Title": "IDAOComponente.cs",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\Persistencia\\IDAOComponente.cs",
+              "DocumentMoniker": "D:\\DAM2\\Projecte\\AutofactoryNET\\Persistencia\\IDAOComponente.cs",
               "RelativeDocumentMoniker": "Persistencia\\IDAOComponente.cs",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\Persistencia\\IDAOComponente.cs",
+              "ToolTip": "D:\\DAM2\\Projecte\\AutofactoryNET\\Persistencia\\IDAOComponente.cs",
               "RelativeToolTip": "Persistencia\\IDAOComponente.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAzwBYAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAxwBYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-10T20:09:22.286Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 15,
               "Title": "IDAOProducte.cs",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\Persistencia\\IDAOProducte.cs",
+              "DocumentMoniker": "D:\\DAM2\\Projecte\\AutofactoryNET\\Persistencia\\IDAOProducte.cs",
               "RelativeDocumentMoniker": "Persistencia\\IDAOProducte.cs",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\Persistencia\\IDAOProducte.cs",
+              "ToolTip": "D:\\DAM2\\Projecte\\AutofactoryNET\\Persistencia\\IDAOProducte.cs",
               "RelativeToolTip": "Persistencia\\IDAOProducte.cs",
               "ViewState": "AgIAABEAAAAAAAAAAAAswB8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T20:00:41.858Z",
+              "WhenOpened": "2025-11-10T20:00:41.858Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DaoProveidorTest.cs",
+              "DocumentMoniker": "D:\\DAM2\\Projecte\\AutofactoryNET\\ProvesBD\\DaoProveidorTest.cs",
+              "RelativeDocumentMoniker": "ProvesBD\\DaoProveidorTest.cs",
+              "ToolTip": "D:\\DAM2\\Projecte\\AutofactoryNET\\ProvesBD\\DaoProveidorTest.cs",
+              "RelativeToolTip": "ProvesBD\\DaoProveidorTest.cs",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAUwGcAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T12:36:47.942Z",
               "EditorCaption": ""
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "DaoProveidorTest.cs",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\ProvesBD\\DaoProveidorTest.cs",
-              "RelativeDocumentMoniker": "ProvesBD\\DaoProveidorTest.cs",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\ProvesBD\\DaoProveidorTest.cs",
-              "RelativeToolTip": "ProvesBD\\DaoProveidorTest.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABkAAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T12:36:47.942Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 14,
               "Title": "OracleFactory.cs",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\OracleFactory.cs",
+              "DocumentMoniker": "D:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\OracleFactory.cs",
               "RelativeDocumentMoniker": "DAO\\OracleFactory.cs",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\OracleFactory.cs",
+              "ToolTip": "D:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\OracleFactory.cs",
               "RelativeToolTip": "DAO\\OracleFactory.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAwwBwAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABAAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-07T16:33:41.636Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
             }
           ]
         }

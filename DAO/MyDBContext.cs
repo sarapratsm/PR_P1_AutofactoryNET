@@ -19,7 +19,20 @@ namespace DAO {
 	//On crearem la connexio amb la base de dades.
 	public class MyDBContext : DbContext {
 
-        // DBSETS (Afegeix-los per poder consultar amb EF si vols)
+        /// <summary>
+        /// Mètode per configurar la connexió a la base de dades Oracle.
+        /// </summary>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
+        {
+            if (!optionBuilder.IsConfigured)
+            {
+                //Configuracio de la connexio amb la base de dades.
+                string ip_mv = "10.2.59.102";
+                optionBuilder.UseOracle("User Id=alumne;Password=alumne;Data Source=" + ip_mv + ":1521/XEPDB1;");
+            }
+        }
+
+        // DBSETS Afegeix-los per poder consultar amb EF
         public DbSet<Item> Items { get; set; }
         public DbSet<Producte> Productes { get; set; }
         public DbSet<Componente> Components { get; set; }
@@ -29,21 +42,12 @@ namespace DAO {
 
         //No fem un per unitat de mesura perque es un enum.
 
-        /// 
-        /// <param name="optionBuilder"></param>
-        protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder){
-			if (!optionBuilder.IsConfigured)
-			{
-                //Configuracio de la connexio amb la base de dades.
-                string ip_mv = "10.2.59.102";
-                optionBuilder.UseOracle("User Id=alumne;Password=alumne;Data Source="+ip_mv+":1521/XEPDB1;");
-			}
-        }
 
+        /// <summary>
+        /// Metode per configurar el mapeig de les entitats amb les taules de la base de dades Oracle.
+        /// </summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // ... (ITEM, PRODUCTE, COMPONENTE, PROVINCIA es queden igual) ...
-
             // --- ITEM (Base) ---
             modelBuilder.Entity<Item>(entity =>
             {
@@ -51,7 +55,7 @@ namespace DAO {
                 entity.HasKey(e => e.Codi);
                 entity.Property(e => e.Codi).HasColumnName("it_codi");
                 entity.Property(e => e.Nom).HasColumnName("it_nom");
-                entity.Property(e => e.Desc).HasColumnName("it_desc");
+                entity.Property(e => e.Descripcio).HasColumnName("it_desc");
                 entity.Property(e => e.Stock).HasColumnName("it_stock");
                 entity.Property(e => e.Foto).HasColumnName("it_foto");
                 entity.Property(e => e.Tipus).HasColumnName("it_tipus");

@@ -23,6 +23,10 @@ namespace DAO {
 
 		public bool AfegirProveidor(Proveidor p);
 
+		public bool ModificarProveidor(Proveidor p);
+
+		public bool EliminarProveidor(int codi_prov);
+
 
     }//end IDAOProveidor
 

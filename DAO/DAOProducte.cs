@@ -8,10 +8,12 @@
 
 using DAO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Text;
@@ -27,7 +29,198 @@ namespace DAO {
 
         public bool AfegirProducte(Producte producte)
         {
-            throw new NotImplementedException();
+            var connexio = _context.Database.GetDbConnection();
+            if (connexio.State != System.Data.ConnectionState.Open)
+            {
+                connexio.Open();
+            }
+            var transaccio = _context.Database.CurrentTransaction;
+            if(transaccio == null)
+            {
+                throw new InvalidOperationException("No hi ha cap transacció activa. Assegura't d'iniciar una transacció abans d'afegir un producte.");
+            }
+            try
+            {
+                int filesAfectades = 0;
+                using (var cmdItem = connexio.CreateCommand())
+                {
+                    string sqlItem = @"INSERT INTO ITEM (it_codi, it_nom, it_desc, it_stock, it_foto, it_tipus)
+                                       VALUES (:codi, :nom, :descr, :stock, :foto, 'P')";
+                    cmdItem.CommandText = sqlItem;
+                    cmdItem.Transaction = transaccio.GetDbTransaction();
+
+                    Utils.CrearParametres(cmdItem, producte.Codi, ":codi", System.Data.DbType.String);
+                    Utils.CrearParametres(cmdItem, producte.Nom, ":nom", System.Data.DbType.String);
+                    Utils.CrearParametres(cmdItem, producte.Descripcio, ":descr", System.Data.DbType.String);
+                    Utils.CrearParametres(cmdItem, producte.Stock, ":stock", System.Data.DbType.Int32);
+                    Utils.CrearParametres(cmdItem, producte.Foto, ":foto", System.Data.DbType.Binary);
+
+                    filesAfectades += cmdItem.ExecuteNonQuery();
+                }
+                if (filesAfectades > 0)
+                {
+                    using (var cmdProducte = connexio.CreateCommand())
+                    {
+                        string sqlProducte = @"INSERT INTO PRODUCTE (pr_it_codi)
+                                               VALUES (:it_codi)";
+                        cmdProducte.CommandText = sqlProducte;
+                        cmdProducte.Transaction = transaccio.GetDbTransaction();
+                        Utils.CrearParametres(cmdProducte, producte.Codi, ":it_codi", System.Data.DbType.String);
+                        filesAfectades += cmdProducte.ExecuteNonQuery();
+                    }
+                }
+                if (filesAfectades == 2)
+                {
+                    return true;
+                }
+                else
+                {
+                    transaccio.Rollback();
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                // Si falla qualsevol cosa, fem rollback
+                transaccio.Rollback(); 
+                throw; // Rellença l'excepció
+                return false;
+            }
+        }
+
+        public bool ModificarProducte(Producte producte)
+        {
+            var connexio = _context.Database.GetDbConnection();
+            if (connexio.State != System.Data.ConnectionState.Open)
+            {
+                connexio.Open();
+            }
+            var transaccio = _context.Database.CurrentTransaction;
+            if (transaccio == null)
+            {
+                throw new InvalidOperationException("No hi ha cap transacció activa. Crida a BeginTransaction() des del UnitOfWork.");
+            }
+
+            try
+            {
+                int filesAfectades = 0;
+
+                // SQL 1: Actualitzar ITEM
+                using (var cmdItem = connexio.CreateCommand())
+                {
+                    string sqlItem = @"UPDATE ITEM SET
+                                           it_nom = :nom,
+                                           it_desc = :descr,
+                                           it_stock = :stock,
+                                           it_foto = :foto
+                                       WHERE it_codi = :cod";
+                    cmdItem.CommandText = sqlItem;
+                    cmdItem.Transaction = transaccio.GetDbTransaction();
+
+                    Utils.CrearParametres(cmdItem, producte.Nom, ":nom", DbType.String);
+                    Utils.CrearParametres(cmdItem, producte.Descripcio, ":descr", DbType.String);
+                    Utils.CrearParametres(cmdItem, producte.Stock, ":stock", DbType.Int32);
+                    Utils.CrearParametres(cmdItem, producte.Foto, ":foto", DbType.Binary);
+                    Utils.CrearParametres(cmdItem, producte.Codi, ":cod", DbType.String);
+
+                    filesAfectades = cmdItem.ExecuteNonQuery();
+                }
+
+                // SQL 2: La taula PRODUCTE no té camps per actualitzar,
+                // només té la clau (pr_it_codi), que no es pot canviar.
+                // Per tant, només comprovem que la fila d'ITEM s'ha actualitzat.
+
+                if (filesAfectades == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    // Si no s'ha trobat (filesAfectades = 0), desfem
+                    transaccio.Rollback();
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                transaccio.Rollback();
+                throw;
+            }
+        }
+
+        public bool EliminarProducte(string codi)
+        {
+            var connexio = _context.Database.GetDbConnection();
+            if (connexio.State != System.Data.ConnectionState.Open)
+            {
+                connexio.Open();
+            }
+            var transaccio = _context.Database.CurrentTransaction;
+            if (transaccio == null)
+            {
+                throw new InvalidOperationException("No hi ha cap transacció activa. Crida a BeginTransaction() des del UnitOfWork.");
+            }
+
+            try
+            {
+                int filesAfectades = 0;
+                DbParameter paramCodi = null;
+
+                // 1. Esborrar de PROD_ITEM (on és pare o fill)
+                // (El teu DDL té FKs que ho requereixen)
+                using (var cmd = connexio.CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM PROD_ITEM WHERE pi_pr_it_codi = :cod OR pi_it_codi = :cod";
+                    cmd.Transaction = transaccio.GetDbTransaction();
+                    paramCodi = cmd.CreateParameter();
+                    paramCodi.ParameterName = ":cod";
+                    paramCodi.Value = codi;
+                    cmd.Parameters.Add(paramCodi);
+                    cmd.ExecuteNonQuery(); // Pot ser 0
+                }
+
+                // 2. Esborrar de PRODUCTE (la fila filla)
+                using (var cmd = connexio.CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM PRODUCTE WHERE pr_it_codi = :cod";
+                    cmd.Transaction = transaccio.GetDbTransaction();
+                    paramCodi = cmd.CreateParameter();
+                    paramCodi.ParameterName = ":cod";
+                    paramCodi.Value = codi;
+                    cmd.Parameters.Add(paramCodi);
+                    filesAfectades = cmd.ExecuteNonQuery();
+                }
+
+                // 3. Esborrar de ITEM (la fila pare)
+                if (filesAfectades > 0)
+                {
+                    using (var cmd = connexio.CreateCommand())
+                    {
+                        cmd.CommandText = "DELETE FROM ITEM WHERE it_codi = :cod";
+                        cmd.Transaction = transaccio.GetDbTransaction();
+                        paramCodi = cmd.CreateParameter();
+                        paramCodi.ParameterName = ":cod";
+                        paramCodi.Value = codi;
+                        cmd.Parameters.Add(paramCodi);
+                        filesAfectades += cmd.ExecuteNonQuery();
+                    }
+                }
+
+                if (filesAfectades == 2) // Ha d'haver esborrat de PRODUCTE i de ITEM
+                {
+                    return true;
+                }
+                else
+                {
+                    transaccio.Rollback();
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                transaccio.Rollback();
+                throw;
+            }
         }
 
         public bool AfegirProveidor(Proveidor p)
@@ -35,10 +228,7 @@ namespace DAO {
             throw new NotImplementedException();
         }
 
-        public bool EliminarProducte(string codi)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public int EliminarProveidor(int codi_prov)
         {
@@ -55,14 +245,51 @@ namespace DAO {
             throw new NotImplementedException();
         }
 
-        public bool ModificarProducte(Producte producte)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public Producte ObtenirProductePerCodi(string codi)
         {
-            throw new NotImplementedException();
+            // Patró basat en GetProvincia
+            Producte producte = null;
+
+            string sql = @"SELECT 
+                               i.it_codi, i.it_nom, i.it_desc, i.it_stock, i.it_foto, i.it_tipus
+                           FROM ITEM i
+                           JOIN PRODUCTE p ON i.it_codi = p.pr_it_codi
+                           WHERE i.it_tipus = 'P' AND i.it_codi = :id"; // <-- Afegim WHERE
+
+            var connexio = _context.Database.GetDbConnection();
+            if (connexio.State != ConnectionState.Open)
+            {
+                connexio.Open();
+            }
+
+            using (DbCommand cmd = connexio.CreateCommand())
+            {
+                cmd.CommandText = sql;
+                cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+
+                Utils.CrearParametres(cmd, codi, ":id", DbType.String);
+
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read()) // Només esperem un
+                    {
+                        string nom = reader.GetString(reader.GetOrdinal("it_nom"));
+                        string desc = reader.IsDBNull(reader.GetOrdinal("it_desc")) ? null : reader.GetString(reader.GetOrdinal("it_desc"));
+                        int stock = Convert.ToInt32(reader.GetValue(reader.GetOrdinal("it_stock")));
+
+                        byte[] fotoBytes = null;
+                        if (reader["it_foto"] != DBNull.Value)
+                        {
+                            fotoBytes = (byte[])reader["it_foto"];
+                        }
+
+                        producte = new Producte(codi, nom, desc, stock, fotoBytes);
+                    }
+                }
+            }
+            return producte; // Retorna l'objecte o null
         }
 
         public ObservableCollection<Producte> ObtenirTots()
@@ -82,6 +309,9 @@ namespace DAO {
                 using (DbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = sql;
+                    // Enllaça la comanda amb la transacció del UoW
+                    cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+
                     using (DbDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())

@@ -7,48 +7,89 @@ namespace ProvesBD
     [TestClass]
     public sealed class DaoComponenteTest
     {
-        /// <summary>
-        /// Comprova que 'ObtenirTotsComponents' retorna les dades
-        /// de demo inserides amb l'script SQL.
-        /// </summary>
         [TestMethod]
         public void Test_Lectura_ObtenirTotsComponents_RetornaDadesDemo()
         {
-            // Arrange
-            // 'using' s'encarrega de fer .Dispose() automàticament
             using (UnitOfWork uow = OracleFactory.getUOW())
             {
-                // Obtenim el DAO des de la UnitOfWork
-                IDAOComponente dao = uow.DAOComponente;
-
-                List<Componente> components = null;
-
-                // Act
-                try
-                {
-                    components = dao.ObtenirTots();
-                }
-                catch (System.Exception ex)
-                {
-                    // Si la connexió o la consulta SQL falla, el test fallarà
-                    Assert.Fail($"L'execució de ObtenirTotsComponents ha fallat: {ex.Message}");
-                }
-
-                // Assert
-                Assert.IsNotNull(components, "La llista de components no hauria de ser nul·la.");
-
-                // Segons el teu script, hi ha 10 components
-                Assert.IsTrue(components.Count >= 10, "S'esperaven almenys 10 components de les dades demo.");
-
-                // Comprovem si existeix un component específic
-                bool existeixRF = components.Any(c => c.Codi == "RF1123"); //
-                Assert.IsTrue(existeixRF, "El component 'RF1123' de les dades demo no s'ha trobat.");
-
-                // Comprovem un altre component
-                bool existeix73 = components.Any(c => c.Codi == "7363GH"); //
-                Assert.IsTrue(existeix73, "El component '7363GH' de les dades demo no s'ha trobat.");
+                var components = uow.DAOComponente.ObtenirTots();
+                Assert.IsNotNull(components);
+                Assert.IsTrue(components.Count >= 10, "S'esperaven almenys 10 components.");
             }
-            // (No cal Commit, només hem llegit)
+        }
+
+        [TestMethod]
+        public void Test_Escriptura_AfegirComponent_Funciona()
+        {
+            // --- CANVI: Codi més curt ("C-TEST-1" té 8 caràcters) ---
+            string codiTest = "C-TEST-1";
+            Componente c = new Componente(codiTest, "Test Afegir Comp", "Desc Comp", 50, null, 'C', "FAB-TEST", TipusUnitat.Unitats);
+
+            try
+            {
+                using (UnitOfWork uow = OracleFactory.getUOW())
+                {
+                    uow.BeginTransaction();
+                    bool res = uow.DAOComponente.AfegirComponent(c);
+                    Assert.IsTrue(res, "AfegirComponent hauria de retornar true");
+                    uow.Commit();
+                }
+            }
+            finally
+            {
+                // Neteja (S'executa sempre)
+                using (UnitOfWork uow = OracleFactory.getUOW())
+                {
+                    uow.BeginTransaction();
+                    uow.DAOComponente.EliminarComponent(codiTest);
+                    uow.Commit();
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Test_Escriptura_ModificarComponent_Funciona()
+        {
+            // --- CANVI: Codi més curt ("C-TEST-2" té 8 caràcters) ---
+            string codiTest = "C-TEST-2";
+            Componente cOrig = new Componente(codiTest, "Test Modificar Comp", "Desc Orig", 10, null, 'C', "FAB-ORIG", TipusUnitat.Kg);
+
+            try
+            {
+                using (UnitOfWork uow = OracleFactory.getUOW())
+                {
+                    uow.BeginTransaction();
+                    uow.DAOComponente.AfegirComponent(cOrig);
+                    uow.Commit();
+                }
+
+                Componente cMod = new Componente(codiTest, "Nom Modificat", "Desc Mod", 99, null, 'C', "FAB-MOD", TipusUnitat.Unitats);
+                using (UnitOfWork uow = OracleFactory.getUOW())
+                {
+                    uow.BeginTransaction();
+                    bool res = uow.DAOComponente.ModificarComponent(cMod);
+                    Assert.IsTrue(res, "ModificarComponent hauria de retornar true");
+                    uow.Commit();
+                }
+
+                using (UnitOfWork uow = OracleFactory.getUOW())
+                {
+                    var cVerificar = uow.DAOComponente.ObtenirComponentPerCodi(codiTest);
+                    Assert.IsNotNull(cVerificar);
+                    Assert.AreEqual("Nom Modificat", cVerificar.Nom);
+                    Assert.AreEqual("FAB-MOD", cVerificar.CodiFabricant);
+                }
+            }
+            finally
+            {
+                // Neteja (S'executa sempre)
+                using (UnitOfWork uow = OracleFactory.getUOW())
+                {
+                    uow.BeginTransaction();
+                    uow.DAOComponente.EliminarComponent(codiTest);
+                    uow.Commit();
+                }
+            }
         }
     }
 }

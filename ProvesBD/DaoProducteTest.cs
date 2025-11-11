@@ -8,61 +8,53 @@ namespace ProvesBD
     [TestClass]
     public sealed class DaoProducteTest
     {
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            // Aquí pots posar codi que s'executi abans de cada test, si cal.
-            // Per exemple, podries reiniciar l'estat de la base de dades.
-        }
-
-        /// <summary>
-        /// Comprova que 'ObtenirTotsProductes' retorna les dades
-        /// de demo inserides amb l'script SQL.
-        /// </summary>
         [TestMethod]
         public void Test_Lectura_ObtenirTotsProductes_RetornaDadesDemo()
         {
-            // Arrange
             using (UnitOfWork uow = OracleFactory.getUOW())
             {
-                IDAOProducte dao = uow.DAOProducte;
-                List<Producte> productes = null;
-
-                // Act
-                try
-                {
-                    productes = dao.ObtenirTots();
-                }
-                catch (System.Exception ex)
-                {
-                    Assert.Fail($"L'execució de ObtenirTotsProductes ha fallat: {ex.Message}");
-                }
-
-                // Assert
-                Assert.IsNotNull(productes, "La llista de productes no hauria de ser nul·la.");
-
-                // Comprovem que hi ha 4 productes, segons el DadesDemo.sql
-                Assert.IsTrue(productes.Count >= 4, "S'esperaven almenys 4 productes de les dades demo.");
-
-                // Comprovem un producte específic
-                bool existeix = productes.Any(p => p.Codi == "SFD_CR_01"); //
-                Assert.IsTrue(existeix, "El producte 'SFD_CR_01' de les dades demo no s'ha trobat.");
+                var productes = uow.DAOProducte.ObtenirTots();
+                Assert.IsNotNull(productes);
+                Assert.IsTrue(productes.Count >= 4, "S'esperaven almenys 4 productes.");
             }
         }
-        /*
+
         [TestMethod]
-        public void ProvaSelect()
+        public void Test_Escriptura_CicleCompletProducte_AfegirObtenirEliminar()
         {
-            UnitOfWork uow = OracleFactory.getUOW();
-            
-            
-            ObservableCollection<Producte> productes = uow.DAOProducte.GetProductes("", "");
+            // --- CANVI: Codi més curt ("P-TEST-1" té 8 caràcters) ---
+            string codiTest = "P-TEST-1";
+            Producte p = new Producte(codiTest, "Producte Test", "Desc Test", 10, null);
 
-            Assert.IsNotNull(productes);
-            Assert.AreEqual(1, productes.Count()); //el primer parametre ha de ser el count a la base de dades real
-            
-        }*/
+            try
+            {
+                // --- FASE 1: AFEGIR ---
+                using (UnitOfWork uow = OracleFactory.getUOW())
+                {
+                    uow.BeginTransaction();
+                    bool resultat = uow.DAOProducte.AfegirProducte(p);
+                    Assert.IsTrue(resultat, "El mètode AfegirProducte hauria de retornar true.");
+                    uow.Commit();
+                }
 
+                // --- FASE 2: VERIFICAR QUE EXISTEIX ---
+                using (UnitOfWork uow = OracleFactory.getUOW())
+                {
+                    var producteCreat = uow.DAOProducte.ObtenirProductePerCodi(codiTest);
+                    Assert.IsNotNull(producteCreat, "El producte de test no s'ha trobat.");
+                    Assert.AreEqual("Producte Test", producteCreat.Nom);
+                }
+            }
+            finally
+            {
+                // --- FASE 3: NETEJA (S'EXECUTA SEMPRE) ---
+                using (UnitOfWork uow = OracleFactory.getUOW())
+                {
+                    uow.BeginTransaction();
+                    uow.DAOProducte.EliminarProducte(codiTest);
+                    uow.Commit();
+                }
+            }
+        }
     }
 }

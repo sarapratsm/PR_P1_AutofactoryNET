@@ -16,12 +16,6 @@ namespace DAO {
     //classe estàtica que retorna les implementacions concretes dels teus DAOs.
     public static class OracleFactory {
 
-        /*Retirar comentari si la classe no és estàtica
-		public OracleFactory(){		}
-
-		~OracleFactory(){	}
-		*/
-
         public static UnitOfWork getUOW()
         {
             // Crea un context nou i el passa a la UnitOfWork
