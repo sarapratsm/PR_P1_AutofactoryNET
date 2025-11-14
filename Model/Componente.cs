@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    public class Componente : Item 
+    public class Componente : Item
     {
         //camps
-        private string codiFabricant;
+        private string codiFabricant = string.Empty;
         private decimal preuMig;
-        private Dictionary<Proveidor, decimal> proveidors_preu;
+        private Dictionary<Proveidor, decimal> proveidors_preu = new Dictionary<Proveidor, decimal>();
         private TipusUnitat units;
 
         public Componente() : base()
         {
-            Proveidors_preu = new Dictionary<Proveidor, decimal>();
         }
+
         public Componente(string codi, string nom, string desc, int stock, byte[] foto, char tipus,
                      string codiFabricant, TipusUnitat unitat)
         : base(codi, nom, desc, stock, foto, tipus)
@@ -25,7 +25,7 @@ namespace Model
             this.CodiFabricant = codiFabricant;
             this.Unitat = unitat;
 
-            Proveidors_preu = new Dictionary<Proveidor, decimal>();
+            // Ya inicializados arriba
             PreuMig = 0; // Es calcularà amb el Trigger de la BD
         }
 

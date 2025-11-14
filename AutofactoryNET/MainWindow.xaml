@@ -5,8 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutofactoryNET"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Background="{StaticResource BackgroundLightBrush}"
+        Title="AutoFactory" Height="450" Width="800">
 
-    </Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Menú">
+                <MenuItem Header="Items"  x:Name="mnuItems" Click="mnuItems_Click"></MenuItem>
+                <MenuItem Header="Productes" x:Name="mnuProductes" Click="mnuProductes_Click"></MenuItem>
+                <MenuItem Header="Components" x:Name="mnuComponentes" Click="mnuComponentes_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Ajuda">Siusplau</MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="10">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top">
+
+                    <Grid Grid.Column="1" Width="30" Height="30">
+                        <Ellipse Fill="{StaticResource AccentBrush}" Opacity="0.1"/>
+                        <Path Data="M60,25 L45,90 L55,90 L60,75 L75,75 L80,90 L90,90 L75,25 Z"
+                              Fill="{StaticResource PrimaryBrush}" Stretch="Uniform"/>
+                    </Grid>
+
+                    <TextBlock Text="AutoFactory"
+                               HorizontalAlignment="Right" Grid.Column="0"
+                               VerticalAlignment="Center" Margin="5,0,0,0"
+                               Style="{StaticResource TitleTextStyle}"/>
+                </StackPanel>
+            </Grid>
+            <Frame x:Name="frmMain" Grid.Row="1" NavigationUIVisibility="Hidden"></Frame>
+        </Grid>
+    </DockPanel>
 </Window>
