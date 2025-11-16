@@ -1,6 +1,9 @@
 ﻿using AutofactoryNET;
+using DAO;
+using Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +24,9 @@ namespace AppAutoFactory.View
     /// </summary>
     public partial class PageComps : Page
     {
+        ObservableCollection<Componente> componentes = new ObservableCollection<Componente>();
+        public MainWindow MainWindow { get; } // Per poder navegar
+
         public PageComps()
         {
             InitializeComponent();
@@ -28,14 +34,63 @@ namespace AppAutoFactory.View
 
         public PageComps(MainWindow mainWindow)
         {
-            MainWindow = mainWindow;
+            InitializeComponent();
+            this.MainWindow = mainWindow;
         }
 
-        public MainWindow MainWindow { get; }
 
         private void dtgComps_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             //Navegar cap a Page Comp_proveidor passant el component per parametre.
+            btnModificar_Click(sender, null);
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            dtgComps.ItemsSource = componentes;
+            componentes= OracleFactory.getUOW().DAOComponente.ObtenirTots();
+
+        }
+
+        private void RefrescarDataGrid()
+        {
+            // Buidem la llista actual
+            componentes.Clear();
+
+            try
+            {
+                using (UnitOfWork uow = OracleFactory.getUOW())
+                {
+                    // Obtenim els components de la BBDD
+                    var componentsDeLaBD = uow.DAOComponente.ObtenirTots();
+
+                    // Omplim la col·lecció
+                    foreach (var c in componentsDeLaBD)
+                    {
+                        componentes.Add(c);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error en carregar els components des de la BBDD: \n" + ex.Message,
+                                "Error de Connexió", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void btnModificar_Click(object sender, RoutedEventArgs e)
+        {
+            Componente compSeleccionat = dtgComps.SelectedItem as Componente;
+            if (compSeleccionat == null)
+            {
+                MessageBox.Show("Si us plau, selecciona un component per modificar.", "Cap Selecció", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (this.MainWindow != null)
+            {
+                this.MainWindow.NavegarACompProveidor(compSeleccionat);
+            }
         }
     }
 }

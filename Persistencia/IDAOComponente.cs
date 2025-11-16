@@ -22,7 +22,7 @@ namespace DAO
         public ObservableCollection<Componente> ObtenirTots();
 
         //--- Mètodes Proveidor ---
-        public Dictionary<Proveidor, decimal> GetProveidors(Componente component);
+        public Dictionary<Proveidor, decimal> GetProveidors(string codi_component);
         public decimal CalculaPreuMig(Componente component);
 
         //public List<Component> ObtenirPerFabricant(string fabricant);

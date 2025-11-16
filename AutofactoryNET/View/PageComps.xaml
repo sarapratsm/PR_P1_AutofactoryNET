@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:AppAutoFactory.View"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      Loaded="Page_Loaded"
       Title="Components">
 
     <Grid>
@@ -22,7 +23,31 @@
         <Grid x:Name="grdCamps">
             
         </Grid>
-        <DataGrid x:Name="dtgComps" MouseDoubleClick="dtgComps_MouseDoubleClick"></DataGrid>
-        <Button x:Name="btnSave"></Button>
+        <ToolBar Grid.Row="0" Margin="5">
+            <Label Content="Codi:"/>
+            <TextBox x:Name="txtFiltreCodi" Width="100" Margin="0,0,10,0"/>
+            <Label Content="Nom:"/>
+            <TextBox x:Name="txtFiltreNom" Width="150" Margin="0,0,10,0"/>
+            <Button x:Name="btnFiltrar" Content="Filtrar" Margin="0,0,10,0"/>
+
+            <Separator/>
+
+            <Button x:Name="btnAfegir" Content="Afegir Component" Click="btnAfegir_Click"/>
+            <Button x:Name="btnModificar" Content="Modificar" Margin="5,0,0,0" Click="btnModificar_Click"/>
+            <Button x:Name="btnEliminar" Content="Eliminar" Margin="5,0,0,0" Click="btnEliminar_Click"/>
+        </ToolBar>
+
+        <DataGrid x:Name="dtgComps" Grid.Row="1" 
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="True"
+                  SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Codi" Binding="{Binding Codi}" Width="100"/>
+                <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*"/>
+                <DataGridTextColumn Header="Fabricant" Binding="{Binding CodiFabricant}" Width="100"/>
+                <DataGridTextColumn Header="Unitat" Binding="{Binding Unitat}" Width="80"/>
+                <DataGridTextColumn Header="Stock" Binding="{Binding Stock}" Width="80"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Page>

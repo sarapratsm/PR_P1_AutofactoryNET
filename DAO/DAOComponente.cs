@@ -340,15 +340,143 @@ namespace DAO {
         }
 
 
+        // ... (dins de la teva classe DAOComponente)
 
-        public ObservableCollection<Componente> GetComponents(string codi, string nom)
+        public ObservableCollection<Componente> GetComponents(string codi_filtre, string nom_filtre)
         {
-            throw new NotImplementedException();
+            // ... (la connexió i el SQL es queden igual)
+            ObservableCollection<Componente> components = new ObservableCollection<Componente>();
+            var connexio = _context.Database.GetDbConnection();
+            if (connexio.State != ConnectionState.Open)
+            {
+                connexio.Open();
+            }
+
+            using (DbCommand cmd = connexio.CreateCommand())
+            {
+                string sql = @"SELECT 
+                           i.it_codi, i.it_nom, i.it_desc, i.it_stock, i.it_foto, i.it_tipus,
+                           c.cm_codi_fabricant, c.cm_um_codi, c.cm_preu_mig
+                       FROM ITEM i
+                       JOIN COMPONENTE c ON i.it_codi = c.cm_it_codi
+                       WHERE i.it_tipus = 'C' 
+                         AND (:COD_FILTRE = '%%' OR UPPER(i.it_codi) LIKE :COD_FILTRE)
+                         AND (:NOM_FILTRE = '%%' OR UPPER(i.it_nom) LIKE :NOM_FILTRE)";
+
+                cmd.CommandText = sql;
+                cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+
+                string codi_param = "%" + (codi_filtre ?? "").ToUpper() + "%";
+                string nom_param = "%" + (nom_filtre ?? "").ToUpper() + "%";
+
+                // --- CORRECCIÓ AQUÍ: Treure els ':' dels noms ---
+                Utils.CrearParametres(cmd, codi_param, "COD_FILTRE", DbType.String);
+                Utils.CrearParametres(cmd, nom_param, "NOM_FILTRE", DbType.String);
+
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    // ... (la resta del codi de lectura es queda igual)
+                    while (reader.Read())
+                    {
+                        string codi = reader.GetString(reader.GetOrdinal("it_codi"));
+                        string nom = reader.GetString(reader.GetOrdinal("it_nom"));
+                        string descripcio = reader.IsDBNull(reader.GetOrdinal("it_desc")) ? null : reader.GetString(reader.GetOrdinal("it_desc"));
+                        int stock = Convert.ToInt32(reader.GetValue(reader.GetOrdinal("it_stock")));
+                        byte[] fotoBytes = null;
+                        if (reader["it_foto"] != DBNull.Value)
+                        {
+                            fotoBytes = (byte[])reader["it_foto"];
+                        }
+                        char tipus = reader.GetString(reader.GetOrdinal("it_tipus"))[0];
+                        string codiFabricant = reader.GetString(reader.GetOrdinal("cm_codi_fabricant"));
+                        TipusUnitat unitat = (TipusUnitat)Convert.ToInt32(reader.GetValue(reader.GetOrdinal("cm_um_codi")));
+                        Componente c = new Componente(codi, nom, descripcio, stock, fotoBytes, tipus, codiFabricant, unitat);
+                        components.Add(c);
+                    }
+                }
+            }
+            return components;
         }
 
-        public Dictionary<Proveidor, decimal> GetProveidors(Componente component)
+        public Dictionary<Proveidor, decimal> GetProveidors(string codi_comp)
         {
-            throw new NotImplementedException();
+            Dictionary<Proveidor, decimal> proveidorsPreu = new Dictionary<Proveidor, decimal>();
+
+            // SQL que fa JOIN entre PROV_COMP i PROVEIDOR (i les seves taules)
+            // per obtenir l'objecte Proveidor complet i el preu
+            string sql = @"SELECT 
+                               pv.pv_codi, pv.pv_CIF, pv.pv_rao_social, pv.pv_linia_adreça_facturacio, 
+                               pv.pv_persona_contacte, pv.pv_telf_contacte,
+                               m.mu_codi, m.mu_nom,
+                               pr.pr_codi, pr.pr_nom,
+                               pc.pc_preu  -- El preu d'aquest component per a aquest proveïdor
+                           FROM PROV_COMP pc
+                           JOIN PROVEIDOR pv ON pc.pc_pv_codi = pv.pv_codi
+                           LEFT JOIN MUNICIPI m ON pv.pv_mu_pr_codi = m.mu_pr_codi AND pv.pv_mu_codi = m.mu_codi
+                           LEFT JOIN PROVINCIA pr ON m.mu_pr_codi = pr.pr_codi
+                           WHERE pc.pc_cm_it_codi = :cod_comp";
+
+            var connexio = _context.Database.GetDbConnection();
+            if (connexio.State != ConnectionState.Open)
+            {
+                connexio.Open();
+            }
+
+            using (DbCommand cmd = connexio.CreateCommand())
+            {
+                cmd.CommandText = sql;
+                cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+
+                Utils.CrearParametres(cmd, codi_comp, ":cod_comp", DbType.String);
+
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        // 1. Crear Provincia (si existeix)
+                        Provincia provincia = null;
+                        if (reader["pr_codi"] != DBNull.Value)
+                        {
+                            provincia = new Provincia(
+                                Convert.ToInt32(reader.GetValue(reader.GetOrdinal("pr_codi"))),
+                                reader.GetString(reader.GetOrdinal("pr_nom"))
+                            );
+                        }
+
+                        // 2. Crear Municipi (si existeix)
+                        Municipi municipi = null;
+                        if (reader["mu_codi"] != DBNull.Value)
+                        {
+                            municipi = new Municipi(
+                                Convert.ToInt32(reader.GetValue(reader.GetOrdinal("mu_codi"))),
+                                reader.GetString(reader.GetOrdinal("mu_nom")),
+                                provincia
+                            );
+                        }
+
+                        // 3. Crear Proveidor
+                        Proveidor proveidor = new Proveidor(
+                            Convert.ToInt32(reader.GetValue(reader.GetOrdinal("pv_codi"))),
+                            reader.GetString(reader.GetOrdinal("pv_CIF")),
+                            reader.GetString(reader.GetOrdinal("pv_rao_social")),
+                            reader.GetString(reader.GetOrdinal("pv_linia_adreça_facturacio")),
+                            reader.IsDBNull(reader.GetOrdinal("pv_persona_contacte")) ? null : reader.GetString(reader.GetOrdinal("pv_persona_contacte")),
+                            reader.IsDBNull(reader.GetOrdinal("pv_telf_contacte")) ? null : reader.GetString(reader.GetOrdinal("pv_telf_contacte")),
+                            municipi
+                        );
+
+                        // 4. Llegir el preu
+                        decimal preu = reader.GetDecimal(reader.GetOrdinal("pc_preu"));
+
+                        // 5. Afegir al diccionari
+                        if (!proveidorsPreu.ContainsKey(proveidor))
+                        {
+                            proveidorsPreu.Add(proveidor, preu);
+                        }
+                    }
+                }
+            }
+            return proveidorsPreu;
         }
 
         public Componente ObtenirComponentPerCodi(string codi)

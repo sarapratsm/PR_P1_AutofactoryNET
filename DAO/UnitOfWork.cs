@@ -9,9 +9,9 @@ namespace DAO
         private bool _disposed = false;
 
         // Les teves propietats "Lazy Loading" (ESTÀ PERFECTE)
-        private IDAOComponente _daoComponente;
-        private IDAOProducte _daoProducte;
-        private IDAOProveidor _daoProveidor;
+        public IDAOProducte _daoProducte;
+        public IDAOProveidor _daoProveidor;
+        public IDAOComponente _daoComponente;
 
         public UnitOfWork(MyDBContext context)
         {

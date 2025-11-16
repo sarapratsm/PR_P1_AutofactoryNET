@@ -48,6 +48,8 @@ namespace AutofactoryNET
         {
             frmMain.Navigate(pageCompProv, componente);
         }
+
+        
     }
 }
 

@@ -11,6 +11,6 @@
       Title="Comp_proveidor">
 
     <Grid>
-        
+        <DataGrid x:Name="dtgCompProv"></DataGrid>
     </Grid>
 </Page>
