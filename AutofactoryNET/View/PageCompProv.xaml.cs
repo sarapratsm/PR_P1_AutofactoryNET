@@ -8,86 +8,82 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Navigation; // Necessari per a NavigationEventArgs
 
 namespace AppAutoFactory.View
 {
-    /// <summary>
-    /// Lógica de interacción para Comp_proveidor.xaml
-    /// </summary>
     public partial class PageCompProv : Page
     {
         private Componente _componentActual;
+        ObservableCollection<KeyValuePair<Proveidor, decimal>> proveidorsDelComponent;
 
-        ObservableCollection<KeyValuePair<Proveidor, decimal>> proveidorsDelComponent; // Proveïdors i preus del component actual
+        // Aquesta col·lecció és per omplir el ComboBox
+        ObservableCollection<Proveidor> totsElsProveidors;
+
         public PageCompProv()
         {
-            InitializeComponent();
+            InitializeComponent(); // Ara això no hauria de petar
+
+            // Inicialitzem les col·leccions
             proveidorsDelComponent = new ObservableCollection<KeyValuePair<Proveidor, decimal>>();
             dtgCompProv.ItemsSource = proveidorsDelComponent;
+
+            totsElsProveidors = new ObservableCollection<Proveidor>();
+            cmbProveidors.ItemsSource = totsElsProveidors;
+            cmbProveidors.DisplayMemberPath = "RaoSocial"; // Mostra el nom
+
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void navigationService_LoadCompleted(object sender, NavigationEventArgs e)
-        {
-            object parametre = e.ExtraData;
-            if (parametre != null || !(parametre is Componente)) throw new Exception("Parametre invàlid per a la pàgina Comp_proveidor.");
-        }
-
-        private void Page_Unloaded(object sender, RoutedEventArgs e)
-        {
-            if (NavigationService.ExtraData is Componente componentRebut)
+            //Obtenir el component passat com a paràmetre
+            if (NavigationService != null && NavigationService.Content != null)
             {
-                _componentActual = componentRebut;
-
-                // (Ara que tenim el component, podem carregar les seves dades)
-                CarregarProveidors();
-            }
-            else
-            {
-                MessageBox.Show("Error: No s'ha rebut un component vàlid.", "Error de Navegació", MessageBoxButton.OK, MessageBoxImage.Error);
-                // Podríem tancar la pàgina si hi ha un error greu
-                // this.NavigationService.GoBack();
+                _componentActual = NavigationService.Content as Componente;
+                if (_componentActual != null)
+                {
+                    lblComponent.Content = $"Proveïdors del component: {_componentActual.Nom}";
+                    // Carregar els proveïdors del component
+                    CarregarProveidorsDelComponent();
+                    
+                }
+                else
+                {
+                    MessageBox.Show("No s'ha passat cap component vàlid.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
-        private void CarregarProveidors()
+        private void CarregarProveidorsDelComponent()
         {
             if (_componentActual == null) return;
-
             proveidorsDelComponent.Clear();
-
             try
             {
                 using (UnitOfWork uow = OracleFactory.getUOW())
                 {
-                    // Necessites implementar 'ObtenirProveidorsDeComponent' al teu DAO
-                    var diccionari = uow.DAOComponente.GetProveidors(_componentActual);
-
+                    // Cridem al mètode del DAO que ja hem implementat
+                    var diccionari = uow.DAOComponente.GetProveidors(_componentActual.Codi);
                     foreach (var kvp in diccionari)
                     {
                         proveidorsDelComponent.Add(kvp);
                     }
                 }
             }
-            catch (NotImplementedException)
-            {
-                MessageBox.Show("La funció 'ObtenirProveidorsDeComponent' encara no està implementada al DAO.", "Funció Pendent", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
             catch (Exception ex)
             {
-                MessageBox.Show("Error en carregar els proveïdors: \n" + ex.Message, "Error de BBDD", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Error en carregar els proveïdors del component: \n" + ex.Message, "Error de BBDD", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void btnGuardar_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnAfegirProveidor_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

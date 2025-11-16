@@ -243,11 +243,11 @@ namespace DAO
 
         // Afegeix aquest mètode dins de la teva classe DAOProducte.cs
 
+        // ... (dins de la teva classe DAOProducte)
+
         public ObservableCollection<Producte> GetProductes(string codi_filtre, string nom_filtre)
         {
-            // Patró basat 100% en GetClients
             ObservableCollection<Producte> productes = new ObservableCollection<Producte>();
-
             var connexio = _context.Database.GetDbConnection();
             if (connexio.State != ConnectionState.Open)
             {
@@ -256,7 +256,6 @@ namespace DAO
 
             using (DbCommand cmd = connexio.CreateCommand())
             {
-                // Query adaptada al DDL amb la lògica de filtratge
                 string sql = @"SELECT 
                            i.it_codi, i.it_nom, i.it_desc, i.it_stock, i.it_foto, i.it_tipus
                        FROM ITEM i
@@ -266,34 +265,29 @@ namespace DAO
                          AND (:NOM_FILTRE = '%%' OR UPPER(i.it_nom) LIKE :NOM_FILTRE)";
 
                 cmd.CommandText = sql;
-
-                // Enllacem la comanda a la transacció!
                 cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
 
-                // Preparem els paràmetres amb '%' per al LIKE
                 string codi_param = "%" + (codi_filtre ?? "").ToUpper() + "%";
                 string nom_param = "%" + (nom_filtre ?? "").ToUpper() + "%";
 
-                Utils.CrearParametres(cmd, codi_param, ":COD_FILTRE", DbType.String);
-                Utils.CrearParametres(cmd, nom_param, ":NOM_FILTRE", DbType.String);
+                // --- CORRECCIÓ AQUÍ: Treure els ':' dels noms ---
+                Utils.CrearParametres(cmd, codi_param, "COD_FILTRE", DbType.String);
+                Utils.CrearParametres(cmd, nom_param, "NOM_FILTRE", DbType.String);
 
                 using (DbDataReader reader = cmd.ExecuteReader())
                 {
+                    // ... (la resta del codi de lectura es queda igual)
                     while (reader.Read())
                     {
-                        // (Mateixa lògica de construcció que a ObtenirTots de Producte)
                         string codi = reader.GetString(reader.GetOrdinal("it_codi"));
                         string nom = reader.GetString(reader.GetOrdinal("it_nom"));
                         string desc = reader.IsDBNull(reader.GetOrdinal("it_desc")) ? null : reader.GetString(reader.GetOrdinal("it_desc"));
                         int stock = Convert.ToInt32(reader.GetValue(reader.GetOrdinal("it_stock")));
-
                         byte[] fotoBytes = null;
                         if (reader["it_foto"] != DBNull.Value)
                         {
                             fotoBytes = (byte[])reader["it_foto"];
                         }
-
-                        // Creem el Producte
                         Producte p = new Producte(codi, nom, desc, stock, fotoBytes);
                         productes.Add(p);
                     }

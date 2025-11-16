@@ -5,109 +5,11 @@
              StartupUri="MainWindow.xaml">
 
     <Application.Resources>
-        <!-- PALETA DE COLORS -->
-        <Color x:Key="ColorPrimary">#FFDFA0B5</Color>
-        <Color x:Key="ColorAccent">#FFB39CD0</Color>
-        <Color x:Key="ColorBackgroundLight">#FFF9F7F8</Color>
-        <Color x:Key="ColorTextDark">#FF4A3F55</Color>
-
-        <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource ColorPrimary}"/>
-        <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource ColorAccent}"/>
-        <SolidColorBrush x:Key="BackgroundLightBrush" Color="{StaticResource ColorBackgroundLight}"/>
-        <SolidColorBrush x:Key="TextDarkBrush" Color="{StaticResource ColorTextDark}"/>
-
-        <!-- TIPOGRAFIES -->
-        <FontFamily x:Key="FontTitle">Segoe UI Semibold</FontFamily>
-        <FontFamily x:Key="FontSubtitle">Segoe UI</FontFamily>
-        <FontFamily x:Key="FontBody">Segoe UI</FontFamily>
-
-        <!-- ESTILS DE TEXT -->
-        <Style x:Key="TitleTextStyle" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="{StaticResource FontTitle}"/>
-            <Setter Property="FontSize" Value="34"/>
-            <Setter Property="Foreground" Value="{StaticResource TextDarkBrush}"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="Margin" Value="0,8,0,8"/>
-        </Style>
-
-        <Style x:Key="SubtitleTextStyle" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="{StaticResource FontSubtitle}"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Foreground" Value="{StaticResource TextDarkBrush}"/>
-            <Setter Property="Opacity" Value="0.8"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="Margin" Value="0,6,0,6"/>
-        </Style>
-
-        <Style x:Key="BodyTextStyle" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="{StaticResource FontBody}"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="{StaticResource TextDarkBrush}"/>
-            <Setter Property="Opacity" Value="0.9"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-        </Style>
-
-        <!-- TEXT DESTACAT -->
-        <Style x:Key="HighlightTextStyle" TargetType="Run">
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
-        </Style>
-
-        <!-- BOTÓ PRINCIPAL (GLOBAL) -->
-        <Style x:Key="PrimaryButton" TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Padding" Value="12,6"/>
-            <Setter Property="FontFamily" Value="{StaticResource FontSubtitle}"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect Color="#888" BlurRadius="10" Opacity="0.3"/>
-                </Setter.Value>
-            </Setter>
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border"
-                            Background="{TemplateBinding Background}"
-                            CornerRadius="15"
-                            Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          RecognizesAccessKey="True"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="{StaticResource AccentBrush}"/>
-                                <Setter TargetName="border" Property="Opacity" Value="0.9"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Opacity" Value="0.8"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="#FFD8D8D8"/>
-                                <Setter Property="Foreground" Value="#FFAAAAAA"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- FONS SUAU AMB DEGRADAT -->
-        <LinearGradientBrush x:Key="WindowBackground" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FFF9F7F8" Offset="0"/>
-            <GradientStop Color="#FFF1E9EF" Offset="1"/>
-        </LinearGradientBrush>
-
-        <!-- Aplicar fons per defecte a totes les finestres -->
-        <Style TargetType="{x:Type Window}">
-            <Setter Property="Background" Value="{StaticResource WindowBackground}"/>
-        </Style>
-
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/Estils.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
+
 </Application>

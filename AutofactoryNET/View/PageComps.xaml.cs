@@ -25,6 +25,10 @@ namespace AppAutoFactory.View
     public partial class PageComps : Page
     {
         ObservableCollection<Componente> componentes = new ObservableCollection<Componente>();
+
+        private Componente _componentActual;
+
+
         public MainWindow MainWindow { get; } // Per poder navegar
 
         public PageComps()
@@ -91,6 +95,21 @@ namespace AppAutoFactory.View
             {
                 this.MainWindow.NavegarACompProveidor(compSeleccionat);
             }
+        }
+
+        private void btnAfegir_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnModificar_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnEliminar_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
