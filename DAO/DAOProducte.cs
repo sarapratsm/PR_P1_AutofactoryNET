@@ -273,13 +273,11 @@ namespace DAO
                 string codi_param = "%" + (codi_filtre ?? "").ToUpper() + "%";
                 string nom_param = "%" + (nom_filtre ?? "").ToUpper() + "%";
 
-                // --- CORRECCIÓ AQUÍ: Treure els ':' dels noms ---
                 Utils.CrearParametres(consulta, codi_param, "COD_FILTRE", DbType.String);
                 Utils.CrearParametres(consulta, nom_param, "NOM_FILTRE", DbType.String);
 
                 using (DbDataReader reader = consulta.ExecuteReader())
                 {
-                    // ... (la resta del codi de lectura es queda igual)
                     while (reader.Read())
                     {
                         string codi = reader.GetString(reader.GetOrdinal("it_codi"));

@@ -483,13 +483,23 @@ namespace DAO
             return component;
         }
 
-        public Dictionary<Proveidor, decimal> ObtenirProveidorsPreu(string codi_comp)
+        public Dictionary<Proveidor, decimal> ObtenirProveidorsPreuFiltrats(string codi_comp, string codi_filtre, string nom_filtre, int offset = 0, int rows_per_page = -1)
         {
             Dictionary<Proveidor, decimal> proveidorsPreu = new Dictionary<Proveidor, decimal>();
 
-            // SQL que fa JOIN entre PROV_COMP i PROVEIDOR (i les seves taules)
-            // per obtenir l'objecte Proveidor complet i el preu
-            string sql = @"SELECT 
+            
+
+            var connexio = _context.Database.GetDbConnection();
+            if (connexio.State != ConnectionState.Open)
+            {
+                connexio.Open();
+            }
+
+            using (DbCommand consulta = connexio.CreateCommand())
+            {
+                // SQL que fa JOIN entre PROV_COMP i PROVEIDOR (i les seves taules)
+                // per obtenir l'objecte Proveidor complet i el preu
+                string sql = @"SELECT 
                                pv.pv_codi, pv.pv_CIF, pv.pv_rao_social, pv.pv_linia_adreça_facturacio, 
                                pv.pv_persona_contacte, pv.pv_telf_contacte,
                                m.mu_codi, m.mu_nom,
@@ -499,22 +509,25 @@ namespace DAO
                            JOIN PROVEIDOR pv ON pc.pc_pv_codi = pv.pv_codi
                            LEFT JOIN MUNICIPI m ON pv.pv_mu_pr_codi = m.mu_pr_codi AND pv.pv_mu_codi = m.mu_codi
                            LEFT JOIN PROVINCIA pr ON m.mu_pr_codi = pr.pr_codi
-                           WHERE pc.pc_cm_it_codi = :cod_comp";
+                           WHERE pc.pc_cm_it_codi = :cod_comp
+                                AND UPPER(pv.pv_codi) LIKE: COD_FILTRE
+                                AND UPPER(pv.pv_cif) LIKE: NOM_FILTRE";
 
-            var connexio = _context.Database.GetDbConnection();
-            if (connexio.State != ConnectionState.Open)
-            {
-                connexio.Open();
-            }
+                if (rows_per_page > 0)
+                {
+                    consulta.CommandText += $" limit {rows_per_page} offset {offset}";
+                }
 
-            using (DbCommand cmd = connexio.CreateCommand())
-            {
-                cmd.CommandText = sql;
-                cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+                consulta.CommandText = sql;
+                consulta.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
 
-                Utils.CrearParametres(cmd, codi_comp, ":cod_comp", DbType.String);
+                Utils.CrearParametres(consulta, codi_comp, ":cod_comp", DbType.String);
+                // Preparem els paràmetres amb '%' inclòs
+                // Si el filtre és buit, posem '%' per a que ho trobi tot
+                string codi_param = string.IsNullOrEmpty(codi_filtre) ? "%" : "%" + codi_filtre.ToUpper() + "%";
+                string nom_param = string.IsNullOrEmpty(nom_filtre) ? "%" : "%" + nom_filtre.ToUpper() + "%";
 
-                using (DbDataReader reader = cmd.ExecuteReader())
+                using (DbDataReader reader = consulta.ExecuteReader())
                 {
                     while (reader.Read())
                     {

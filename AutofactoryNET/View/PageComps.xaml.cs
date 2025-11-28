@@ -116,7 +116,9 @@ namespace AppAutoFactory.View
 
         private void btnAfegir_Click(object sender, RoutedEventArgs e)
         {
-
+            //Crear nou component
+            _vmComponente = new VMComponente();
+            txbNom.IsEnabled = true;
         }
 
        
@@ -128,7 +130,6 @@ namespace AppAutoFactory.View
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void btnAfegirProv_Click(object sender, RoutedEventArgs e)
@@ -138,8 +139,7 @@ namespace AppAutoFactory.View
 
         private void dtgComps_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            
-
+            btnEditarProvs_Click(sender, e);
         }
 
         private void dtgComps_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -147,23 +147,18 @@ namespace AppAutoFactory.View
             _componenteActual =(Componente) dtgComps.SelectedItem;
             _vmComponente = new VMComponente(_componenteActual);
             DataContext = _vmComponente;
+            txbNom.IsEnabled = false;
+
 
         }
 
         private void btnEditarProvs_Click(object sender, RoutedEventArgs e)
         {
             //Obrir PageCompProv passant el Component seleccionat
-            PageCompProv pageCompProv = new PageCompProv(_componenteActual);
+            PageCompProv pageCompProv = new PageCompProv(_vmComponente);
             this.NavigationService.Navigate(pageCompProv);
 
         }
-
-        private void btnGestioProvs_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -172,6 +167,11 @@ namespace AppAutoFactory.View
                 NavigationService.GoBack();
             }
 
+        }
+
+        private void btnFiltrar_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

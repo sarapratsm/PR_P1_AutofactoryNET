@@ -31,7 +31,7 @@ namespace AppAutoFactory.ViewModel
             this.TelfContacte = prov.TelfContacte;
             this.Municipi = prov.Municipi;
             this.Preu = preu;
-            this.proveidor= prov;
+            this.proveidor = prov;
         }
 
         #region propietats
@@ -77,9 +77,12 @@ namespace AppAutoFactory.ViewModel
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public Proveidor Proveidor
+        {
+            get { return proveidor; }
+            set { proveidor = value; }
+        }
         #endregion
-
-
-
     }
 }

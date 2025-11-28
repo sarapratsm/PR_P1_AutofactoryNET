@@ -16,7 +16,7 @@
             <TextBox x:Name="txtFiltreCodi" Width="100" Margin="0,0,10,0"/>
             <Label Content="Nom:"/>
             <TextBox x:Name="txtFiltreNom" Width="150" Margin="0,0,10,0"/>
-            <Button x:Name="btnFiltrar" Content="Filtrar" Margin="0,0,10,0"/>
+            <Button x:Name="btnFiltrar" Content="Filtrar" Margin="0,0,10,0" Click="btnFiltrar_Click"/>
 
             <Separator/>
 
@@ -71,7 +71,7 @@
                 <Label Margin="10" Padding="5" Content="Unitats*" Grid.Row="6"></Label>
 
                 <!--Falta la foto aqui-->
-                <TextBox  Margin="10" Padding="5"   Grid.Column="1" Width="100" Grid.Row="1" Text="{Binding Codi}"/>
+                <TextBox  x:Name="txbNom" Margin="10" Padding="5"   Grid.Column="1" Width="100" Grid.Row="1" Text="{Binding Codi}" IsEnabled="False"/>
                 <TextBox  Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="2"   Text="{Binding Nom}"/>
                 <TextBox  Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="3"   Text="{Binding Descripcio}"/>
                 <TextBox  Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="4"   Text="{Binding Fabricant}"/>

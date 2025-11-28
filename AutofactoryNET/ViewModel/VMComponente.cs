@@ -1,6 +1,7 @@
 ﻿using Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel; // <-- 1. Importar per a INotifyPropertyChanged
 using System.Linq;
 using System.Runtime.CompilerServices; // <-- 2. Importar per a [CallerMemberName]
@@ -31,6 +32,7 @@ namespace AppAutoFactory.ViewModel
         private string codiFabricant;
         private decimal preuMig;
         private Dictionary<Proveidor, decimal> proveidors_preu;
+        ObservableCollection<VMProveidor> provsVM;
         private TipusUnitat unitat; // Canviat 'units' per 'unitat' per consistència
         private Componente componente;
 
@@ -124,6 +126,7 @@ namespace AppAutoFactory.ViewModel
                 this.CodiFabricant = c.CodiFabricant;
                 this.PreuMig = c.PreuMig;
                 this.Proveidors_preu = c.Proveidors_preu;
+                transformaDiccionariVM();
                 this.Unitat = c.Unitat;
             }
             else
@@ -136,13 +139,40 @@ namespace AppAutoFactory.ViewModel
         public void save()
         {
             //si validacio correcta
-
             //si c!=null
+            retransformaDiccionari();
         }
 
         public bool validarVM()
         {
             return false;
+        }
+
+        private bool transformaDiccionariVM()
+        {
+            this.provsVM = new ObservableCollection<VMProveidor>();
+            if (this.proveidors_preu != null)
+            {
+                foreach (KeyValuePair<Proveidor, decimal> kvp in this.proveidors_preu)
+                {
+                    provsVM.Add(new VMProveidor(kvp.Key, kvp.Value));
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void retransformaDiccionari()
+        {
+            this.proveidors_preu.Clear();
+            foreach (VMProveidor p in this.provsVM)
+            {
+                this.proveidors_preu.Add(p.Proveidor, p.Preu);
+            }
+
         }
     }
 }

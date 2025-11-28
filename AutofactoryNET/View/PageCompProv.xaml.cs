@@ -15,34 +15,22 @@ namespace AppAutoFactory.View
 {
     public partial class PageCompProv : Page
     {
-        private Componente _componentActual;
-        private VMComponente _nouComponent;
+        private VMComponente _componentActual;
+        
+        ObservableCollection<Proveidor> llistaTotsProv; // Col·lecció és per omplir el ComboBox
+        ObservableCollection<VMProveidor> _llistaVMProvs = new ObservableCollection<VMProveidor>(); //llista pel dtg.
 
-
-        // Aquesta col·lecció és per omplir el ComboBox
-        ObservableCollection<Proveidor> llistaTotsProv;
-        ObservableCollection<VMProveidor> _llistaVMProvs = new ObservableCollection<VMProveidor>();
-
-        public PageCompProv(Componente c)
+        public PageCompProv(VMComponente c)
         {
             this._componentActual = c; //guardem el component
             InitializeComponent();
             CarregarProveidorsDelComponent();
         }
 
-        public PageCompProv(VMComponente c)
-        {
-            this._nouComponent = c; //guardem el component
-            InitializeComponent();
-            CarregarProveidorsDelComponent();
-        }
-
-
-
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             //Combobox de proveidors
-            llistaTotsProv = OracleFactory.getUOW().DAOProveidor.ObtenirTotsProveidors();
+            llistaTotsProv = OracleFactory.getUOW().DAOProveidor.ObtenirTotsProveidors(); 
             cmbProveidors.ItemsSource = llistaTotsProv;
             cmbProveidors.DisplayMemberPath = "RaoSocial"; // Mostra el nom
             cmbProveidors.SelectedIndex = 0;
@@ -53,36 +41,52 @@ namespace AppAutoFactory.View
 
             lblComponent.Text = $"Proveïdors del component: {_componentActual.Nom}";
             // Carregar els proveïdors del component
-            
+
         }
 
         private void inicialitzarLlistaProvsVM()
         {
-            if (_componentActual.Proveidors_preu == null || _componentActual.Proveidors_preu.Count() == 0)
+            if (_componentActual.Proveidors_preu == null)
             {
-                CarregarProveidorsDelComponent();
+                //Si la llista no s'ha carregat, la carreguem
+                CarregarProveidorsDelComponent ();
             }
+            transformaDiccionariVM(_componentActual.Proveidors_preu);
+        }
+
+        
+        private void CarregarProveidorsDelComponent()
+        {
+            _componentActual.Proveidors_preu = new Dictionary<Proveidor, decimal>();
+            _componentActual.Proveidors_preu = OracleFactory.getUOW().DAOComponente.ObtenirProveidorsPreuFiltrats(_componentActual.Codi, "", "");
+        }
+
+        private void transformaDiccionariVM(Dictionary<Proveidor, decimal> _llistaProvs)
+        {
             _llistaVMProvs.Clear();
-            Dictionary<Proveidor, decimal> _llistaProvs = _componentActual.Proveidors_preu;
             foreach (KeyValuePair<Proveidor, decimal> kvp in _llistaProvs)
             {
                 _llistaVMProvs.Add(new VMProveidor(kvp.Key, kvp.Value));
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private void CarregarProveidorsDelComponent()
+        private void filtrar()
         {
-            _componentActual.Proveidors_preu.Clear();
-            _componentActual.Proveidors_preu = OracleFactory.getUOW().DAOComponente.ObtenirProveidorsPreu(_componentActual.Codi);
+            string codi_filtre, cif_filtre;
+            codi_filtre = txtCifFiltre.Text;
+            cif_filtre = txtCifFiltre.Text;
+            //Dictionary<Proveidor, decimal> ProvsFiltrats = OracleFactory.getUOW().DAOComponente.ObtenirProveidorsPreuFiltrats(_componentActual.Codi, codi_filtre, cif_filtre);
+            //transformaDiccionariVM(ProvsFiltrats);
 
+            //farem el filtre 
 
         }
 
         private void btnGuardar_Click(object sender, RoutedEventArgs e)
         {
+            //Transformar llista vmproveidors a la llista de proveidors, preu
+            this._componentActual.retransformaDiccionari(); //Actualitzem el diccionari
+
 
         }
 
@@ -132,9 +136,6 @@ namespace AppAutoFactory.View
 
         }
 
-        private void filtrar()
-        {
-            dtgCompProv.ItemsSource = null; //TODO
-        }
+        
     }
 }

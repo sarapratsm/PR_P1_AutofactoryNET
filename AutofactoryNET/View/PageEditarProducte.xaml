@@ -39,7 +39,7 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
                    
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -53,7 +53,7 @@
                 <Label Margin="10" Padding="5" Content="Descripcio" Grid.Row="4"></Label>
 
                 <!--Falta la foto aqui-->
-                <TextBox HorizontalAlignment="Left" Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="1" Text="{Binding Codi}"/>
+                <TextBox HorizontalAlignment="Left" Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="1" Text="{Binding Codi}" IsEnabled="False"/>
                 <TextBox HorizontalAlignment="Left" Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="2" Text="{Binding Nom}"/>
                 <TextBox HorizontalAlignment="Left" Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="3" Text="{Binding Stock}"/>
                 <TextBox HorizontalAlignment="Left" Margin="10" Padding="5" Grid.Column="1" Width="200" Grid.Row="4" Text="{Binding Descripcio}"  Height="auto"/>
