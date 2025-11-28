@@ -67,26 +67,26 @@ namespace ProvesBD
 
                 // Cas 1: Sense filtres (hauria de retornar-ho tot)
                 // El teu script de dades demo té 4 productes
-                resultats = dao.GetProductes("", "");
+                resultats = dao.GetProductesFiltrats("", "", 0, 5);
                 Assert.IsTrue(resultats.Count >= 4, "S'esperaven almenys 4 productes sense filtre.");
 
                 // Cas 2: Filtre per Codi parcial (PDF)
                 // Hauria de trobar PDF_01 i PDF_03
-                resultats = dao.GetProductes("PDF", "");
+                resultats = dao.GetProductesFiltrats("PDF", "",0, 5);
                 Assert.AreEqual(2, resultats.Count, "Hauria de trobar 2 productes amb codi 'PDF'.");
 
                 // Cas 3: Filtre per Nom parcial (fre)
                 // Hauria de trobar els 4
-                resultats = dao.GetProductes("", "fre");
+                resultats = dao.GetProductesFiltrats("", "fre",0,5);
                 Assert.AreEqual(4, resultats.Count, "Hauria de trobar 4 productes amb nom 'fre'.");
 
                 // Cas 4: Filtre per Codi i Nom exacte
-                resultats = dao.GetProductes("PDF_01", "Pinça de fre");
+                resultats = dao.GetProductesFiltrats("PDF_01", "Pinça de fre", 0, 5);
                 Assert.AreEqual(1, resultats.Count, "Hauria de trobar 1 producte amb codi 'PDF_01' i nom 'Pinça de fre'.");
                 Assert.AreEqual("PDF_01", resultats[0].Codi);
 
                 // Cas 5: Filtre sense resultats
-                resultats = dao.GetProductes("XXXXX", "YYYYY");
+                resultats = dao.GetProductesFiltrats("XXXXX", "YYYYY", 0, 5);
                 Assert.AreEqual(0, resultats.Count, "No hauria de trobar cap producte.");
             }
         }

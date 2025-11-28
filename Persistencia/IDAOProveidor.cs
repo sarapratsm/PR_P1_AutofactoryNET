@@ -16,9 +16,7 @@ namespace DAO {
 	public interface IDAOProveidor   {
 
         ObservableCollection<Proveidor> ObtenirTotsProveidors();
-
-		/// 
-		/// <param name="codi_prov"></param>
+		
 		Model.Proveidor ObtenirProveidor(int codi_prov);
 
 		public bool AfegirProveidor(Proveidor p);

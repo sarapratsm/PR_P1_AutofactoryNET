@@ -297,7 +297,49 @@ namespace DAO
             }
         }
 
-        
-}//end DAOProveidor
+        public Dictionary<string, decimal> ObternirProvsPreu(Componente c)
+        {
+            Dictionary<string, decimal> proveidorsPreu = new Dictionary<string, decimal>();
+
+            // SQL per obtenir NOM PROVEÏDOR i PREU
+            string sql = @"SELECT 
+                    pv.pv_rao_social, 
+                    pc.pc_preu
+                   FROM PROV_COMP pc
+                   JOIN PROVEIDOR pv ON pc.pc_pv_codi = pv.pv_codi
+                   WHERE pc.pc_cm_it_codi = :id";
+
+            var connexio = _context.Database.GetDbConnection();
+            if (connexio.State != ConnectionState.Open)
+            {
+                connexio.Open();
+            }
+
+            using (DbCommand cmd = connexio.CreateCommand())
+            {
+                cmd.CommandText = sql;
+                cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+
+                Utils.CrearParametres(cmd, c.Codi, ":id", DbType.String);
+
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string nomProveidor = reader.GetString(reader.GetOrdinal("pv_rao_social"));
+                        decimal preu = reader.GetDecimal(reader.GetOrdinal("pc_preu"));
+
+                        if (!proveidorsPreu.ContainsKey(nomProveidor))
+                        {
+                            proveidorsPreu.Add(nomProveidor, preu);
+                        }
+                    }
+                }
+            }
+            return proveidorsPreu;
+        }
+
+
+    }//end DAOProveidor
 
 }//end namespace Persistencia

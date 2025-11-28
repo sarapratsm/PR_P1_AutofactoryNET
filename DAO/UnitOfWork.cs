@@ -53,7 +53,6 @@ namespace DAO
             }
         }
 
-        // --- MÈTODES DEL TEU PROFESSOR (APROFITATS) ---
 
         /// <summary>
         /// Inicia una transacció manual a la base de dades.

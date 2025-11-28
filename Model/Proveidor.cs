@@ -44,5 +44,12 @@ namespace Model
 
         // Propietat de Navegació (ara gestiona la FK de forma oculta)
         public Municipi Municipi { get => municipi; private set => municipi = value; }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Proveidor proveidor &&
+                   cif == proveidor.cif &&
+                   raoSocial == proveidor.raoSocial;
+        }
     }
 }

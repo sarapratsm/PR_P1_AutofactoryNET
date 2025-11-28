@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutofactoryNET"
         mc:Ignorable="d"
-        
+        Loaded="Window_Loaded"
         Background="{StaticResource BackgroundLightBrush}"
-        Title="AutoFactory" Height="450" Width="800">
+        Title="AutoFactory" Height="600" Width="900">
 
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Menú">
-                <MenuItem Header="Items"  x:Name="mnuItems" Click="mnuItems_Click"></MenuItem>
+                <MenuItem Header="Inici"  x:Name="mnuInici" Click="mnuInici_Click"></MenuItem>
                 <MenuItem Header="Productes" x:Name="mnuProductes" Click="mnuProductes_Click"></MenuItem>
                 <MenuItem Header="Components" x:Name="mnuComponentes" Click="mnuComponentes_Click"></MenuItem>
             </MenuItem>
@@ -24,9 +24,9 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Margin="10">
+            <Grid x:Name="Banner" Grid.Row="0" Margin="10">
                 <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Right"
+                            HorizontalAlignment="Center"
                             VerticalAlignment="Top">
 
                     <Grid Grid.Column="1" Width="30" Height="30">
@@ -35,12 +35,13 @@
                               Fill="{StaticResource PrimaryBrush}" Stretch="Uniform"/>
                     </Grid>
 
-                    <TextBlock Text="AutoFactory"
-                               HorizontalAlignment="Right" Grid.Column="0"
-                               VerticalAlignment="Center" Margin="5,0,0,0"
+                    <TextBlock Text="AutoFactory" x:Name="txbTitle"
+                               HorizontalAlignment="Left" Grid.Column="0"
+                               VerticalAlignment="Center" Margin="50,0,0,0"
                                Style="{StaticResource TitleTextStyle}"/>
                 </StackPanel>
             </Grid>
+            
             <Frame x:Name="frmMain" Grid.Row="1" NavigationUIVisibility="Hidden"></Frame>
         </Grid>
     </DockPanel>

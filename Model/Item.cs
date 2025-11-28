@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,7 +36,16 @@ namespace Model
         public byte[] Foto { get => foto; private set => foto = value; }
         public char Tipus { get => tipus; private set => tipus = value; }
 
+       
 
+        public static bool ValidaNom(string nom)
+        {
+            if (nom == null || nom.Length < 3)
+            {
+                return false; 
+            } 
+            return true;
+        }
         
     }
 }

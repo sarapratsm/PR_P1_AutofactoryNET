@@ -10,69 +10,21 @@ using System.Data.Common;
 using System.IO;
 using System.Text;
 
-namespace DAO {
+
+namespace DAO
+{
     public class DAOComponente : IDAOComponente
     {
+        // Dependència del DbContext
         private readonly MyDBContext _context;
 
+        //Constructor
         public DAOComponente(MyDBContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public ObservableCollection<Componente> ObtenirTots()
-        {
-            ObservableCollection<Componente> components = new ObservableCollection<Componente>();
 
-            // Query adaptada al DDL
-            string sql = @"SELECT 
-                               i.it_codi, i.it_nom, i.it_desc, i.it_stock, i.it_foto, i.it_tipus,
-                               c.cm_codi_fabricant, c.cm_um_codi, c.cm_preu_mig
-                           FROM ITEM i
-                           JOIN COMPONENTE c ON i.it_codi = c.cm_it_codi
-                           WHERE i.it_tipus = 'C'"; 
-
-            using (DbConnection conn = _context.Database.GetDbConnection())
-            {
-                conn.Open();
-                using (DbCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = sql;
-
-                    // Enllaça la comanda amb la transacció del UoW
-                    cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
-
-                    using (DbDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            string codi = reader.GetString(reader.GetOrdinal("it_codi"));
-                            string nom = reader.GetString(reader.GetOrdinal("it_nom"));
-                            string descripcio = reader.IsDBNull(reader.GetOrdinal("it_desc")) ? null : reader.GetString(reader.GetOrdinal("it_desc"));
-                            int stock = Convert.ToInt32(reader.GetValue(reader.GetOrdinal("it_stock")));
-
-                            // NOTA FOTO: DDL és VARCHAR, Model és byte[]
-                            // string fotoPath = reader.IsDBNull(reader.GetOrdinal("it_foto")) ? null : reader.GetString(reader.GetOrdinal("it_foto"));
-                            byte[] fotoBytes = null; // Passant null al constructor
-
-                            char tipus = reader.GetString(reader.GetOrdinal("it_tipus"))[0];
-                            string codiFabricant = reader.GetString(reader.GetOrdinal("cm_codi_fabricant"));
-                            TipusUnitat unitat = (TipusUnitat)Convert.ToInt32(reader.GetValue(reader.GetOrdinal("cm_um_codi")));
-
-                            // Creem el component
-                            Componente c = new Componente(codi, nom, descripcio, stock, fotoBytes, tipus, codiFabricant, unitat);
-
-                            // TODO: Assignar el preu mig llegit (cm_preu_mig)
-                            // El teu model C# no té un setter públic per a PreuMig.
-                            // Hauries d'afegir-lo o carregar-lo a través de CalculaPreuMig.
-
-                            components.Add(c);
-                        }
-                    }
-                }
-            }
-            return components;
-        }
 
         public bool AfegirComponent(Componente component)
         {
@@ -310,49 +262,19 @@ namespace DAO {
             }
         }
 
-
-        public decimal CalculaPreuMig(Componente component)
+        /*public ObservableCollection<Componente> ObtenirComponentsFiltrats(string codi_filtre, string nom_filtre)
         {
-            // Cridem la funció d'Oracle f_calcula_preu_mig
-
-            var connexio = _context.Database.GetDbConnection();
-            if (connexio.State != ConnectionState.Open)
-            {
-                connexio.Open();
-            }
-
-            using (var cmd = connexio.CreateCommand())
-            {
-                cmd.CommandText = "SELECT f_calcula_preu_mig(:cod) FROM DUAL";
-                cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
-
-                Utils.CrearParametres(cmd, component.Codi, ":cod", DbType.String);
-
-                // ExecuteScalar s'usa per a consultes que retornen un sol valor
-                var resultat = cmd.ExecuteScalar();
-
-                if (resultat != null && resultat != DBNull.Value)
-                {
-                    return Convert.ToDecimal(resultat);
-                }
-            }
-            return 0;
-        }
-
-
-        // ... (dins de la teva classe DAOComponente)
-
-        public ObservableCollection<Componente> GetComponents(string codi_filtre, string nom_filtre)
-        {
-            // ... (la connexió i el SQL es queden igual)
             ObservableCollection<Componente> components = new ObservableCollection<Componente>();
             var connexio = _context.Database.GetDbConnection();
+
             if (connexio.State != ConnectionState.Open)
-            {
+            {  
                 connexio.Open();
             }
 
-            using (DbCommand cmd = connexio.CreateCommand())
+
+
+            using (DbCommand consulta = connexio.CreateCommand())
             {
                 string sql = @"SELECT 
                            i.it_codi, i.it_nom, i.it_desc, i.it_stock, i.it_foto, i.it_tipus,
@@ -363,21 +285,22 @@ namespace DAO {
                          AND (:COD_FILTRE = '%%' OR UPPER(i.it_codi) LIKE :COD_FILTRE)
                          AND (:NOM_FILTRE = '%%' OR UPPER(i.it_nom) LIKE :NOM_FILTRE)";
 
-                cmd.CommandText = sql;
-                cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+                consulta.CommandText = sql;
+                consulta.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction(); // IMPORTANT !!!
 
                 string codi_param = "%" + (codi_filtre ?? "").ToUpper() + "%";
                 string nom_param = "%" + (nom_filtre ?? "").ToUpper() + "%";
+                Utils.CrearParametres(consulta, codi_param, "COD_FILTRE", DbType.String);
+                Utils.CrearParametres(consulta, nom_param, "NOM_FILTRE", DbType.String);
 
-                // --- CORRECCIÓ AQUÍ: Treure els ':' dels noms ---
-                Utils.CrearParametres(cmd, codi_param, "COD_FILTRE", DbType.String);
-                Utils.CrearParametres(cmd, nom_param, "NOM_FILTRE", DbType.String);
+                
 
-                using (DbDataReader reader = cmd.ExecuteReader())
+
+                using (DbDataReader reader = consulta.ExecuteReader())
                 {
-                    // ... (la resta del codi de lectura es queda igual)
                     while (reader.Read())
                     {
+                        // Descarreguem les dades de cada columna de la taula
                         string codi = reader.GetString(reader.GetOrdinal("it_codi"));
                         string nom = reader.GetString(reader.GetOrdinal("it_nom"));
                         string descripcio = reader.IsDBNull(reader.GetOrdinal("it_desc")) ? null : reader.GetString(reader.GetOrdinal("it_desc"));
@@ -390,6 +313,74 @@ namespace DAO {
                         char tipus = reader.GetString(reader.GetOrdinal("it_tipus"))[0];
                         string codiFabricant = reader.GetString(reader.GetOrdinal("cm_codi_fabricant"));
                         TipusUnitat unitat = (TipusUnitat)Convert.ToInt32(reader.GetValue(reader.GetOrdinal("cm_um_codi")));
+                        //double preu_mig; //Es calcularà automàticament
+                        Componente c = new Componente(codi, nom, descripcio, stock, fotoBytes, tipus, codiFabricant, unitat);
+                        components.Add(c);
+                    }
+                }
+            }
+            return components;
+        }*/
+
+        public ObservableCollection<Componente> ObtenirComponentsFiltrats(string codi_filtre, string nom_filtre, int offset = 0, int rows_per_page = -1)
+        {
+            ObservableCollection<Componente> components = new ObservableCollection<Componente>();
+            var connexio = _context.Database.GetDbConnection();
+
+            if (connexio.State != ConnectionState.Open)
+            {
+                connexio.Open();
+            }
+
+            using (DbCommand consulta = connexio.CreateCommand())
+            {
+                // SQL SIMPLIFICAT: Eliminem la part (:VAR = '%%') per evitar duplicar paràmetres
+                string sql = @"SELECT 
+                   i.it_codi, i.it_nom, i.it_desc, i.it_stock, i.it_foto, i.it_tipus,
+                   c.cm_codi_fabricant, c.cm_um_codi, c.cm_preu_mig
+               FROM ITEM i
+               JOIN COMPONENTE c ON i.it_codi = c.cm_it_codi
+               WHERE i.it_tipus = 'C' 
+                 AND UPPER(i.it_codi) LIKE :COD_FILTRE
+                 AND UPPER(i.it_nom) LIKE :NOM_FILTRE";
+
+                if (rows_per_page > 0)
+                {
+                    consulta.CommandText += $" limit {rows_per_page} offset {offset}";
+                }
+
+                consulta.CommandText = sql;
+                consulta.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+
+                // Preparem els paràmetres amb '%' inclòs
+                // Si el filtre és buit, posem '%' per a que ho trobi tot
+                string codi_param = string.IsNullOrEmpty(codi_filtre) ? "%" : "%" + codi_filtre.ToUpper() + "%";
+                string nom_param = string.IsNullOrEmpty(nom_filtre) ? "%" : "%" + nom_filtre.ToUpper() + "%";
+
+                // Creem els paràmetres SENSE els dos punts (correcte per a OracleClient)
+                Utils.CrearParametres(consulta, codi_param, "COD_FILTRE", DbType.String);
+                Utils.CrearParametres(consulta, nom_param, "NOM_FILTRE", DbType.String);
+
+                using (DbDataReader reader = consulta.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        // (El teu codi de lectura original)
+                        string codi = reader.GetString(reader.GetOrdinal("it_codi"));
+                        string nom = reader.GetString(reader.GetOrdinal("it_nom"));
+                        string descripcio = reader.IsDBNull(reader.GetOrdinal("it_desc")) ? null : reader.GetString(reader.GetOrdinal("it_desc"));
+                        int stock = Convert.ToInt32(reader.GetValue(reader.GetOrdinal("it_stock")));
+
+                        byte[] fotoBytes = null;
+                        if (reader["it_foto"] != DBNull.Value)
+                        {
+                            fotoBytes = (byte[])reader["it_foto"];
+                        }
+
+                        char tipus = reader.GetString(reader.GetOrdinal("it_tipus"))[0];
+                        string codiFabricant = reader.GetString(reader.GetOrdinal("cm_codi_fabricant"));
+                        TipusUnitat unitat = (TipusUnitat)Convert.ToInt32(reader.GetValue(reader.GetOrdinal("cm_um_codi")));
+
                         Componente c = new Componente(codi, nom, descripcio, stock, fotoBytes, tipus, codiFabricant, unitat);
                         components.Add(c);
                     }
@@ -398,7 +389,101 @@ namespace DAO {
             return components;
         }
 
-        public Dictionary<Proveidor, decimal> GetProveidors(string codi_comp)
+        public Dictionary<string, decimal> ObternirProvCodPreu(Componente c)
+        {
+            Dictionary<string, decimal> proveidorsPreu = new Dictionary<string, decimal>();
+
+            // SQL per obtenir NOM PROVEÏDOR i PREU
+            string sql = @"SELECT 
+                    pv.pv_rao_social, 
+                    pc.pc_preu
+                   FROM PROV_COMP pc
+                   JOIN PROVEIDOR pv ON pc.pc_pv_codi = pv.pv_codi
+                   WHERE pc.pc_cm_it_codi = :id";
+
+            var connexio = _context.Database.GetDbConnection();
+            if (connexio.State != ConnectionState.Open)
+            {
+                connexio.Open();
+            }
+
+            using (DbCommand cmd = connexio.CreateCommand())
+            {
+                cmd.CommandText = sql;
+                cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+
+                Utils.CrearParametres(cmd, c.Codi, ":id", DbType.String);
+
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string nomProveidor = reader.GetString(reader.GetOrdinal("pv_rao_social"));
+                        decimal preu = reader.GetDecimal(reader.GetOrdinal("pc_preu"));
+
+                        if (!proveidorsPreu.ContainsKey(nomProveidor))
+                        {
+                            proveidorsPreu.Add(nomProveidor, preu);
+                        }
+                    }
+                }
+            }
+            return proveidorsPreu;
+        }
+
+        public Componente ObtenirComponentPerCodi(string codi)
+        {
+            Componente component = null;
+
+            string sql = @"SELECT 
+                               i.it_codi, i.it_nom, i.it_desc, i.it_stock, i.it_foto, i.it_tipus,
+                               c.cm_codi_fabricant, c.cm_um_codi, c.cm_preu_mig
+                           FROM ITEM i
+                           JOIN COMPONENTE c ON i.it_codi = c.cm_it_codi
+                           WHERE i.it_tipus = 'C' AND i.it_codi = :id";
+
+            var connexio = _context.Database.GetDbConnection();
+            if (connexio.State != ConnectionState.Open)
+            {
+                connexio.Open();
+            }
+
+            using (DbCommand cmd = connexio.CreateCommand())
+            {
+                cmd.CommandText = sql;
+                cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+
+                Utils.CrearParametres(cmd, codi, ":id", DbType.String);
+
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        string nom = reader.GetString(reader.GetOrdinal("it_nom"));
+                        string descripcio = reader.IsDBNull(reader.GetOrdinal("it_desc")) ? null : reader.GetString(reader.GetOrdinal("it_desc"));
+                        int stock = Convert.ToInt32(reader.GetValue(reader.GetOrdinal("it_stock")));
+
+                        byte[] fotoBytes = null;
+                        if (reader["it_foto"] != DBNull.Value)
+                        {
+                            fotoBytes = (byte[])reader["it_foto"];
+                        }
+
+                        char tipus = reader.GetString(reader.GetOrdinal("it_tipus"))[0];
+                        string codiFabricant = reader.GetString(reader.GetOrdinal("cm_codi_fabricant"));
+                        TipusUnitat unitat = (TipusUnitat)Convert.ToInt32(reader.GetValue(reader.GetOrdinal("cm_um_codi")));
+
+                        // Creem el component
+                        component = new Componente(codi, nom, descripcio, stock, fotoBytes, tipus, codiFabricant, unitat);
+
+                        
+                    }
+                }
+            }
+            return component;
+        }
+
+        public Dictionary<Proveidor, decimal> ObtenirProveidorsPreu(string codi_comp)
         {
             Dictionary<Proveidor, decimal> proveidorsPreu = new Dictionary<Proveidor, decimal>();
 
@@ -479,54 +564,93 @@ namespace DAO {
             return proveidorsPreu;
         }
 
-        public Componente ObtenirComponentPerCodi(string codi)
-        {
-            Componente component = null;
 
+        
+        public decimal CalculaPreuMig(Componente component)
+       {
+           // Cridem la funció d'Oracle f_calcula_preu_mig
+
+           var connexio = _context.Database.GetDbConnection();
+           if (connexio.State != ConnectionState.Open)
+           {
+               connexio.Open();
+           }
+
+           using (var cmd = connexio.CreateCommand())
+           {
+               cmd.CommandText = "SELECT f_calcula_preu_mig(:cod) FROM DUAL";
+               cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+
+               Utils.CrearParametres(cmd, component.Codi, ":cod", DbType.String);
+
+               // ExecuteScalar s'usa per a consultes que retornen un sol valor
+               var resultat = cmd.ExecuteScalar();
+
+               if (resultat != null && resultat != DBNull.Value)
+               {
+                   return Convert.ToDecimal(resultat);
+               }
+           }
+           return 0;
+       }
+       
+
+        #region metodes que no vull aplicar ara mateix
+        /*public ObservableCollection<Componente> ObtenirTotsESBORRAR()
+        {
+            ObservableCollection<Componente> components = new ObservableCollection<Componente>();
+
+            // Query adaptada al DDL
             string sql = @"SELECT 
                                i.it_codi, i.it_nom, i.it_desc, i.it_stock, i.it_foto, i.it_tipus,
                                c.cm_codi_fabricant, c.cm_um_codi, c.cm_preu_mig
                            FROM ITEM i
                            JOIN COMPONENTE c ON i.it_codi = c.cm_it_codi
-                           WHERE i.it_tipus = 'C' AND i.it_codi = :id"; // <-- Afegim WHERE
+                           WHERE i.it_tipus = 'C'"; 
 
-            var connexio = _context.Database.GetDbConnection();
-            if (connexio.State != ConnectionState.Open)
+            using (DbConnection conn = _context.Database.GetDbConnection())
             {
-                connexio.Open();
-            }
-
-            using (DbCommand cmd = connexio.CreateCommand())
-            {
-                cmd.CommandText = sql;
-                cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
-
-                Utils.CrearParametres(cmd, codi, ":id", DbType.String);
-
-                using (DbDataReader reader = cmd.ExecuteReader())
+                conn.Open();
+                using (DbCommand cmd = conn.CreateCommand())
                 {
-                    if (reader.Read()) // Només esperem un
+                    cmd.CommandText = sql;
+
+                    // Enllaça la comanda amb la transacció del UoW
+                    cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+
+                    using (DbDataReader reader = cmd.ExecuteReader())
                     {
-                        string nom = reader.GetString(reader.GetOrdinal("it_nom"));
-                        string descripcio = reader.IsDBNull(reader.GetOrdinal("it_desc")) ? null : reader.GetString(reader.GetOrdinal("it_desc"));
-                        int stock = Convert.ToInt32(reader.GetValue(reader.GetOrdinal("it_stock")));
-
-                        byte[] fotoBytes = null;
-                        if (reader["it_foto"] != DBNull.Value)
+                        while (reader.Read())
                         {
-                            fotoBytes = (byte[])reader["it_foto"];
+                            string codi = reader.GetString(reader.GetOrdinal("it_codi"));
+                            string nom = reader.GetString(reader.GetOrdinal("it_nom"));
+                            string descripcio = reader.IsDBNull(reader.GetOrdinal("it_desc")) ? null : reader.GetString(reader.GetOrdinal("it_desc"));
+                            int stock = Convert.ToInt32(reader.GetValue(reader.GetOrdinal("it_stock")));
+
+                            // NOTA FOTO: DDL és VARCHAR, Model és byte[]
+                            // string fotoPath = reader.IsDBNull(reader.GetOrdinal("it_foto")) ? null : reader.GetString(reader.GetOrdinal("it_foto"));
+                            byte[] fotoBytes = null; // Passant null al constructor
+
+                            char tipus = reader.GetString(reader.GetOrdinal("it_tipus"))[0];
+                            string codiFabricant = reader.GetString(reader.GetOrdinal("cm_codi_fabricant"));
+                            TipusUnitat unitat = (TipusUnitat)Convert.ToInt32(reader.GetValue(reader.GetOrdinal("cm_um_codi")));
+
+                            // Creem el component
+                            Componente c = new Componente(codi, nom, descripcio, stock, fotoBytes, tipus, codiFabricant, unitat);
+
+                            // TODO: Assignar el preu mig llegit (cm_preu_mig)
+                            // El teu model C# no té un setter públic per a PreuMig.
+                            // Hauries d'afegir-lo o carregar-lo a través de CalculaPreuMig.
+
+                            components.Add(c);
                         }
-
-                        char tipus = reader.GetString(reader.GetOrdinal("it_tipus"))[0];
-                        string codiFabricant = reader.GetString(reader.GetOrdinal("cm_codi_fabricant"));
-                        TipusUnitat unitat = (TipusUnitat)Convert.ToInt32(reader.GetValue(reader.GetOrdinal("cm_um_codi")));
-
-                        component = new Componente(codi, nom, descripcio, stock, fotoBytes, tipus, codiFabricant, unitat);
                     }
                 }
             }
-            return component; // Retorna l'objecte o null
-        }
+            return components;
+        }*/
+        #endregion
+
     }//end DAOComponent
 
 }//end namespace Persistencia

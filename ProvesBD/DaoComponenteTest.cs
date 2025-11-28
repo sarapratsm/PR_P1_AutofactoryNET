@@ -12,7 +12,7 @@ namespace ProvesBD
         {
             using (UnitOfWork uow = OracleFactory.getUOW())
             {
-                var components = uow.DAOComponente.ObtenirTots();
+                var components = uow.DAOComponente.ObtenirComponentsFiltrats("", "");
                 Assert.IsNotNull(components);
                 Assert.IsTrue(components.Count >= 10, "S'esperaven almenys 10 components.");
             }
@@ -102,21 +102,21 @@ namespace ProvesBD
 
                 // Cas 1: Sense filtres (hauria de retornar-ho tot)
                 // El teu script de dades demo té 10 components
-                resultats = dao.GetComponents("", "");
+                resultats = dao.ObtenirComponentsFiltrats("", "");
                 Assert.IsTrue(resultats.Count >= 10, "S'esperaven almenys 10 components sense filtre.");
 
                 // Cas 2: Filtre per Codi exacte
-                resultats = dao.GetComponents("RF1123", "");
+                resultats = dao.ObtenirComponentsFiltrats("RF1123", "");
                 Assert.AreEqual(1, resultats.Count, "Hauria de trobar 1 component amb codi 'RF1123'.");
                 Assert.AreEqual("Cos de pinça", resultats[0].Nom);
 
                 // Cas 3: Filtre per Nom parcial (acer)
                 // Hauria de trobar "Cargols d’acer tractat" i "Base metàl·lica acer"
-                resultats = dao.GetComponents("", "acer");
+                resultats = dao.ObtenirComponentsFiltrats("", "acer");
                 Assert.AreEqual(2, resultats.Count, "Hauria de trobar 2 components amb nom 'acer'.");
 
                 // Cas 4: Filtre per Codi i Nom (sense resultats)
-                resultats = dao.GetComponents("RF1123", "Pintura");
+                resultats = dao.ObtenirComponentsFiltrats("RF1123", "Pintura");
                 Assert.AreEqual(0, resultats.Count, "No hauria de trobar cap producte.");
             }
         }

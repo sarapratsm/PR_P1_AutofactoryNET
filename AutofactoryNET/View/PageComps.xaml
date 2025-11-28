@@ -8,25 +8,10 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Loaded="Page_Loaded"
       Background="{StaticResource WindowBackground}"
-      
-
       Title="Components">
-
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Label Grid.Row="0" Grid.Column="0">Components</Label>
-        <Grid x:Name="grdCamps">
-            
-        </Grid>
-        <ToolBar Grid.Row="0" Margin="5">
+    <DockPanel LastChildFill="True">
+        <!--Toolbar-->
+        <ToolBar  Margin="5" DockPanel.Dock ="Top">
             <Label Content="Codi:"/>
             <TextBox x:Name="txtFiltreCodi" Width="100" Margin="0,0,10,0"/>
             <Label Content="Nom:"/>
@@ -36,21 +21,80 @@
             <Separator/>
 
             <Button x:Name="btnAfegir" Content="Afegir Component" Click="btnAfegir_Click"/>
-            <Button x:Name="btnModificar" Content="Modificar" Margin="5,0,0,0" Click="btnModificar_Click_1"/>
+            <Button x:Name="btnModificar" Content="Modificar" Margin="5,0,0,0" Click="btnModificar_Click"/>
             <Button x:Name="btnEliminar" Content="Eliminar" Margin="5,0,0,0" Click="btnEliminar_Click"/>
+            <Button x:Name="btnGestioProvs" Content="Gestiona Proveidors" Margin="5,0,0,0" Click="btnGestioProvs_Click"/>
         </ToolBar>
 
-        <DataGrid x:Name="dtgComps" Grid.Row="1" 
+        <Grid Margin="10"  x:Name="grdBotonera" DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel x:Name="stp_esquerra" Orientation="Horizontal">
+                <Button Style="{StaticResource SecondaryButton}" x:Name="btnCancel" Click="btnCancel_Click" Content="Cancel·la" Margin="10,0,10,0"></Button>
+                <Button x:Name="btnEditarProvs" Click="btnEditarProvs_Click" >Gestionar proveidors</Button>
+            </StackPanel  >
+            <StackPanel Orientation="Horizontal" Grid.Column="1" x:Name="stp_dreta" HorizontalAlignment="Right">
+                <Button    x:Name="btnSave" Click="btnSave_Click" Grid.Column="0">Guarda</Button>
+            </StackPanel>
+        </Grid>
+
+
+        <!--Es troba al centre del dockpanel-->
+        <Grid x:Name="grdCentral" Margin="10,5,10,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid x:Name="grdCamps" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <!--Labels-->
+                <Label Margin="10" Padding="5" Content="Codi*" Grid.Row="1"></Label>
+                <Label Margin="10" Padding="5" Content="Nom*" Grid.Row="2"></Label>
+                <Label Margin="10" Padding="5" Content="Descripcio" Grid.Row="3"></Label>
+                <Label Margin="10" Padding="5" Content="Fabricant*" Grid.Row="4"></Label>
+                <Label Margin="10" Padding="5" Content="Stock*" Grid.Row="5"></Label>
+                <Label Margin="10" Padding="5" Content="Unitats*" Grid.Row="6"></Label>
+
+                <!--Falta la foto aqui-->
+                <TextBox  Margin="10" Padding="5"   Grid.Column="1" Width="100" Grid.Row="1" Text="{Binding Codi}"/>
+                <TextBox  Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="2"   Text="{Binding Nom}"/>
+                <TextBox  Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="3"   Text="{Binding Descripcio}"/>
+                <TextBox  Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="4"   Text="{Binding Fabricant}"/>
+                <TextBox  Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="5"   Text="{Binding Stock}"/>
+                <ComboBox Margin="10" Padding="5"  Grid.Column="1" Width="100"  Grid.Row="6" Text="{Binding Unitats}"/>
+            </Grid>
+
+            <DataGrid x:Name="dtgComps" Grid.Column="1" 
                   AutoGenerateColumns="False" 
                   IsReadOnly="True"
-                  SelectionMode="Single">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Codi" Binding="{Binding Codi}" Width="100"/>
-                <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*"/>
-                <DataGridTextColumn Header="Fabricant" Binding="{Binding CodiFabricant}" Width="100"/>
-                <DataGridTextColumn Header="Unitat" Binding="{Binding Unitat}" Width="80"/>
-                <DataGridTextColumn Header="Stock" Binding="{Binding Stock}" Width="80"/>
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
+                  SelectionMode="Single"
+                      MouseDoubleClick="dtgComps_MouseDoubleClick"
+                      SelectionChanged="dtgComps_SelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Codi" Binding="{Binding Codi}" Width="100"/>
+                    <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*"/>
+                    <DataGridTextColumn Header="Fabricant" Binding="{Binding CodiFabricant}" Width="100"/>
+                    <DataGridTextColumn Header="Unitat" Binding="{Binding Unitat}" Width="80"/>
+                    <DataGridTextColumn Header="Stock" Binding="{Binding Stock}" Width="80"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+
+    </DockPanel>
 </Page>

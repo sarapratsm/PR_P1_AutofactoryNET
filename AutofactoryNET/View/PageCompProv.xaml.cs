@@ -1,4 +1,5 @@
-﻿using DAO;
+﻿using AppAutoFactory.ViewModel;
+using DAO;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -15,65 +16,69 @@ namespace AppAutoFactory.View
     public partial class PageCompProv : Page
     {
         private Componente _componentActual;
-        ObservableCollection<KeyValuePair<Proveidor, decimal>> proveidorsDelComponent;
+        private VMComponente _nouComponent;
+
 
         // Aquesta col·lecció és per omplir el ComboBox
-        ObservableCollection<Proveidor> totsElsProveidors;
+        ObservableCollection<Proveidor> llistaTotsProv;
+        ObservableCollection<VMProveidor> _llistaVMProvs = new ObservableCollection<VMProveidor>();
 
-        public PageCompProv()
+        public PageCompProv(Componente c)
         {
-            InitializeComponent(); // Ara això no hauria de petar
-
-            // Inicialitzem les col·leccions
-            proveidorsDelComponent = new ObservableCollection<KeyValuePair<Proveidor, decimal>>();
-            dtgCompProv.ItemsSource = proveidorsDelComponent;
-
-            totsElsProveidors = new ObservableCollection<Proveidor>();
-            cmbProveidors.ItemsSource = totsElsProveidors;
-            cmbProveidors.DisplayMemberPath = "RaoSocial"; // Mostra el nom
-
+            this._componentActual = c; //guardem el component
+            InitializeComponent();
+            CarregarProveidorsDelComponent();
         }
+
+        public PageCompProv(VMComponente c)
+        {
+            this._nouComponent = c; //guardem el component
+            InitializeComponent();
+            CarregarProveidorsDelComponent();
+        }
+
+
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            //Obtenir el component passat com a paràmetre
-            if (NavigationService != null && NavigationService.Content != null)
+            //Combobox de proveidors
+            llistaTotsProv = OracleFactory.getUOW().DAOProveidor.ObtenirTotsProveidors();
+            cmbProveidors.ItemsSource = llistaTotsProv;
+            cmbProveidors.DisplayMemberPath = "RaoSocial"; // Mostra el nom
+            cmbProveidors.SelectedIndex = 0;
+
+            //Datagrid:
+            inicialitzarLlistaProvsVM();
+            dtgCompProv.ItemsSource = _llistaVMProvs;
+
+            lblComponent.Text = $"Proveïdors del component: {_componentActual.Nom}";
+            // Carregar els proveïdors del component
+            
+        }
+
+        private void inicialitzarLlistaProvsVM()
+        {
+            if (_componentActual.Proveidors_preu == null || _componentActual.Proveidors_preu.Count() == 0)
             {
-                _componentActual = NavigationService.Content as Componente;
-                if (_componentActual != null)
-                {
-                    lblComponent.Content = $"Proveïdors del component: {_componentActual.Nom}";
-                    // Carregar els proveïdors del component
-                    CarregarProveidorsDelComponent();
-                    
-                }
-                else
-                {
-                    MessageBox.Show("No s'ha passat cap component vàlid.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                CarregarProveidorsDelComponent();
+            }
+            _llistaVMProvs.Clear();
+            Dictionary<Proveidor, decimal> _llistaProvs = _componentActual.Proveidors_preu;
+            foreach (KeyValuePair<Proveidor, decimal> kvp in _llistaProvs)
+            {
+                _llistaVMProvs.Add(new VMProveidor(kvp.Key, kvp.Value));
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void CarregarProveidorsDelComponent()
         {
-            if (_componentActual == null) return;
-            proveidorsDelComponent.Clear();
-            try
-            {
-                using (UnitOfWork uow = OracleFactory.getUOW())
-                {
-                    // Cridem al mètode del DAO que ja hem implementat
-                    var diccionari = uow.DAOComponente.GetProveidors(_componentActual.Codi);
-                    foreach (var kvp in diccionari)
-                    {
-                        proveidorsDelComponent.Add(kvp);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error en carregar els proveïdors del component: \n" + ex.Message, "Error de BBDD", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            _componentActual.Proveidors_preu.Clear();
+            _componentActual.Proveidors_preu = OracleFactory.getUOW().DAOComponente.ObtenirProveidorsPreu(_componentActual.Codi);
+
+
         }
 
         private void btnGuardar_Click(object sender, RoutedEventArgs e)
@@ -83,7 +88,53 @@ namespace AppAutoFactory.View
 
         private void btnAfegirProveidor_Click(object sender, RoutedEventArgs e)
         {
+            Proveidor prov = (Proveidor)cmbProveidors.SelectedItem;
+            Decimal preu_dec = 0;
+            string preu = txtPreu.Text;
+            bool v = Decimal.TryParse(preu, System.Globalization.NumberStyles.Currency, System.Globalization.CultureInfo.CurrentCulture, out preu_dec); //invocacion satanica
+            if (prov == null)
+            {
+                MessageBox.Show("Selecciona un proveïdor vàlid.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            else if (preu_dec <= 0)
+            {
+                MessageBox.Show("Introdueix un preu vàlid.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            else
+            {
+                if (_componentActual.Proveidors_preu.Keys.Any(p => p.Codi == prov.Codi)) //El contains no funciona pq busca la mateixa @de memoria
+                {
+                    MessageBox.Show("El proveïdor ja està assignat a aquest component.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else
+                {
+                    VMProveidor vmProv = new VMProveidor(prov, preu_dec);
+                    _llistaVMProvs.Add(vmProv);
+                    _componentActual.Proveidors_preu.Add(prov, preu_dec);
+                }
 
+            }
+
+
+
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            //retornar a la pagina anterior
+            if (this.NavigationService.CanGoBack)
+            {
+                this.NavigationService.GoBack();
+            }
+
+        }
+
+        private void filtrar()
+        {
+            dtgCompProv.ItemsSource = null; //TODO
         }
     }
 }

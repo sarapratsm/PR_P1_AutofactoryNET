@@ -1,4 +1,5 @@
-﻿using AutofactoryNET;
+﻿using AppAutoFactory.ViewModel;
+using AutofactoryNET;
 using DAO;
 using Model;
 using System;
@@ -24,54 +25,70 @@ namespace AppAutoFactory.View
     /// </summary>
     public partial class PageComps : Page
     {
-        ObservableCollection<Componente> componentes = new ObservableCollection<Componente>();
+        ObservableCollection<Componente> llistaComponents = new ObservableCollection<Componente>();
 
-        private Componente _componentActual;
+        private Componente _componenteActual;
+        private VMComponente _vmComponente;
+        
 
+        public MainWindow MainWindow { get; } 
 
-        public MainWindow MainWindow { get; } // Per poder navegar
-
-        public PageComps()
-        {
-            InitializeComponent();
-        }
+        
 
         public PageComps(MainWindow mainWindow)
         {
             InitializeComponent();
             this.MainWindow = mainWindow;
+            DataContext = _vmComponente;
+
         }
 
 
-        private void dtgComps_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            //Navegar cap a Page Comp_proveidor passant el component per parametre.
-            btnModificar_Click(sender, null);
-        }
+
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            dtgComps.ItemsSource = componentes;
-            componentes= OracleFactory.getUOW().DAOComponente.ObtenirTots();
+            llistaComponents= OracleFactory.getUOW().DAOComponente.ObtenirComponentsFiltrats("", "");
+            dtgComps.ItemsSource = llistaComponents;
+    
+
+            try
+            {
+                using (UnitOfWork uow = OracleFactory.getUOW())
+                {
+                    // Obtenim els productes de la BBDD
+                    var componentesDeLaBD = uow.DAOComponente.ObtenirComponentsFiltrats("", "");
+
+                    foreach (var c in componentesDeLaBD)
+                    {
+                        llistaComponents.Add(c);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error en carregar els productes des de la BBDD: \n" + ex.Message,
+                                "Error de Connexió", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
         }
 
-        private void RefrescarDataGrid()
+        private void RefrescarDataGrid(string codi, string nom)
         {
             // Buidem la llista actual
-            componentes.Clear();
+            llistaComponents.Clear();
 
             try
             {
                 using (UnitOfWork uow = OracleFactory.getUOW())
                 {
                     // Obtenim els components de la BBDD
-                    var componentsDeLaBD = uow.DAOComponente.ObtenirTots();
+                    var componentsDeLaBD = uow.DAOComponente.ObtenirComponentsFiltrats(codi, nom);
 
                     // Omplim la col·lecció
                     foreach (var c in componentsDeLaBD)
                     {
-                        componentes.Add(c);
+                        llistaComponents.Add(c);
                     }
                 }
             }
@@ -102,13 +119,58 @@ namespace AppAutoFactory.View
 
         }
 
-        private void btnModificar_Click_1(object sender, RoutedEventArgs e)
+       
+
+        private void btnEliminar_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void btnEliminar_Click(object sender, RoutedEventArgs e)
+        private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+
+        }
+
+        private void btnAfegirProv_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void dtgComps_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            
+
+        }
+
+        private void dtgComps_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _componenteActual =(Componente) dtgComps.SelectedItem;
+            _vmComponente = new VMComponente(_componenteActual);
+            DataContext = _vmComponente;
+
+        }
+
+        private void btnEditarProvs_Click(object sender, RoutedEventArgs e)
+        {
+            //Obrir PageCompProv passant el Component seleccionat
+            PageCompProv pageCompProv = new PageCompProv(_componenteActual);
+            this.NavigationService.Navigate(pageCompProv);
+
+        }
+
+        private void btnGestioProvs_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            if (NavigationService.CanGoBack)
+            {
+                NavigationService.GoBack();
+            }
 
         }
     }

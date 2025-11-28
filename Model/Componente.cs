@@ -24,7 +24,7 @@ namespace Model
         {
             this.CodiFabricant = codiFabricant;
             this.Unitat = unitat;
-
+            proveidors_preu = new Dictionary<Proveidor, decimal>();
             // Ya inicializados arriba
             PreuMig = 0; // Es calcularà amb el Trigger de la BD
         }
@@ -32,9 +32,7 @@ namespace Model
         public string CodiFabricant { get => codiFabricant; private set => codiFabricant = value; }
         public decimal PreuMig { get => preuMig; private set => preuMig = value; } // EF el podrà omplir
 
-        // Aquest Dictionary no es pot mapejar a la BD.
-        // L'haurem d'ignorar al 'OnModelCreating' de MyDBContext.
-        public Dictionary<Proveidor, decimal> Proveidors_preu { get => proveidors_preu; private set => proveidors_preu = value; }
+        public Dictionary<Proveidor, decimal> Proveidors_preu { get => proveidors_preu;  set => proveidors_preu = value; }
 
         public TipusUnitat Unitat { get => units; private set => units = value; }
     }

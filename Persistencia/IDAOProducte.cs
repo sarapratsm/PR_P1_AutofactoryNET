@@ -13,7 +13,7 @@ namespace DAO
         // --- Mètodes de Lectura ---
         Producte ObtenirProductePerCodi(string codi);
         ObservableCollection<Producte> ObtenirTots();
-        ObservableCollection<Producte> GetProductes(string codi, string nomParcial);
+        ObservableCollection<Producte> GetProductesFiltrats(string codi, string nomParcial, int offset, int rows_per_page);
 
         //--- Mètodes Proveidor ---
         /// 

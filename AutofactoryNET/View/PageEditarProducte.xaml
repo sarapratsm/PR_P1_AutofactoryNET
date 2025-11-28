@@ -1,0 +1,111 @@
+﻿<Page x:Class="AppAutoFactory.View.PageEditarProducte"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:AppAutoFactory.View" 
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Background="{StaticResource WindowBackground}"
+      Title="PageEditarProducte">
+
+    <DockPanel LastChildFill="True">
+        <!--Botonera-->
+        <Grid Margin="10"  x:Name="grdBotonera" DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel x:Name="stp_esquerra" Orientation="Horizontal">
+                <Button Style="{StaticResource SecondaryButton}" x:Name="btnCancel" Click="btnCancel_Click" Content="Cancel·la" Margin="10,0,10,0"></Button>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="1" x:Name="stp_dreta" HorizontalAlignment="Right">
+                <Button    x:Name="btnSave" Click="btnSave_Click" Grid.Column="0">Guarda</Button>
+            </StackPanel>
+        </Grid>
+
+        <!--Es troba al centre del dockpanel-->
+        <Grid x:Name="grdCentral" Margin="10,5,10,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid x:Name="grdCamps" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                   
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <!--Labels-->
+                <Label Margin="10" Padding="5" Content="Codi*" Grid.Row="1"></Label>
+                <Label Margin="10" Padding="5" Content="Nom*" Grid.Row="2"></Label>
+                <Label Margin="10" Padding="5" Content="Stock*" Grid.Row="3"></Label>
+                <Label Margin="10" Padding="5" Content="Descripcio" Grid.Row="4"></Label>
+
+                <!--Falta la foto aqui-->
+                <TextBox HorizontalAlignment="Left" Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="1" Text="{Binding Codi}"/>
+                <TextBox HorizontalAlignment="Left" Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="2" Text="{Binding Nom}"/>
+                <TextBox HorizontalAlignment="Left" Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="3" Text="{Binding Stock}"/>
+                <TextBox HorizontalAlignment="Left" Margin="10" Padding="5" Grid.Column="1" Width="200" Grid.Row="4" Text="{Binding Descripcio}"  Height="auto"/>
+                <GroupBox Header="Subcomponents" Margin="0,10,0,0" Padding="10" BorderBrush="{StaticResource AccentBrush}" BorderThickness="1" Grid.Row="5" Grid.ColumnSpan="2">
+                    <DataGrid x:Name="dtgSubcomponents" Margin="0,0,0,0" 
+                              AutoGenerateColumns="False" 
+                              IsReadOnly="True"
+                              SelectionMode="Single"
+                                  SelectionChanged="dtgSubcomponents_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Codi" Binding="{Binding Codi}" Width="*"/>
+                            <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*"/>
+                            <DataGridTextColumn Header="Quantitat" Binding="{Binding Quantitat}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+
+            </Grid >
+
+            <Grid x:Name="grdSubcomponents" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <GroupBox Header="Afegir subcomponents" Margin="0,0,0,10" Padding="10" BorderBrush="{StaticResource AccentBrush}" BorderThickness="1">
+                    <StackPanel x:Name="stpFiltres" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Orientation="Vertical">
+                        <!--Filtres-->
+                        <GroupBox Background="{StaticResource WindowBackground}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Header="Filtres" Margin="15,10,10,0" Padding="10" BorderBrush="{StaticResource AccentBrush}" BorderThickness="1">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox x:Name="txtFiltreCodi" Width="100" Margin="10,10,10,0"  ToolTip="Filtre Codi" />
+                                <TextBox x:Name="txtFiltreNom" MinWidth="150" Width="auto" Margin="10,10,10,0"  ToolTip="Filtre Nom" />
+                                <Button x:Name="btnFiltrar" Content="Filtra" Margin="10,10,10,0" Background="LightGray"/>
+                            </StackPanel>
+                        </GroupBox>
+                        <DataGrid x:Name="dtgComps" Margin="10,10,10,0" 
+                              AutoGenerateColumns="False" 
+                              IsReadOnly="True"
+                              SelectionMode="Single"
+                                  SelectionChanged="dtgComps_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Codi" Binding="{Binding Codi}" Width="100"/>
+                                <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBox x:Name="txtQuantitatSubcomp" Width="100" Margin="10,10,10,0"  ToolTip="Quantitat" />
+                            <Button x:Name="btnAfegirSubcomp" Click="btnAfegirSubcomp_Click" Content="Afegeix Subcomponent" Margin="10,10,10,0" Padding="10,5"/>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Page>
