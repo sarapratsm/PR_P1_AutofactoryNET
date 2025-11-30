@@ -17,7 +17,7 @@ namespace AppAutoFactory.View
     {
         private VMComponente _componentActual;
         
-        ObservableCollection<Proveidor> llistaTotsProv; // Col·lecció és per omplir el ComboBox
+        ObservableCollection<Proveidor> _llistaTotsProv; // Col·lecció és per omplir el ComboBox
         ObservableCollection<VMProveidor> _llistaVMProvs = new ObservableCollection<VMProveidor>(); //llista pel dtg.
 
         public PageCompProv(VMComponente c)
@@ -30,8 +30,8 @@ namespace AppAutoFactory.View
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             //Combobox de proveidors
-            llistaTotsProv = OracleFactory.getUOW().DAOProveidor.ObtenirTotsProveidors(); 
-            cmbProveidors.ItemsSource = llistaTotsProv;
+            _llistaTotsProv = OracleFactory.getUOW().DAOProveidor.ObtenirTotsProveidors(); 
+            cmbProveidors.ItemsSource = _llistaTotsProv;
             cmbProveidors.DisplayMemberPath = "RaoSocial"; // Mostra el nom
             cmbProveidors.SelectedIndex = 0;
 
@@ -46,12 +46,13 @@ namespace AppAutoFactory.View
 
         private void inicialitzarLlistaProvsVM()
         {
+            //_llistaVMProvs = new ObservableCollection<VMProveidor>();
             if (_componentActual.Proveidors_preu == null)
             {
                 //Si la llista no s'ha carregat, la carreguem
                 CarregarProveidorsDelComponent ();
             }
-            transformaDiccionariVM(_componentActual.Proveidors_preu);
+            _llistaVMProvs= TransformaDiccionariVM(_componentActual.Proveidors_preu);
         }
 
         
@@ -61,26 +62,18 @@ namespace AppAutoFactory.View
             _componentActual.Proveidors_preu = OracleFactory.getUOW().DAOComponente.ObtenirProveidorsPreuFiltrats(_componentActual.Codi, "", "");
         }
 
-        private void transformaDiccionariVM(Dictionary<Proveidor, decimal> _llistaProvs)
+        private ObservableCollection<VMProveidor> TransformaDiccionariVM(Dictionary<Proveidor, decimal> _llistaProvs)
         {
-            _llistaVMProvs.Clear();
+            ObservableCollection < VMProveidor > llista = new ObservableCollection<VMProveidor>();
             foreach (KeyValuePair<Proveidor, decimal> kvp in _llistaProvs)
             {
-                _llistaVMProvs.Add(new VMProveidor(kvp.Key, kvp.Value));
+                llista.Add(new VMProveidor(kvp.Key, kvp.Value));
             }
-        }
-
-        private void filtrar()
-        {
-            string codi_filtre, cif_filtre;
-            codi_filtre = txtCifFiltre.Text;
-            cif_filtre = txtCifFiltre.Text;
-            //Dictionary<Proveidor, decimal> ProvsFiltrats = OracleFactory.getUOW().DAOComponente.ObtenirProveidorsPreuFiltrats(_componentActual.Codi, codi_filtre, cif_filtre);
-            //transformaDiccionariVM(ProvsFiltrats);
-
-            //farem el filtre 
+            return llista;
 
         }
+
+        
 
         private void btnGuardar_Click(object sender, RoutedEventArgs e)
         {
@@ -136,6 +129,48 @@ namespace AppAutoFactory.View
 
         }
 
-        
+        #region botons de filtrat
+        private void filtraCombo_Click(object sender, RoutedEventArgs e)
+        {
+            ObservableCollection<Proveidor> provsFiltratsCmb = new ObservableCollection<Proveidor>();
+            string stringFiltreCodi = txtCodiFiltre.Text.ToLower();
+            try
+            {
+                Int32.Parse(stringFiltreCodi);
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("El codi ha de ser numèric.", "Error de format", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            string filtreCif = txtCifFiltre.Text.ToLower();
+            
+            foreach (Proveidor p in _llistaTotsProv)
+            {
+                if (p.Codi.ToString().Contains(stringFiltreCodi) && p.Cif.ToLower().Contains(filtreCif))
+                {
+                    provsFiltratsCmb.Add(p);
+                }
+            }
+            cmbProveidors.ItemsSource = provsFiltratsCmb;
+        }
+
+        private void filtraDtg_Click(object sender, RoutedEventArgs e)
+        {
+            Dictionary<Proveidor, decimal> DiccionariProvsFiltratsDtg = new Dictionary<Proveidor, decimal>();
+            string stringFiltreCodi = txtCodiFiltre.Text.ToLower();
+            string filtreCif = txtCifFiltre.Text.ToLower();
+            DiccionariProvsFiltratsDtg= OracleFactory.getUOW().DAOComponente.ObtenirProveidorsPreuFiltrats(_componentActual.Codi, stringFiltreCodi, filtreCif);
+            ObservableCollection<VMProveidor> llista_filtrada = TransformaDiccionariVM(DiccionariProvsFiltratsDtg);
+            dtgCompProv.ItemsSource=llista_filtrada;
+
+        }
+
+        private void netejaFiltres_Click(object sender, RoutedEventArgs e)
+        {
+            cmbProveidors.ItemsSource = _llistaTotsProv;
+            dtgCompProv.ItemsSource = _llistaVMProvs;
+        }
+        #endregion 
     }
 }

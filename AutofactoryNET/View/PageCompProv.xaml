@@ -21,13 +21,25 @@
         <TextBlock Grid.Row="0" x:Name="lblComponent" Text="Dades del Component" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,10" Style="{StaticResource SubtitleTextStyle}"/>
 
         <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10">
-            <StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+
+                </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
                 <Label Content="Codi:" FontWeight="Bold"/>
                 <TextBox x:Name="txtCodiFiltre" IsReadOnly="True" Margin="5,0,0,10"/>
 
                 <Label Content="CIF:" FontWeight="Bold"/>
                 <TextBox x:Name="txtCifFiltre" IsReadOnly="True" Margin="5,0,0,0"/>
             </StackPanel>
+                <StackPanel Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Center">
+                    <Button x:Name="filtraCombo" Content="Filtra nous proveidors"  Margin="0,10,0,0" Click="filtraCombo_Click" Background="LightGray"></Button>
+                    <Button x:Name="filtraDtg" Content="Filtra proveidors actuals" Margin="0,10,0,0" Click="filtraDtg_Click"   Background="LightGray"></Button>
+                    <Button x:Name="netejaFiltres" Content="Neteja filtres" Margin="0,10,0,0" Click="netejaFiltres_Click" Style="{StaticResource SecondaryButton}"></Button>
+                </StackPanel>
+            </Grid>
         </Border>
 
         <Grid Grid.Row="2" Margin="0,15,0,10">
@@ -38,7 +50,7 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                <Label Content="Proveïdor:"/>
+                <Label Content="Nou proveïdor:"/>
                 <ComboBox x:Name="cmbProveidors"/>
             </StackPanel>
 
@@ -54,7 +66,7 @@
                   AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Proveïdor (Nom)" Binding="{Binding RaoSocial}" Width="*"/>
+                <DataGridTextColumn Header="Nom del proveïdor" Binding="{Binding RaoSocial}" Width="*"/>
                 <DataGridTextColumn Header="CIF" Binding="{Binding Cif}" Width="150"/>
                 <DataGridTextColumn Header="Preu" Binding="{Binding Preu}" Width="100"/>
             </DataGrid.Columns>
@@ -65,8 +77,8 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnGuardar" Grid.Column="1" Content="Guardar"   Click="btnGuardar_Click" HorizontalAlignment="Right" Margin="0,10,0,0" Padding="15,5"/>
-            <Button x:Name="btnCancel" Grid.Column="0" Content="Cancel"   Click="btnCancel_Click"  HorizontalAlignment="Left" Margin="0,10,0,0" Padding="15,5" Style="{StaticResource SecondaryButton}"/>
+            <Button x:Name="btnGuardar" Grid.Column="1" Content="Guarda"   Click="btnGuardar_Click" HorizontalAlignment="Right" Margin="0,10,0,0" Padding="15,5"/>
+            <Button x:Name="btnCancel" Grid.Column="0" Content="Cancel·la"   Click="btnCancel_Click"  HorizontalAlignment="Left" Margin="0,10,0,0" Padding="15,5" Style="{StaticResource SecondaryButton}"/>
         </Grid>
 
     </Grid>

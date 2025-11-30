@@ -19,6 +19,7 @@ namespace DAO
             consulta.Parameters.Add(p);
         }
 
+       
     }//end Utils
 
 }//end namespace Persistencia

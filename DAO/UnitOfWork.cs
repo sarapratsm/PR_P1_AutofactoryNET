@@ -106,5 +106,21 @@ namespace DAO
             }
             GC.SuppressFinalize(this);
         }
+
+        //Metode per comprovar si el servidor està actiu
+        public bool IsServerAlive()
+        {
+            try
+            {
+                _context.Database.OpenConnection();
+                _context.Database.CloseConnection();
+                //Alternativa:  _context.Database.CanConnect();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

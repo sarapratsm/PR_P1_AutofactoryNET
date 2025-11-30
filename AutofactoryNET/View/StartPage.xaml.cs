@@ -1,4 +1,5 @@
 ﻿using AutofactoryNET;
+using DAO;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,10 @@ namespace AppAutoFactory.View
     /// </summary>
     public partial class StartPage : Page
     {
+        Thread serverStatusThread;
+        bool hiHaConnexio = false;
+        private bool _keepRunning;
+
         public MainWindow MainWindow { get; }
 
         public StartPage(MainWindow mainWindow)
@@ -32,23 +37,72 @@ namespace AppAutoFactory.View
 
         private void btnVeureProductes_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.Navegacio(1);
-
-        }
-
-        private void btnAfegirProducte_Click(object sender, RoutedEventArgs e)
-        {
+            intentarNavegar(1);
 
         }
 
         private void btnVeureComponents_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.Navegacio(2);
+            intentarNavegar(2);
         }
 
-        private void btnAfegirComponent_Click(object sender, RoutedEventArgs e)
+        private void intentarNavegar(int opcio)
+        {
+            if (hiHaConnexio)
+                MainWindow.Navegacio(opcio);
+            else
+            {
+                MessageBox.Show("No es pot connectar amb el servidor de base de dades. Comprova la connexió.", "Error de Connexió", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (serverStatusThread == null || !serverStatusThread.IsAlive)
+            {
+                serverStatusThread = new Thread(CheckServerStatus);
+                serverStatusThread.IsBackground = true;
+                serverStatusThread.Start();
+                _keepRunning = true;
+            }
+        }
+        //metode perque el thread comprovi si el servidor està actiu
+        private void CheckServerStatus()
         {
 
+            while (true)
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    lblServerStatus.Content = "Intentant connectar amb el servidor...";
+                    lblServerStatus.Foreground = Brushes.Gray;
+                });
+
+                //El thread s'encalla aqui, així que suposo que millor fer dos dispatchers(?)
+                bool serverIsUp = OracleFactory.getUOW().IsServerAlive();
+
+                Dispatcher.Invoke(() =>
+                {
+                    if (serverIsUp)
+                    {
+                        lblServerStatus.Content = "Servidor Actiu";
+                        lblServerStatus.Foreground = Brushes.Green;
+                        hiHaConnexio = true;
+                    }
+                    else
+                    {
+                        lblServerStatus.Content = "Servidor Inactiu";
+                        lblServerStatus.Foreground = Brushes.Red;
+                        hiHaConnexio = false;
+                    }
+                });
+                Thread.Sleep(5000); // Espera 5 segons abans de tornar a comprovar
+            }
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            _keepRunning = false; //aturem el fil quan sortim de la pàgina
         }
     }
 }

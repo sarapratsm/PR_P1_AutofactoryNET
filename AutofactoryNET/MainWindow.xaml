@@ -9,15 +9,16 @@
         Background="{StaticResource BackgroundLightBrush}"
         Title="AutoFactory" Height="600" Width="900">
 
-    <DockPanel>
+    <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Menú">
                 <MenuItem Header="Inici"  x:Name="mnuInici" Click="mnuInici_Click"></MenuItem>
                 <MenuItem Header="Productes" x:Name="mnuProductes" Click="mnuProductes_Click"></MenuItem>
                 <MenuItem Header="Components" x:Name="mnuComponentes" Click="mnuComponentes_Click"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Ajuda">Siusplau</MenuItem>
+            <MenuItem Header="Ajuda">Porfa</MenuItem>
         </Menu>
+        
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>

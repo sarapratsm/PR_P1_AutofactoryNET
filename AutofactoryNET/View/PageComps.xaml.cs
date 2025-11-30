@@ -173,5 +173,10 @@ namespace AppAutoFactory.View
         {
             
         }
+
+        private void btnGestioProvs_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

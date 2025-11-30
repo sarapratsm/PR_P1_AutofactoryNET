@@ -1,4 +1,5 @@
 ﻿using AppAutoFactory.View;
+using DAO;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Model;
 using System.Collections.ObjectModel;
@@ -22,7 +23,7 @@ namespace AutofactoryNET
     /// </summary>
     public partial class MainWindow : Window
     {
-        
+
 
         public PageDtgProductes pageProds;
         public PageComps pageComps;
@@ -90,6 +91,8 @@ namespace AutofactoryNET
                 frmMain.Navigate(pageInici);
             }
         }
+
+        
 
         private void frmMain_Navigated(object sender, NavigationEventArgs e)
         {

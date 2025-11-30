@@ -7,6 +7,8 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Background="{StaticResource BackgroundLightBrush}"
+      Loaded="Page_Loaded"
+      Unloaded="Page_Unloaded"
       Title="StartPage">
 
     <DockPanel LastChildFill="True">
@@ -14,10 +16,13 @@
             <Button Margin="20,5,20,5" Click="btnVeureProductes_Click" x:Name="btnVeureProductes" Content="Gestió de productes" Width="auto" Cursor="Hand"  />
             <Button Margin="20,5,20,5" Click="btnVeureComponents_Click" x:Name="btnVeureComponents" Content="Gestió de components" Width="auto"  />
         </StackPanel>
+        <!--Aixo s'ha de treure-->
+        <!---->
         <Border BorderBrush="{StaticResource AccentBrush}" BorderThickness="10" Margin="50" CornerRadius="10" Background="{StaticResource WindowBackground}">
             <StackPanel Orientation="Vertical" x:Name="stpTitle" Grid.Column="0" Grid.Row="0" Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center" >
             <TextBlock Text="Welcome to" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource SubtitleTextStyle}"/>
             <TextBlock Text="AutoFactory" FontSize="50" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource TitleTextStyle}"/>
+        <Label x:Name="lblServerStatus" DockPanel.Dock="Top" HorizontalAlignment="Center">Estat del servidor</Label>
             </StackPanel>
         </Border>
     </DockPanel>
