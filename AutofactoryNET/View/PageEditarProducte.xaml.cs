@@ -41,6 +41,8 @@ namespace AppAutoFactory.View
             this.mode = 0;
             this._producte = null;
             this._vmProducte = new VMProducte();
+            DataContext = _vmProducte;
+
         }
 
         /// <summary>
@@ -53,13 +55,14 @@ namespace AppAutoFactory.View
             this.mode = 1;
             this._producte = p;
             this._vmProducte = new VMProducte(p);
+            DataContext = _vmProducte;
+
         }
 
 
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            DataContext = _vmProducte;
             if (mode == 0)
             {
                 txbTitol.Text = "Nou Producte";
@@ -69,6 +72,7 @@ namespace AppAutoFactory.View
                 txbTitol.Text = "Edició del producte " + _producte.Codi;
 
             }
+            DataContext = _vmProducte;
 
         }
 

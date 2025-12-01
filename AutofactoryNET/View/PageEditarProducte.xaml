@@ -95,13 +95,13 @@
                             <TextBox Text="{Binding Codi}" IsReadOnly="True"  Background="#FFF0F0F0" Grid.Row="0" Grid.Column="1" Margin="5"/>
 
                             <Label Content="Nom:" FontWeight="Bold" Grid.Row="1" Grid.Column="0"/>
-                            <TextBox Text="{Binding Nom}"  Grid.Row="1" Grid.Column="1" Margin="5"/>
+                            <TextBox Text="{Binding Nom, Mode=TwoWay}"  Grid.Row="1" Grid.Column="1" Margin="5"/>
 
                             <Label Content="Stock:" FontWeight="Bold" Grid.Row="2" Grid.Column="0"/>
-                            <TextBox Text="{Binding Stock}"  Grid.Row="2" Grid.Column="1" Margin="5" HorizontalAlignment="Left" Width="100"/>
+                            <TextBox Text="{Binding Stock, Mode=TwoWay}"  Grid.Row="2" Grid.Column="1" Margin="5" HorizontalAlignment="Left" Width="100"/>
 
                             <Label Content="Descripció:" FontWeight="Bold" Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" Margin="0,5,0,0"/>
-                            <TextBox Text="{Binding Descripcio}"  Grid.Row="3" Grid.Column="1" Margin="5" Height="60" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+                            <TextBox Text="{Binding Descripcio, Mode=TwoWay}"  Grid.Row="3" Grid.Column="1" Margin="5" Height="60" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
                         </Grid>
                     </Grid>
                 </Border>
