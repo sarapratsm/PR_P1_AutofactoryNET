@@ -64,15 +64,15 @@ namespace AppAutoFactory.View
             {
                 serverStatusThread = new Thread(CheckServerStatus);
                 serverStatusThread.IsBackground = true;
-                serverStatusThread.Start();
                 _keepRunning = true;
+                serverStatusThread.Start();
             }
         }
         //metode perque el thread comprovi si el servidor està actiu
         private void CheckServerStatus()
         {
 
-            while (true)
+            while (!hiHaConnexio && _keepRunning)
             {
                 Dispatcher.Invoke(() =>
                 {

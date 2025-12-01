@@ -28,11 +28,11 @@
 
                 </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
-                <Label Content="Codi:" FontWeight="Bold"/>
-                <TextBox x:Name="txtCodiFiltre" IsReadOnly="True" Margin="5,0,0,10"/>
+                <Label Content="Rao social:" FontWeight="Bold"/>
+                <TextBox x:Name="txtRaoSocial"  Margin="5,0,0,10"/>
 
                 <Label Content="CIF:" FontWeight="Bold"/>
-                <TextBox x:Name="txtCifFiltre" IsReadOnly="True" Margin="5,0,0,0"/>
+                <TextBox x:Name="txtCifFiltre"  Margin="5,0,0,0"/>
             </StackPanel>
                 <StackPanel Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Center">
                     <Button x:Name="filtraCombo" Content="Filtra nous proveidors"  Margin="0,10,0,0" Click="filtraCombo_Click" Background="LightGray"></Button>

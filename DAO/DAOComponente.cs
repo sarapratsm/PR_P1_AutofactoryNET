@@ -483,7 +483,7 @@ namespace DAO
             return component;
         }
 
-        public Dictionary<Proveidor, decimal> ObtenirProveidorsPreuFiltrats(string codi_comp, string codi_filtre, string nom_filtre, int offset = 0, int rows_per_page = -1)
+        public Dictionary<Proveidor, decimal> ObtenirProveidorsPreuFiltrats(string codi_comp, string cif_filtre, string raoSocial_filtre, int offset = 0, int rows_per_page = -1)
         {
             Dictionary<Proveidor, decimal> proveidorsPreu = new Dictionary<Proveidor, decimal>();
 
@@ -510,8 +510,8 @@ namespace DAO
                            LEFT JOIN MUNICIPI m ON pv.pv_mu_pr_codi = m.mu_pr_codi AND pv.pv_mu_codi = m.mu_codi
                            LEFT JOIN PROVINCIA pr ON m.mu_pr_codi = pr.pr_codi
                            WHERE pc.pc_cm_it_codi = :cod_comp
-                                AND UPPER(pv.pv_codi) LIKE: COD_FILTRE
-                                AND UPPER(pv.pv_cif) LIKE: NOM_FILTRE";
+                                AND UPPER(pv.pv_cif) LIKE :CIF_FILTRE
+                                AND UPPER(pv.pv_raosocial) LIKE :RS_FILTRE";
 
                 if (rows_per_page > 0)
                 {
@@ -524,8 +524,11 @@ namespace DAO
                 Utils.CrearParametres(consulta, codi_comp, ":cod_comp", DbType.String);
                 // Preparem els paràmetres amb '%' inclòs
                 // Si el filtre és buit, posem '%' per a que ho trobi tot
-                string codi_param = string.IsNullOrEmpty(codi_filtre) ? "%" : "%" + codi_filtre.ToUpper() + "%";
-                string nom_param = string.IsNullOrEmpty(nom_filtre) ? "%" : "%" + nom_filtre.ToUpper() + "%";
+                string cif_param = string.IsNullOrEmpty(cif_filtre) ? "%" : "%" + cif_filtre.ToUpper() + "%";
+                string rs_param = string.IsNullOrEmpty(raoSocial_filtre) ? "%" : "%" + raoSocial_filtre.ToUpper() + "%";
+                Utils.CrearParametres(consulta, cif_param, ":CIF_FILTRE", DbType.String);
+                Utils.CrearParametres(consulta, rs_param, ":RS_FILTRE", DbType.String);
+
 
                 using (DbDataReader reader = consulta.ExecuteReader())
                 {

@@ -34,6 +34,7 @@ namespace AppAutoFactory.View
         public PageDtgProductes()
         {
             InitializeComponent();
+            cmbFiltreTipus.SelectedIndex = 0;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

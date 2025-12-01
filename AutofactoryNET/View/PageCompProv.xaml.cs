@@ -16,7 +16,7 @@ namespace AppAutoFactory.View
     public partial class PageCompProv : Page
     {
         private VMComponente _componentActual;
-        
+
         ObservableCollection<Proveidor> _llistaTotsProv; // Col·lecció és per omplir el ComboBox
         ObservableCollection<VMProveidor> _llistaVMProvs = new ObservableCollection<VMProveidor>(); //llista pel dtg.
 
@@ -30,7 +30,7 @@ namespace AppAutoFactory.View
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             //Combobox de proveidors
-            _llistaTotsProv = OracleFactory.getUOW().DAOProveidor.ObtenirTotsProveidors(); 
+            _llistaTotsProv = OracleFactory.getUOW().DAOProveidor.ObtenirTotsProveidors();
             cmbProveidors.ItemsSource = _llistaTotsProv;
             cmbProveidors.DisplayMemberPath = "RaoSocial"; // Mostra el nom
             cmbProveidors.SelectedIndex = 0;
@@ -50,12 +50,12 @@ namespace AppAutoFactory.View
             if (_componentActual.Proveidors_preu == null)
             {
                 //Si la llista no s'ha carregat, la carreguem
-                CarregarProveidorsDelComponent ();
+                CarregarProveidorsDelComponent();
             }
-            _llistaVMProvs= TransformaDiccionariVM(_componentActual.Proveidors_preu);
+            _llistaVMProvs = TransformaDiccionariVM(_componentActual.Proveidors_preu);
         }
 
-        
+
         private void CarregarProveidorsDelComponent()
         {
             _componentActual.Proveidors_preu = new Dictionary<Proveidor, decimal>();
@@ -64,7 +64,7 @@ namespace AppAutoFactory.View
 
         private ObservableCollection<VMProveidor> TransformaDiccionariVM(Dictionary<Proveidor, decimal> _llistaProvs)
         {
-            ObservableCollection < VMProveidor > llista = new ObservableCollection<VMProveidor>();
+            ObservableCollection<VMProveidor> llista = new ObservableCollection<VMProveidor>();
             foreach (KeyValuePair<Proveidor, decimal> kvp in _llistaProvs)
             {
                 llista.Add(new VMProveidor(kvp.Key, kvp.Value));
@@ -73,7 +73,7 @@ namespace AppAutoFactory.View
 
         }
 
-        
+
 
         private void btnGuardar_Click(object sender, RoutedEventArgs e)
         {
@@ -133,21 +133,12 @@ namespace AppAutoFactory.View
         private void filtraCombo_Click(object sender, RoutedEventArgs e)
         {
             ObservableCollection<Proveidor> provsFiltratsCmb = new ObservableCollection<Proveidor>();
-            string stringFiltreCodi = txtCodiFiltre.Text.ToLower();
-            try
-            {
-                Int32.Parse(stringFiltreCodi);
-            }
-            catch (FormatException)
-            {
-                MessageBox.Show("El codi ha de ser numèric.", "Error de format", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
             string filtreCif = txtCifFiltre.Text.ToLower();
-            
+            string filtreRaoSocial = txtRaoSocial.Text.ToLower();
+
             foreach (Proveidor p in _llistaTotsProv)
             {
-                if (p.Codi.ToString().Contains(stringFiltreCodi) && p.Cif.ToLower().Contains(filtreCif))
+                if (p.RaoSocial.ToLower().Contains(filtreRaoSocial) && p.Cif.ToLower().Contains(filtreCif))
                 {
                     provsFiltratsCmb.Add(p);
                 }
@@ -157,12 +148,19 @@ namespace AppAutoFactory.View
 
         private void filtraDtg_Click(object sender, RoutedEventArgs e)
         {
+            //TODO: Els filtres han de ser per RAOSOCIAL i CIF. NO PER CODI.
+
             Dictionary<Proveidor, decimal> DiccionariProvsFiltratsDtg = new Dictionary<Proveidor, decimal>();
-            string stringFiltreCodi = txtCodiFiltre.Text.ToLower();
+            //string stringFiltreCodi = txtCodiFiltre.Text.ToLower();
+
+            string stringFiltreCodi = txtRaoSocial.Text.ToLower();
             string filtreCif = txtCifFiltre.Text.ToLower();
-            DiccionariProvsFiltratsDtg= OracleFactory.getUOW().DAOComponente.ObtenirProveidorsPreuFiltrats(_componentActual.Codi, stringFiltreCodi, filtreCif);
+
+            DiccionariProvsFiltratsDtg = OracleFactory.getUOW().DAOComponente.ObtenirProveidorsPreuFiltrats(_componentActual.Codi, stringFiltreCodi, filtreCif);
             ObservableCollection<VMProveidor> llista_filtrada = TransformaDiccionariVM(DiccionariProvsFiltratsDtg);
-            dtgCompProv.ItemsSource=llista_filtrada;
+            dtgCompProv.ItemsSource = llista_filtrada;
+
+
 
         }
 
