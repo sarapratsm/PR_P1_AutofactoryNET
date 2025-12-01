@@ -23,6 +23,7 @@ namespace AppAutoFactory.Pages
         Dictionary<string, string> users = new Dictionary<string, string>()
         {
             {"email@autofactory.org", "1234"},
+            {"1","2"},
             {"mila", "milamila"},
             {"sara", "mila1234"}
         };
@@ -37,7 +38,7 @@ namespace AppAutoFactory.Pages
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             input_user = txtUser.Text;
-            input_password = txtPassword.Text;
+            input_password = txtPassword.Password; //No és Text ni Content! És Password.
 
             if (users.ContainsKey(input_user) && users[input_user] == input_password)
             {

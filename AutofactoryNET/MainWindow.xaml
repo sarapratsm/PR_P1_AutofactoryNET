@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Loaded="Window_Loaded"
         Background="{StaticResource BackgroundLightBrush}"
+        WindowStartupLocation="CenterScreen"
+        Icon="./Images/image.ico"
         Title="AutoFactory" Height="600" Width="900">
 
     <DockPanel LastChildFill="True">

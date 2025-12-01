@@ -70,6 +70,7 @@
                 <Label Margin="10" Padding="5" Content="Stock*" Grid.Row="5"></Label>
                 <Label Margin="10" Padding="5" Content="Unitats*" Grid.Row="6"></Label>
 
+                <Image x:Name="imgComp" Grid.Column="1" Grid.Row="0" Width="50" Height="50" HorizontalAlignment="Right" Source="{Binding Foto}"></Image>
                 <!--Falta la foto aqui-->
                 <TextBox  x:Name="txbNom" Margin="10" Padding="5"   Grid.Column="1" Width="100" Grid.Row="1" Text="{Binding Codi}" IsEnabled="False"/>
                 <TextBox  Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="2"   Text="{Binding Nom}"/>

@@ -6,34 +6,30 @@ using System.Runtime.CompilerServices; // <-- 2. Importar per a [CallerMemberNam
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace AppAutoFactory.ViewModel
 {
-    // 3. Implementar la interfície
-    internal class VMProducte : INotifyPropertyChanged
+    public class VMProducte : INotifyPropertyChanged
     {
-        // 4. Implementar l'esdeveniment de la interfície
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        // 5. Mètode "Helper" per notificar a la UI
         protected void OnPropertyChanged([CallerMemberName] string? name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        // --- CAMPS PRIVATS (Backing Fields) ---
         private string codi;
         private string nom;
         private string descripcio;
         private int stock;
         private byte[]? foto;
         private char tipus;
-        // El Diccionari de Components (Comps) el gestionarem per separat,
-        //[cite_start]// ja que és per al DataGrid de la pàgina 5 
+        private ObservableCollection<Item> subcomponents;
         private Producte producte;
 
-        // --- PROPIETATS PÚBLIQUES (Per al Binding) ---
-        // Ara, cada 'set' notifica a la UI que ha de refrescar-se
+
+
 
         public string Codi
         {
@@ -71,6 +67,15 @@ namespace AppAutoFactory.ViewModel
             set { tipus = value; OnPropertyChanged(); }
         }
 
+        public ObservableCollection<Item> Subcomponents
+        {
+            get { return subcomponents; }
+            set
+            {
+                subcomponents = value; OnPropertyChanged();
+            }
+        }
+
         // --- CONSTRUCTORS ---
         public VMProducte()
         {
@@ -79,6 +84,8 @@ namespace AppAutoFactory.ViewModel
             this.codi = "";
             this.nom = "";
             this.descripcio = "";
+            this.subcomponents = new ObservableCollection<Item>();
+
         }
 
         public VMProducte(Producte p)
@@ -88,13 +95,14 @@ namespace AppAutoFactory.ViewModel
 
             if (p != null)
             {
-                this.producte= p;
-                // Assignem a les PROPIETATS (majúscula)
+                this.producte = p;
                 this.Codi = p.Codi;
                 this.Nom = p.Nom;
                 this.Descripcio = p.Descripcio;
                 this.Stock = p.Stock;
                 this.Foto = p.Foto;
+                this.subcomponents= new ObservableCollection<Item>(); //Caldrà omplir la llista desde la app.
+
             }
         }
     }

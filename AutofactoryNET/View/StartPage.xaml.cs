@@ -37,12 +37,14 @@ namespace AppAutoFactory.View
 
         private void btnVeureProductes_Click(object sender, RoutedEventArgs e)
         {
+            //MainWindow.Navegacio(1);
             intentarNavegar(1);
 
         }
 
         private void btnVeureComponents_Click(object sender, RoutedEventArgs e)
         {
+            //MainWindow.Navegacio(2);
             intentarNavegar(2);
         }
 

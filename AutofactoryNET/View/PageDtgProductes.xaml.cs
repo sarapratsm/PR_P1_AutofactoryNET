@@ -1,8 +1,10 @@
-﻿using DAO;
+﻿using AppAutoFactory.ViewModel;
+using DAO;
 using Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +27,9 @@ namespace AppAutoFactory.View
     {
         ObservableCollection<Producte> llistaProductes = new ObservableCollection<Producte>();
         private Producte? _producteSeleccionat;
+        //private VMProducte _producteVM;
+
+        PageEditarProducte pageEditarProducte;
 
         public PageDtgProductes()
         {
@@ -55,40 +60,47 @@ namespace AppAutoFactory.View
             }
         }
 
+
+        private void btnAfegirProducte_Click(object sender, RoutedEventArgs e)
+        {
+            NavegaAEditorProducte(0);
+        }
+
+        private void dtgProductes_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            NavegaAEditorProducte(1);
+        }
         private void btnModificar_Click(object sender, RoutedEventArgs e)
         {
+            NavegaAEditorProducte(1);
 
         }
 
         private void btnEliminar_Click(object sender, RoutedEventArgs e)
         {
-
+            //mostrar un missatge que demani confirmació de la eliminació.
+            //MessageBox.Show("S'eliminarà el producte. Aquest canvi és irreversible");
         }
-
-        private void btnAfegirProducte_Click(object sender, RoutedEventArgs e)
-        {
-            NavegaAEditorProducte(new Producte(), 0);
-        }
-
-
-        private void dtgProductes_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            _producteSeleccionat = dtgProductes.SelectedItem as Producte;
-            if (_producteSeleccionat != null)
-            {
-                NavegaAEditorProducte(_producteSeleccionat, 1);
-            }
-        }
-
+        
         private void dtgProductes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _producteSeleccionat = dtgProductes.SelectedItem as Producte;
 
         }
 
-        private void NavegaAEditorProducte(Producte p, int mode)
+        private void NavegaAEditorProducte(int mode)
         {
-            PageEditarProducte pageEditarProducte = new PageEditarProducte(p, mode);
+            if (mode == 0)
+            {
+                pageEditarProducte = new PageEditarProducte();
+            }
+            else if (mode == 1)
+            {
+                if (_producteSeleccionat != null)
+                {
+                    pageEditarProducte = new PageEditarProducte(_producteSeleccionat);
+                }
+            }
             this.NavigationService?.Navigate(pageEditarProducte);
         }
     }

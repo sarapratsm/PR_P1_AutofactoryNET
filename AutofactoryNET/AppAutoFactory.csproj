@@ -10,6 +10,11 @@
 
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="Images\image.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\image.ico" />
   </ItemGroup>
 
   <ItemGroup>

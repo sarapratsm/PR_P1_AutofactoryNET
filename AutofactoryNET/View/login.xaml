@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:AppAutoFactory.Pages"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="AutoFactory - Login" Height="auto" Width="auto">
+        WindowStartupLocation="CenterScreen"
+        Title="AutoFactory - Login" Height="240" Width="600">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -46,7 +47,7 @@
             <Label    Margin="10"  HorizontalAlignment="Right" Content="Email:" Grid.Row="0" Grid.Column="0"></Label>
             <Label    Margin="10"  HorizontalAlignment="Right" Content="Password:" Grid.Row="1" Grid.Column="0"></Label>
             <TextBox  x:Name="txtUser" Margin="10"  MinWidth="250" Grid.Column="1" Grid.Row="0"></TextBox>
-            <TextBox  x:Name="txtPassword" Margin="10"  MinWidth="250" Grid.Column="1" Grid.Row="1"></TextBox>
+            <PasswordBox  x:Name="txtPassword" Margin="10"  MinWidth="250" Grid.Column="1" Grid.Row="1" ></PasswordBox>
             <Button   Margin="10" MinWidth="100" MaxWidth="150"  x:Name="btnLogin" Click="btnLogin_Click" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" >Login</Button>
         </Grid>
     </Grid>
