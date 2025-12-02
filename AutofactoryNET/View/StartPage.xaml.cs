@@ -33,6 +33,8 @@ namespace AppAutoFactory.View
         {
             InitializeComponent();
             this.MainWindow = mainWindow;
+            btnVeureComponents.IsEnabled = hiHaConnexio;
+            btnVeureProductes.IsEnabled = hiHaConnexio;
         }
 
         private void btnVeureProductes_Click(object sender, RoutedEventArgs e)
@@ -87,6 +89,7 @@ namespace AppAutoFactory.View
                 {
                     if (serverIsUp)
                     {
+                        //TODO: mirar per què no agafa els colorsd.
                         lblServerStatus.Content = "Servidor Actiu";
                         lblServerStatus.Foreground = Brushes.Green;
                         hiHaConnexio = true;
@@ -97,6 +100,8 @@ namespace AppAutoFactory.View
                         lblServerStatus.Foreground = Brushes.Red;
                         hiHaConnexio = false;
                     }
+                    btnVeureComponents.IsEnabled = hiHaConnexio;
+                    btnVeureProductes.IsEnabled = hiHaConnexio;
                 });
                 Thread.Sleep(5000); // Espera 5 segons abans de tornar a comprovar
             }

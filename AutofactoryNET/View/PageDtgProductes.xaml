@@ -24,14 +24,12 @@
             <!--Filtres-->
             <GroupBox Background="{StaticResource WindowBackground}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Header="Filtres" Margin="15,10,10,0" Padding="10" BorderBrush="{StaticResource AccentBrush}" BorderThickness="1">
                 <StackPanel x:Name="stpFiltres" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" >
+                    <Label Content="Codi:"></Label>
                     <TextBox x:Name="txtFiltreCodi" Width="150" Margin="10,10,10,0"  ToolTip="Filtre Codi" />
+                    <Label Content="Nom:"></Label>
                     <TextBox x:Name="txtFiltreNom" Width="150" Margin="10,10,10,0"  ToolTip="Filtre Nom" />
-                    <ComboBox x:Name="cmbFiltreTipus" Width="150" Margin="10,10,10,0"  ToolTip="Filtre Tipus">
-                        <ComboBoxItem  x:Name="cbi1">Tot</ComboBoxItem>
-                        <ComboBoxItem Tag="Model.Producte" x:Name="cbi2">Productes</ComboBoxItem>
-                        <ComboBoxItem Tag="Model.Componente" x:Name="cbi3">Components</ComboBoxItem>
-                    </ComboBox>
-                    <Button x:Name="btnFiltrar" Content="Filtrar" Margin="10,10,10,0" Background="LightGray"/>
+
+                    <Button x:Name="btnFiltrar" Content="Filtrar" Margin="10,10,10,0" Background="LightGray" Click="btnFiltrar_Click"/>
                 </StackPanel>
             </GroupBox>
 

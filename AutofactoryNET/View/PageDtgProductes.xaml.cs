@@ -34,7 +34,6 @@ namespace AppAutoFactory.View
         public PageDtgProductes()
         {
             InitializeComponent();
-            cmbFiltreTipus.SelectedIndex = 0;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -103,6 +102,17 @@ namespace AppAutoFactory.View
                 }
             }
             this.NavigationService?.Navigate(pageEditarProducte);
+        }
+
+        private void btnFiltrar_Click(object sender, RoutedEventArgs e)
+        {
+            string filtreNom = txtFiltreNom.Text;
+            string filtreCodi = txtFiltreCodi.Text;
+
+
+            ObservableCollection<Producte> productesFiltrats = OracleFactory.getUOW().DAOProducte.GetProductesFiltrats(filtreCodi, filtreNom, -1, 10);
+            dtgProductes.ItemsSource = productesFiltrats;
+
         }
     }
 }

@@ -511,7 +511,7 @@ namespace DAO
                            LEFT JOIN PROVINCIA pr ON m.mu_pr_codi = pr.pr_codi
                            WHERE pc.pc_cm_it_codi = :cod_comp
                                 AND UPPER(pv.pv_cif) LIKE :CIF_FILTRE
-                                AND UPPER(pv.pv_raosocial) LIKE :RS_FILTRE";
+                                AND UPPER(pv.pv_rao_social) LIKE :RS_FILTRE";
 
                 if (rows_per_page > 0)
                 {
