@@ -148,15 +148,12 @@ namespace AppAutoFactory.View
 
         private void filtraDtg_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: Els filtres han de ser per RAOSOCIAL i CIF. NO PER CODI.
-
             Dictionary<Proveidor, decimal> DiccionariProvsFiltratsDtg = new Dictionary<Proveidor, decimal>();
-            //string stringFiltreCodi = txtCodiFiltre.Text.ToLower();
 
-            string stringFiltreCodi = txtRaoSocial.Text.ToLower();
+            string filtreRaoSocial = txtRaoSocial.Text.ToLower();
             string filtreCif = txtCifFiltre.Text.ToLower();
 
-            DiccionariProvsFiltratsDtg = OracleFactory.getUOW().DAOComponente.ObtenirProveidorsPreuFiltrats(_componentActual.Codi, stringFiltreCodi, filtreCif);
+            DiccionariProvsFiltratsDtg = OracleFactory.getUOW().DAOComponente.ObtenirProveidorsPreuFiltrats(_componentActual.Codi, filtreCif, filtreRaoSocial);
             ObservableCollection<VMProveidor> llista_filtrada = TransformaDiccionariVM(DiccionariProvsFiltratsDtg);
             dtgCompProv.ItemsSource = llista_filtrada;
 

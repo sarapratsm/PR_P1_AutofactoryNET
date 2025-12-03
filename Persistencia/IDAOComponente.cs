@@ -24,7 +24,7 @@ namespace DAO
         //public ObservableCollection<Componente> ObtenirTotsESBORRAR(); //Utilitzarem el filtrat sense filtres
 
         //--- Mètodes Proveidor ---
-        public Dictionary<Proveidor, decimal> ObtenirProveidorsPreuFiltrats(string codi_component, string codi_filtre, string nom_filtre, int offset = 0, int rows_per_page = -1); 
+        public Dictionary<Proveidor, decimal> ObtenirProveidorsPreuFiltrats(string codi_comp, string cif_filtre, string raoSocial_filtre, int offset = 0, int rows_per_page = -1); 
         public Dictionary<string, decimal> ObternirProvCodPreu(Componente component); //Aquest mètode és més senzill
 
         public decimal CalculaPreuMig(Componente component); //Aquest mètode no cal perquè el preu mig es calcula amb un trigger a la BD
