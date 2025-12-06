@@ -108,17 +108,19 @@ namespace DAO
         }
 
         //Metode per comprovar si el servidor està actiu
-        public bool IsServerAlive()
+        public bool IsServerAlive(out string message)
         {
             try
             {
                 _context.Database.OpenConnection();
                 _context.Database.CloseConnection();
                 //Alternativa:  _context.Database.CanConnect();
+                 message = "Connexió establerta correctament.";
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
+                message = "No s'ha pogut establir la connexió amb el servidor de base de dades: " + ex.Message;
                 return false;
             }
         }

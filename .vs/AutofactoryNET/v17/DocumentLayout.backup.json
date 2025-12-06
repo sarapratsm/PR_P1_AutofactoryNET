@@ -1,58 +1,34 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "E:\\DAM2\\Projecte\\AutofactoryNET\\",
+  "WorkspaceRootPath": "C:\\Users\\sprat\\Documents\\Aa ICB0 - DESENVOLUPAMENT D\u0027APLICACIONS MULTIPLATAFORMA\\DAM2\\DAM2_projecte\\AutofactoryNET\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|e:\\dam2\\projecte\\autofactorynet\\autofactorynet\\view\\pagedtgproductes.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|solutionrelative:autofactorynet\\view\\pagedtgproductes.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|e:\\dam2\\projecte\\autofactorynet\\autofactorynet\\view\\pagedtgproductes.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|solutionrelative:autofactorynet\\view\\pagedtgproductes.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|e:\\dam2\\projecte\\autofactorynet\\dao\\daocomponente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|solutionrelative:dao\\daocomponente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|e:\\dam2\\projecte\\autofactorynet\\dao\\daoproducte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|solutionrelative:dao\\daoproducte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|e:\\dam2\\projecte\\autofactorynet\\autofactorynet\\view\\pagecomps.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|solutionrelative:autofactorynet\\view\\pagecomps.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|e:\\dam2\\projecte\\autofactorynet\\autofactorynet\\view\\pagecompprov.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|solutionrelative:autofactorynet\\view\\pagecompprov.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|e:\\dam2\\projecte\\autofactorynet\\autofactorynet\\view\\pagecompprov.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|solutionrelative:autofactorynet\\view\\pagecompprov.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|e:\\dam2\\projecte\\autofactorynet\\autofactorynet\\view\\startpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|c:\\users\\sprat\\documents\\aa icb0 - desenvolupament d\u0027aplicacions multiplataforma\\dam2\\dam2_projecte\\autofactorynet\\autofactorynet\\view\\startpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|solutionrelative:autofactorynet\\view\\startpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|e:\\dam2\\projecte\\autofactorynet\\autofactorynet\\view\\startpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|c:\\users\\sprat\\documents\\aa icb0 - desenvolupament d\u0027aplicacions multiplataforma\\dam2\\dam2_projecte\\autofactorynet\\autofactorynet\\view\\startpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|solutionrelative:autofactorynet\\view\\startpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|e:\\dam2\\projecte\\autofactorynet\\autofactorynet\\view\\login.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|c:\\users\\sprat\\documents\\aa icb0 - desenvolupament d\u0027aplicacions multiplataforma\\dam2\\dam2_projecte\\autofactorynet\\dao\\unitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|solutionrelative:dao\\unitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|c:\\users\\sprat\\documents\\aa icb0 - desenvolupament d\u0027aplicacions multiplataforma\\dam2\\dam2_projecte\\autofactorynet\\dao\\daoproveidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|solutionrelative:dao\\daoproveidor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|c:\\users\\sprat\\documents\\aa icb0 - desenvolupament d\u0027aplicacions multiplataforma\\dam2\\dam2_projecte\\autofactorynet\\dao\\daoproducte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|solutionrelative:dao\\daoproducte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|c:\\users\\sprat\\documents\\aa icb0 - desenvolupament d\u0027aplicacions multiplataforma\\dam2\\dam2_projecte\\autofactorynet\\dao\\mydbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2BDCD93E-371F-4417-AE21-28FE2BD781A5}|DAO\\DAO.csproj|solutionrelative:dao\\mydbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|c:\\users\\sprat\\documents\\aa icb0 - desenvolupament d\u0027aplicacions multiplataforma\\dam2\\dam2_projecte\\autofactorynet\\autofactorynet\\view\\login.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|solutionrelative:autofactorynet\\view\\login.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D9540313-E544-4A01-B1AF-D13B0758990C}|Persistencia\\IDAO.csproj|e:\\dam2\\projecte\\autofactorynet\\persistencia\\idaocomponente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D9540313-E544-4A01-B1AF-D13B0758990C}|Persistencia\\IDAO.csproj|solutionrelative:persistencia\\idaocomponente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|e:\\dam2\\projecte\\autofactorynet\\autofactorynet\\view\\pageeditarproducte.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|solutionrelative:autofactorynet\\view\\pageeditarproducte.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|e:\\dam2\\projecte\\autofactorynet\\autofactorynet\\view\\pageeditarproducte.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{81F08990-9ED0-415F-8065-2017CAD6A34E}|AutofactoryNET\\AppAutoFactory.csproj|solutionrelative:autofactorynet\\view\\pageeditarproducte.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
   "DocumentGroupContainers": [
@@ -62,173 +38,103 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UnitOfWork.cs",
+              "DocumentMoniker": "C:\\Users\\sprat\\Documents\\Aa ICB0 - DESENVOLUPAMENT D\u0027APLICACIONS MULTIPLATAFORMA\\DAM2\\DAM2_projecte\\AutofactoryNET\\DAO\\UnitOfWork.cs",
+              "RelativeDocumentMoniker": "DAO\\UnitOfWork.cs",
+              "ToolTip": "C:\\Users\\sprat\\Documents\\Aa ICB0 - DESENVOLUPAMENT D\u0027APLICACIONS MULTIPLATAFORMA\\DAM2\\DAM2_projecte\\AutofactoryNET\\DAO\\UnitOfWork.cs",
+              "RelativeToolTip": "DAO\\UnitOfWork.cs",
+              "ViewState": "AgIAAFkAAAAAAAAAAIAxwH0AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-06T16:11:21.379Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "DAOProducte.cs",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\DAOProducte.cs",
-              "RelativeDocumentMoniker": "DAO\\DAOProducte.cs",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\DAOProducte.cs",
-              "RelativeToolTip": "DAO\\DAOProducte.cs",
-              "ViewState": "AgIAAPwAAAAAAAAAAAAgwBUBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-02T20:00:16.136Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "PageComps.xaml",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\PageComps.xaml",
-              "RelativeDocumentMoniker": "AutofactoryNET\\View\\PageComps.xaml",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\PageComps.xaml",
-              "RelativeToolTip": "AutofactoryNET\\View\\PageComps.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-12-01T14:19:27.745Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "StartPage.xaml",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\StartPage.xaml",
-              "RelativeDocumentMoniker": "AutofactoryNET\\View\\StartPage.xaml",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\StartPage.xaml",
-              "RelativeToolTip": "AutofactoryNET\\View\\StartPage.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-12-01T20:02:30.172Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 0,
               "Title": "StartPage.xaml.cs",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\StartPage.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\sprat\\Documents\\Aa ICB0 - DESENVOLUPAMENT D\u0027APLICACIONS MULTIPLATAFORMA\\DAM2\\DAM2_projecte\\AutofactoryNET\\AutofactoryNET\\View\\StartPage.xaml.cs",
               "RelativeDocumentMoniker": "AutofactoryNET\\View\\StartPage.xaml.cs",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\StartPage.xaml.cs",
+              "ToolTip": "C:\\Users\\sprat\\Documents\\Aa ICB0 - DESENVOLUPAMENT D\u0027APLICACIONS MULTIPLATAFORMA\\DAM2\\DAM2_projecte\\AutofactoryNET\\AutofactoryNET\\View\\StartPage.xaml.cs",
               "RelativeToolTip": "AutofactoryNET\\View\\StartPage.xaml.cs",
-              "ViewState": "AgIAAFkAAAAAAAAAAAAswGEAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAEoAAAAAAAAAAAAIwGAAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T20:02:31.78Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "DAOComponente.cs",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\DAOComponente.cs",
-              "RelativeDocumentMoniker": "DAO\\DAOComponente.cs",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\DAO\\DAOComponente.cs",
-              "RelativeToolTip": "DAO\\DAOComponente.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T19:53:39.01Z",
+              "WhenOpened": "2025-12-06T16:10:43.567Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "PageDtgProductes.xaml",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\PageDtgProductes.xaml",
-              "RelativeDocumentMoniker": "AutofactoryNET\\View\\PageDtgProductes.xaml",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\PageDtgProductes.xaml",
-              "RelativeToolTip": "AutofactoryNET\\View\\PageDtgProductes.xaml",
+              "Title": "StartPage.xaml",
+              "DocumentMoniker": "C:\\Users\\sprat\\Documents\\Aa ICB0 - DESENVOLUPAMENT D\u0027APLICACIONS MULTIPLATAFORMA\\DAM2\\DAM2_projecte\\AutofactoryNET\\AutofactoryNET\\View\\StartPage.xaml",
+              "RelativeDocumentMoniker": "AutofactoryNET\\View\\StartPage.xaml",
+              "ToolTip": "C:\\Users\\sprat\\Documents\\Aa ICB0 - DESENVOLUPAMENT D\u0027APLICACIONS MULTIPLATAFORMA\\DAM2\\DAM2_projecte\\AutofactoryNET\\AutofactoryNET\\View\\StartPage.xaml",
+              "RelativeToolTip": "AutofactoryNET\\View\\StartPage.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-12-01T14:15:34.724Z",
+              "WhenOpened": "2025-12-06T16:10:41.332Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "PageDtgProductes.xaml.cs",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\PageDtgProductes.xaml.cs",
-              "RelativeDocumentMoniker": "AutofactoryNET\\View\\PageDtgProductes.xaml.cs",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\PageDtgProductes.xaml.cs",
-              "RelativeToolTip": "AutofactoryNET\\View\\PageDtgProductes.xaml.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAuwHUAAAABAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "DAOProveidor.cs",
+              "DocumentMoniker": "C:\\Users\\sprat\\Documents\\Aa ICB0 - DESENVOLUPAMENT D\u0027APLICACIONS MULTIPLATAFORMA\\DAM2\\DAM2_projecte\\AutofactoryNET\\DAO\\DAOProveidor.cs",
+              "RelativeDocumentMoniker": "DAO\\DAOProveidor.cs",
+              "ToolTip": "C:\\Users\\sprat\\Documents\\Aa ICB0 - DESENVOLUPAMENT D\u0027APLICACIONS MULTIPLATAFORMA\\DAM2\\DAM2_projecte\\AutofactoryNET\\DAO\\DAOProveidor.cs",
+              "RelativeToolTip": "DAO\\DAOProveidor.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T14:15:37.498Z",
+              "WhenOpened": "2025-12-06T16:10:21.26Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DAOProducte.cs",
+              "DocumentMoniker": "C:\\Users\\sprat\\Documents\\Aa ICB0 - DESENVOLUPAMENT D\u0027APLICACIONS MULTIPLATAFORMA\\DAM2\\DAM2_projecte\\AutofactoryNET\\DAO\\DAOProducte.cs",
+              "RelativeDocumentMoniker": "DAO\\DAOProducte.cs",
+              "ToolTip": "C:\\Users\\sprat\\Documents\\Aa ICB0 - DESENVOLUPAMENT D\u0027APLICACIONS MULTIPLATAFORMA\\DAM2\\DAM2_projecte\\AutofactoryNET\\DAO\\DAOProducte.cs",
+              "RelativeToolTip": "DAO\\DAOProducte.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-06T16:10:10.671Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "PageCompProv.xaml",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\PageCompProv.xaml",
-              "RelativeDocumentMoniker": "AutofactoryNET\\View\\PageCompProv.xaml",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\PageCompProv.xaml",
-              "RelativeToolTip": "AutofactoryNET\\View\\PageCompProv.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-12-01T14:12:42.406Z",
+              "Title": "MyDBContext.cs",
+              "DocumentMoniker": "C:\\Users\\sprat\\Documents\\Aa ICB0 - DESENVOLUPAMENT D\u0027APLICACIONS MULTIPLATAFORMA\\DAM2\\DAM2_projecte\\AutofactoryNET\\DAO\\MyDBContext.cs",
+              "RelativeDocumentMoniker": "DAO\\MyDBContext.cs",
+              "ToolTip": "C:\\Users\\sprat\\Documents\\Aa ICB0 - DESENVOLUPAMENT D\u0027APLICACIONS MULTIPLATAFORMA\\DAM2\\DAM2_projecte\\AutofactoryNET\\DAO\\MyDBContext.cs",
+              "RelativeToolTip": "DAO\\MyDBContext.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAmwBMAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-06T15:12:56.302Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "PageCompProv.xaml.cs",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\PageCompProv.xaml.cs",
-              "RelativeDocumentMoniker": "AutofactoryNET\\View\\PageCompProv.xaml.cs",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\PageCompProv.xaml.cs",
-              "RelativeToolTip": "AutofactoryNET\\View\\PageCompProv.xaml.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAkwDoAAAAzAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T14:15:26.815Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "IDAOComponente.cs",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\Persistencia\\IDAOComponente.cs",
-              "RelativeDocumentMoniker": "Persistencia\\IDAOComponente.cs",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\Persistencia\\IDAOComponente.cs",
-              "RelativeToolTip": "Persistencia\\IDAOComponente.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAApwBcAAABvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T20:25:51.287Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "PageEditarProducte.xaml.cs",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\PageEditarProducte.xaml.cs",
-              "RelativeDocumentMoniker": "AutofactoryNET\\View\\PageEditarProducte.xaml.cs",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\PageEditarProducte.xaml.cs",
-              "RelativeToolTip": "AutofactoryNET\\View\\PageEditarProducte.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T12:23:03.877Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
               "Title": "login.xaml",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\login.xaml",
+              "DocumentMoniker": "C:\\Users\\sprat\\Documents\\Aa ICB0 - DESENVOLUPAMENT D\u0027APLICACIONS MULTIPLATAFORMA\\DAM2\\DAM2_projecte\\AutofactoryNET\\AutofactoryNET\\View\\login.xaml",
               "RelativeDocumentMoniker": "AutofactoryNET\\View\\login.xaml",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\login.xaml",
+              "ToolTip": "C:\\Users\\sprat\\Documents\\Aa ICB0 - DESENVOLUPAMENT D\u0027APLICACIONS MULTIPLATAFORMA\\DAM2\\DAM2_projecte\\AutofactoryNET\\AutofactoryNET\\View\\login.xaml",
               "RelativeToolTip": "AutofactoryNET\\View\\login.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-12-02T08:54:41.034Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "PageEditarProducte.xaml",
-              "DocumentMoniker": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\PageEditarProducte.xaml",
-              "RelativeDocumentMoniker": "AutofactoryNET\\View\\PageEditarProducte.xaml",
-              "ToolTip": "E:\\DAM2\\Projecte\\AutofactoryNET\\AutofactoryNET\\View\\PageEditarProducte.xaml",
-              "RelativeToolTip": "AutofactoryNET\\View\\PageEditarProducte.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-12-01T12:23:04.767Z",
+              "WhenOpened": "2025-12-06T11:35:57.169Z",
               "EditorCaption": ""
             }
           ]

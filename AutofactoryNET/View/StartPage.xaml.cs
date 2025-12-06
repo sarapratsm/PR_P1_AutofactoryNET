@@ -83,20 +83,20 @@ namespace AppAutoFactory.View
                 });
 
                 //El thread s'encalla aqui, així que suposo que millor fer dos dispatchers(?)
-                bool serverIsUp = OracleFactory.getUOW().IsServerAlive();
+                string msg = "";
+                bool serverIsUp = OracleFactory.getUOW().IsServerAlive(out msg);
 
                 Dispatcher.Invoke(() =>
                 {
+                    lblServerStatus.Content = msg;
                     if (serverIsUp)
                     {
                         //TODO: mirar per què no agafa els colorsd.
-                        lblServerStatus.Content = "Servidor Actiu";
                         lblServerStatus.Foreground = Brushes.Green;
                         hiHaConnexio = true;
                     }
                     else
                     {
-                        lblServerStatus.Content = "Servidor Inactiu";
                         lblServerStatus.Foreground = Brushes.Red;
                         hiHaConnexio = false;
                     }
