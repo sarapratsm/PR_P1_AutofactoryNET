@@ -7,6 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="1000"
       Background="{StaticResource WindowBackground}"
+      Loaded="Page_Loaded"
       Title="Gestió de Producte">
 
     <Grid Margin="15">
@@ -35,8 +36,12 @@
                 <TextBlock Text="Catàleg d'Items" Style="{StaticResource SubtitleTextStyle}" Grid.Row="0"/>
 
                 <StackPanel Grid.Row="0" Margin="0,30,0,10">
-                    <TextBox x:Name="txtFiltreNom"  Tag="Busca per Nom..." Margin="0,5"/>
-                    <TextBox x:Name="txtFiltreCodi"  Tag="Busca per Codi..." Margin="0,5"/>
+                    <TextBox x:Name="txbFiltreNom"  Tag="Busca per Nom..." Margin="0,5"/>
+                    <TextBox x:Name="txbFiltreCodi"  Tag="Busca per Codi..." Margin="0,5"/>
+                    <ComboBox x:Name="cmbTipus" >
+                        <ComboBoxItem Content="Components" ></ComboBoxItem>
+                        <ComboBoxItem Content="Productes"></ComboBoxItem>
+                    </ComboBox>
                     <Button x:Name="btnFiltrar" Content="🔍 Filtrar" Click="btnFiltrar_Click" Style="{StaticResource SecondaryButton}" HorizontalAlignment="Right"/>
                 </StackPanel>
 
@@ -92,7 +97,7 @@
                             </Grid.ColumnDefinitions>
 
                             <Label Content="Codi:" FontWeight="Bold" Grid.Row="0" Grid.Column="0"/>
-                            <TextBox Text="{Binding Codi}" IsReadOnly="True"  Background="#FFF0F0F0" Grid.Row="0" Grid.Column="1" Margin="5"/>
+                            <TextBox x:Name="txbCodi" Text="{Binding Codi}" IsReadOnly="True"  Background="#FFF0F0F0" Grid.Row="0" Grid.Column="1" Margin="5"/>
 
                             <Label Content="Nom:" FontWeight="Bold" Grid.Row="1" Grid.Column="0"/>
                             <TextBox Text="{Binding Nom, Mode=TwoWay}"  Grid.Row="1" Grid.Column="1" Margin="5"/>

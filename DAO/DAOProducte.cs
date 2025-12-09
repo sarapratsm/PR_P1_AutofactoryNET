@@ -243,7 +243,7 @@ namespace DAO
 
         
 
-        public ObservableCollection<Producte> GetProductesFiltrats(string codi_filtre, string nom_filtre, int offset = 0, int rows_per_page = -1) //No passa els tests.
+        public ObservableCollection<Producte> ObtenirProductesFiltrats(string codi_filtre, string nom_filtre, int offset = 0, int rows_per_page = -1) //No passa els tests.
         {
             ObservableCollection<Producte> productes = new ObservableCollection<Producte>();
             var connexio = _context.Database.GetDbConnection();

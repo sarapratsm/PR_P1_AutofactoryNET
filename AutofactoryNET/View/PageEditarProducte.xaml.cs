@@ -3,6 +3,7 @@ using DAO;
 using Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,12 +39,14 @@ namespace AppAutoFactory.View
         public PageEditarProducte()
         {
             InitializeComponent();
-            this.mode = 0;
             this._producte = null;
             this._vmProducte = new VMProducte();
             DataContext = _vmProducte;
+            this.mode = 0;
 
         }
+
+        
 
         /// <summary>
         /// Constructor per a la edició d'un producte ja existent.
@@ -63,16 +66,55 @@ namespace AppAutoFactory.View
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+
+            DataContext = _vmProducte;
+            configuracioMode(mode);
+            cmbTipus.SelectedIndex = 0;
+            filtraNousSubcomponents();
+
+        }
+
+        private void filtraNousSubcomponents()
+        {
+            string filtreCodi = txbFiltreCodi.Text;
+            string filtreNom = txbFiltreNom.Text;
+            if (cmbTipus.SelectedIndex == 0)
+            {
+                //Components
+                List<Componente> lComps = OracleFactory.getUOW().DAOComponente.ObtenirComponentsFiltrats(filtreCodi, filtreNom).ToList();
+                ObservableCollection<Item> oComps = new ObservableCollection<Item>(lComps);
+                dtgItems.ItemsSource = oComps;
+            }
+            else if (cmbTipus.SelectedIndex == 1)
+            {
+                //Productes
+                ObservableCollection<Producte> lProds = OracleFactory.getUOW().DAOProducte.ObtenirProductesFiltrats(filtreCodi, filtreNom);
+                ObservableCollection<Item> oProds = new ObservableCollection<Item>(lProds);
+                dtgItems.ItemsSource = oProds;
+            }
+        }
+
+        private void configuracioMode(int nouMode)
+        {
+            this.mode = nouMode; //0 és un nou producte. 1 és una edició.
+            //Admet canvis en els controls segons el mode.
+            //Per exemple, el codi no es pot canviar en mode edició.
+            txbCodi.IsEnabled = nouMode == 0;
+
             if (mode == 0)
             {
+                //NOU PRODUCTE
                 txbTitol.Text = "Nou Producte";
+                btnGuardar.Content = "Crear Producte";
             }
             else if (mode == 1)
             {
+                //EDICIÓ PRODUCTE
+                btnGuardar.Content = "Desar Canvis";
                 txbTitol.Text = "Edició del producte " + _producte.Codi;
-
             }
-            DataContext = _vmProducte;
+
+            
 
         }
 

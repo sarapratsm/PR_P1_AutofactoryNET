@@ -326,7 +326,6 @@ namespace DAO
         {
             ObservableCollection<Componente> components = new ObservableCollection<Componente>();
             var connexio = _context.Database.GetDbConnection();
-
             if (connexio.State != ConnectionState.Open)
             {
                 connexio.Open();

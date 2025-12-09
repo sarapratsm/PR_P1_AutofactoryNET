@@ -110,7 +110,7 @@ namespace AppAutoFactory.View
             string filtreCodi = txtFiltreCodi.Text;
 
 
-            ObservableCollection<Producte> productesFiltrats = OracleFactory.getUOW().DAOProducte.GetProductesFiltrats(filtreCodi, filtreNom, -1, 10);
+            ObservableCollection<Producte> productesFiltrats = OracleFactory.getUOW().DAOProducte.ObtenirProductesFiltrats(filtreCodi, filtreNom, -1, 10);
             dtgProductes.ItemsSource = productesFiltrats;
 
         }
