@@ -8,6 +8,7 @@
         Loaded="Window_Loaded"
         Background="{StaticResource BackgroundLightBrush}"
         WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
         Icon="./Images/image.ico"
         Title="AutoFactory" Height="600" Width="900">
 

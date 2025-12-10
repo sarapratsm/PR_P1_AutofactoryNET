@@ -75,9 +75,9 @@
                 <TextBox  x:Name="txbNom" Margin="10" Padding="5"   Grid.Column="1" Width="100" Grid.Row="1" Text="{Binding Codi, Mode=TwoWay}" IsEnabled="False"/>
                 <TextBox  Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="2"   Text="{Binding Nom, Mode=TwoWay}"/>
                 <TextBox  Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="3"   Text="{Binding Descripcio, Mode=TwoWay}"/>
-                <TextBox  Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="4"   Text="{Binding Fabricant, Mode=TwoWay}"/>
+                <TextBox  Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="4"   Text="{Binding CodiFabricant, Mode=TwoWay}"/>
                 <TextBox  Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="5"   Text="{Binding Stock, Mode=TwoWay}"/>
-                <ComboBox Margin="10" Padding="5"  Grid.Column="1" Width="100"  Grid.Row="6" Text="{Binding Unitats}"/>
+                <ComboBox x:Name="cmbUnitats" Margin="10" Padding="5"  Grid.Column="1" Width="100"  Grid.Row="6" Text="{Binding Unitat}"/>
             </Grid>
 
             <DataGrid x:Name="dtgComps" Grid.Column="1" 

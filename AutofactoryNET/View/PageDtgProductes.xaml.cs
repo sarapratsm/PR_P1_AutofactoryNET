@@ -80,6 +80,32 @@ namespace AppAutoFactory.View
         {
             //mostrar un missatge que demani confirmació de la eliminació.
             //MessageBox.Show("S'eliminarà el producte. Aquest canvi és irreversible");
+            if (_producteSeleccionat != null)
+            {
+                MessageBoxResult result = MessageBox.Show("Estàs segur que vols eliminar el producte seleccionat?", "Confirmació d'eliminació", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        using (UnitOfWork uow = OracleFactory.getUOW())
+                        {
+                            uow.BeginTransaction();
+                            uow.DAOProducte.EliminarProducte(_producteSeleccionat.Codi);
+                            uow.Commit();
+                        }
+                        llistaProductes.Remove(_producteSeleccionat);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error en eliminar el producte de la BBDD: \n" + ex.Message,
+                                        "Error de Connexió", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Si us plau, selecciona un producte per eliminar-lo.", "Cap producte seleccionat", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
         
         private void dtgProductes_SelectionChanged(object sender, SelectionChangedEventArgs e)
