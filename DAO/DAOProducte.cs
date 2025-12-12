@@ -274,6 +274,8 @@ namespace DAO
                 string nom_param = "%" + (nom_filtre ?? "").ToUpper() + "%";
 
                 Utils.CrearParametres(consulta, codi_param, ":COD_FILTRE", DbType.String);
+                Utils.CrearParametres(consulta, codi_param, ":COD_FILTRE", DbType.String);
+                Utils.CrearParametres(consulta, nom_param, ":NOM_FILTRE", DbType.String);
                 Utils.CrearParametres(consulta, nom_param, ":NOM_FILTRE", DbType.String);
 
                 using (DbDataReader reader = consulta.ExecuteReader())

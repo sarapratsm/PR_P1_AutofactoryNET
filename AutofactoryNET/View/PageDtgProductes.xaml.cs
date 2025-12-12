@@ -126,6 +126,10 @@ namespace AppAutoFactory.View
                 {
                     pageEditarProducte = new PageEditarProducte(_producteSeleccionat);
                 }
+                else
+                {
+                    MessageBox.Show("Selecciona un producte per modificar-lo!");
+                }
             }
             this.NavigationService?.Navigate(pageEditarProducte);
         }

@@ -24,7 +24,7 @@ namespace AppAutoFactory.View
     /// </summary>
     public partial class PageEditarProducte : Page
     {
-        Producte _producte;
+        Producte? _producte;
         VMProducte _vmProducte;
         int mode; //0 és un nou producte. 1 és una edició.
         private Item _selectedSubcomponente;
@@ -46,7 +46,7 @@ namespace AppAutoFactory.View
 
         }
 
-        
+
 
         /// <summary>
         /// Constructor per a la edició d'un producte ja existent.
@@ -68,9 +68,10 @@ namespace AppAutoFactory.View
         {
 
             DataContext = _vmProducte;
-            configuracioMode(mode);
             cmbTipus.SelectedIndex = 0;
+            configuracioMode(mode);
             filtraNousSubcomponents();
+            dtgBOM.ItemsSource = _vmProducte.Subcomponents;
 
         }
 
@@ -78,6 +79,7 @@ namespace AppAutoFactory.View
         {
             string filtreCodi = txbFiltreCodi.Text;
             string filtreNom = txbFiltreNom.Text;
+            //No pot apareixer el component que s'està editant.
             if (cmbTipus.SelectedIndex == 0)
             {
                 //Components
@@ -89,6 +91,12 @@ namespace AppAutoFactory.View
             {
                 //Productes
                 ObservableCollection<Producte> lProds = OracleFactory.getUOW().DAOProducte.ObtenirProductesFiltrats(filtreCodi, filtreNom);
+                if (_producte != null)
+                {
+
+                    lProds.Remove(lProds.FirstOrDefault(p => p.Codi == _producte.Codi));
+
+                }
                 ObservableCollection<Item> oProds = new ObservableCollection<Item>(lProds);
                 dtgItems.ItemsSource = oProds;
             }
@@ -114,7 +122,7 @@ namespace AppAutoFactory.View
                 txbTitol.Text = "Edició del producte " + _producte.Codi;
             }
 
-            
+
 
         }
 
@@ -149,6 +157,9 @@ namespace AppAutoFactory.View
                 _selectedNouComponente = dtgItems.SelectedItem as Componente;
             else if (dtgItems.SelectedItem is Producte)
                 _selectedNouComponente = dtgItems.SelectedItem as Producte;
+
+            btnAfegirSubcomp.IsEnabled = _selectedNouComponente != null;
+
         }
 
         private void dtgSubcomponents_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -157,6 +168,7 @@ namespace AppAutoFactory.View
                 _selectedSubcomponente = dtgBOM.SelectedItem as Componente;
             else if (dtgBOM.SelectedItem is Producte)
                 _selectedSubcomponente = dtgBOM.SelectedItem as Producte;
+
         }
 
         private void btnAfegirSubcomp_Click(object sender, RoutedEventArgs e)
@@ -175,9 +187,13 @@ namespace AppAutoFactory.View
             }
         }
 
+        private void cmbTipus_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            filtraNousSubcomponents();
+        }
         private void btnFiltrar_Click(object sender, RoutedEventArgs e)
         {
-
+            filtraNousSubcomponents();
         }
         private void btnGuardar_Click(object sender, RoutedEventArgs e)
         {

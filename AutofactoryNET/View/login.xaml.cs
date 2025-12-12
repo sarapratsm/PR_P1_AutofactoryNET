@@ -24,9 +24,11 @@ namespace AppAutoFactory.Pages
         {
             {"email@autofactory.org", "1234"},
             {"1","2"},
+            {"user","user"},
+            {"alumne","alumne"},
             {"mila", "milamila"},
-            {"sara", "mila1234"}
         };
+
         string input_user;
         string input_password;
 

@@ -36,9 +36,12 @@
                 <TextBlock Text="Catàleg d'Items" Style="{StaticResource SubtitleTextStyle}" Grid.Row="0"/>
 
                 <StackPanel Grid.Row="0" Margin="0,30,0,10">
+                    <Label Content="filtre per nom:"></Label>
                     <TextBox x:Name="txbFiltreNom"  Tag="Busca per Nom..." Margin="0,5"/>
+                    <Label Content="filtre per codi:"></Label>
                     <TextBox x:Name="txbFiltreCodi"  Tag="Busca per Codi..." Margin="0,5"/>
-                    <ComboBox x:Name="cmbTipus" >
+                    <Label Content="filtre per tipus:"></Label>
+                    <ComboBox x:Name="cmbTipus" SelectionChanged="cmbTipus_SelectionChanged">
                         <ComboBoxItem Content="Components" ></ComboBoxItem>
                         <ComboBoxItem Content="Productes"></ComboBoxItem>
                     </ComboBox>
@@ -97,7 +100,7 @@
                             </Grid.ColumnDefinitions>
 
                             <Label Content="Codi:" FontWeight="Bold" Grid.Row="0" Grid.Column="0"/>
-                            <TextBox x:Name="txbCodi" Text="{Binding Codi}" IsReadOnly="True"  Background="#FFF0F0F0" Grid.Row="0" Grid.Column="1" Margin="5"/>
+                            <TextBox x:Name="txbCodi" Text="{Binding Codi}" Grid.Row="0" Grid.Column="1" Margin="5"/>
 
                             <Label Content="Nom:" FontWeight="Bold" Grid.Row="1" Grid.Column="0"/>
                             <TextBox Text="{Binding Nom, Mode=TwoWay}"  Grid.Row="1" Grid.Column="1" Margin="5"/>
