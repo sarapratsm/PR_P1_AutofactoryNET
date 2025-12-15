@@ -389,6 +389,62 @@ namespace DAO
             return productes;
         }
 
+        public bool AfegirSubcomponent(Producte p, Item i, int qt)
+        {
+            var connexio = _context.Database.GetDbConnection();
+            if (connexio.State != System.Data.ConnectionState.Open)
+            {
+                connexio.Open();
+            }
+
+            var transaccio = _context.Database.CurrentTransaction;
+            if (transaccio == null)
+            {
+                throw new InvalidOperationException("No hi ha cap transacció activa. Assegura't d'iniciar una transacció abans d'afegir un subcomponent.");
+            }
+
+            try
+            {
+                int filesAfectades = 0;
+
+                // Obtenim els valors
+                string parentCodi = p.Codi;
+                string childCodi = i.Codi;
+                int quantitat = qt;
+
+                using (var cmdItem = connexio.CreateCommand())
+                {
+                    // 1. Definim la SQL amb paràmetres (per seguretat)
+                    // Nota: Si fas servir MySQL, canvia els ':' per '@' si et dona problemes, 
+                    // encara que molts connectors accepten tots dos.
+                    string sqlItem = @"INSERT INTO PROD_ITEM (pi_pr_it_codi, pi_it_codi, quantitat) 
+                               VALUES (:PARENT, :CHILD, :QTY)";
+
+                    cmdItem.CommandText = sqlItem;
+
+                    // 2. Vinculem la transacció existent al command
+                    cmdItem.Transaction = transaccio.GetDbTransaction();
+
+                    // 3. Afegim els paràmetres (fent servir la teva classe Utils si la tens, o manualment)
+                    Utils.CrearParametres(cmdItem, parentCodi, ":PARENT", System.Data.DbType.String);
+                    Utils.CrearParametres(cmdItem, childCodi, ":CHILD", System.Data.DbType.String);
+                    Utils.CrearParametres(cmdItem, quantitat, ":QTY", System.Data.DbType.Int32);
+
+                    // 4. Executem
+                    filesAfectades = cmdItem.ExecuteNonQuery();
+                }
+
+                // Retornem true si s'ha inserit almenys una fila
+                return filesAfectades > 0;
+            }
+            catch (Exception ex)
+            {
+                // Opcional: Pots fer throw per gestionar l'error a fora
+                // throw new Exception("Error en afegir subcomponent: " + ex.Message);
+                return false;
+            }
+        }
+
 
 
     }//end DAOProducte

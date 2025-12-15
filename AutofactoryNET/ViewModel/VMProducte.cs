@@ -25,7 +25,7 @@ namespace AppAutoFactory.ViewModel
         private int stock;
         private byte[]? foto;
         private char tipus;
-        private ObservableCollection<Item> subcomponents;
+        private Dictionary<Item,Int32> subcomponents;
         private Producte producte;
 
 
@@ -67,7 +67,7 @@ namespace AppAutoFactory.ViewModel
             set { tipus = value; OnPropertyChanged(); }
         }
 
-        public ObservableCollection<Item> Subcomponents
+        public Dictionary<Item, Int32> Subcomponents
         {
             get { return subcomponents; }
             set
@@ -84,7 +84,7 @@ namespace AppAutoFactory.ViewModel
             this.codi = "";
             this.nom = "";
             this.descripcio = "";
-            this.subcomponents = new ObservableCollection<Item>();
+            this.subcomponents = new Dictionary<Item, Int32>();
 
         }
 
@@ -101,7 +101,7 @@ namespace AppAutoFactory.ViewModel
                 this.Descripcio = p.Descripcio;
                 this.Stock = p.Stock;
                 this.Foto = p.Foto;
-                this.subcomponents= new ObservableCollection<Item>(); //Caldrà omplir la llista desde la app.
+                this.subcomponents= new Dictionary<Item, Int32>();  //Caldrà omplir la llista desde la app.
 
             }
         }

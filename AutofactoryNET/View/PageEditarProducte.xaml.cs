@@ -59,6 +59,7 @@ namespace AppAutoFactory.View
             this._producte = p;
             this._vmProducte = new VMProducte(p);
             DataContext = _vmProducte;
+            _vmProducte.Subcomponents = OracleFactory.getUOW().DAOProducte.obtenirSubcomponents(_producte);
 
         }
 
@@ -71,7 +72,8 @@ namespace AppAutoFactory.View
             cmbTipus.SelectedIndex = 0;
             configuracioMode(mode);
             filtraNousSubcomponents();
-            dtgBOM.ItemsSource = _vmProducte.Subcomponents;
+            
+            dtgBOM.ItemsSource = _vmProducte.Subcomponents.Keys;
 
         }
 
@@ -126,25 +128,44 @@ namespace AppAutoFactory.View
 
         }
 
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+
+
+        private bool validaItem()
         {
-            if (validaProducte())
+            StringBuilder sb = new StringBuilder();
+            //nou producte
+            string codi = txbCodi.Text;
+            if (codi.Length > 10 || codi.Length < 1)
             {
-                Producte pValidat = new Producte(
-                    _vmProducte.Codi,
-                    _vmProducte.Nom,
-                    _vmProducte.Descripcio,
-                    _vmProducte.Stock,
-                    _vmProducte.Foto
-                    );
-
-                OracleFactory.getUOW().DAOProducte.AfegirProducte(pValidat);
+                sb.Append("El codi no és vàlid (Mínim 1 caracter i màxim 10). \n");
             }
-        }
+            string nom = txbNom.Text;
+            if (nom.Length > 100 || nom.Length < 1)
+            {
+                sb.Append("El nom no és vàlid (Mínim 1 caracter i màxim 100). \n");
+            }
+            string desc = txbDesc.Text;
+            if (desc.Length > 255 || desc.Length < 1)
+            {
+                sb.Append("La descripció no és vàlida (Mínim 1 caracter i màxim 255). \n");
+            }
+            int stock = 0;
+            try
+            {
+                stock = Int32.Parse(txbStock.Text);
 
-        private bool validaProducte()
-        {
-            throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                sb.Append("Stock ha de ser un número enter! \n");
+            }
+
+            if (sb.Length > 0)
+            {
+                MessageBox.Show(sb.ToString(), "Producte no vàlid", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
         }
 
 
@@ -175,13 +196,13 @@ namespace AppAutoFactory.View
         {
             if (_selectedNouComponente != null)
             {
-                _vmProducte.Subcomponents.Add(_selectedNouComponente);
+                _vmProducte.Subcomponents.Add(_selectedNouComponente, Int32.Parse(txtQuantitatSubcomp.Text));
             }
         }
 
         private void btnEliminarSubcomp_Click(object sender, RoutedEventArgs e)
         {
-            if (_vmProducte.Subcomponents.Contains(_selectedSubcomponente))
+            if (_vmProducte.Subcomponents.Keys.Contains(_selectedSubcomponente))
             {
                 _vmProducte.Subcomponents.Remove(_selectedSubcomponente);
             }
@@ -195,9 +216,77 @@ namespace AppAutoFactory.View
         {
             filtraNousSubcomponents();
         }
+
+
+
+
         private void btnGuardar_Click(object sender, RoutedEventArgs e)
         {
+            Producte pValidat = null;
+            if (validaItem())
+            {
+                try
+                {
+                    pValidat = new Producte(
+                    _vmProducte.Codi,
+                    _vmProducte.Nom,
+                    _vmProducte.Descripcio,
+                    _vmProducte.Stock,
+                    _vmProducte.Foto
+                    );
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message, "Error en crear el producte", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
 
+
+            }
+            if (mode == 0)
+            {
+                try
+                {
+                    using (UnitOfWork uow = OracleFactory.getUOW())
+                    {
+                        uow.BeginTransaction();
+                        uow.DAOProducte.AfegirProducte(pValidat);
+                        foreach (KeyValuePair i in _vmProducte.Subcomponents)
+                            uow.DAOProducte.AfegirSubcomponent(_producte, i.key, i.value);
+                        uow.Commit();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("No s'ha pogut guardar el producte: " + ex.Message, "Error en guardar", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+            }
+            else if (mode == 1)
+            {
+                //producte editat
+                try
+                {
+                    using (UnitOfWork uow = OracleFactory.getUOW())
+                    {
+                        uow.BeginTransaction();
+                        uow.DAOProducte.ModificarProducte(pValidat);
+                        uow.Commit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("No s'ha pogut guardar el producte: " + ex.Message, "Error en guardar", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+            }
+            if (NavigationService.CanGoBack)
+            {
+                NavigationService.GoBack();
+            }
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)

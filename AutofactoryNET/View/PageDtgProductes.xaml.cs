@@ -40,24 +40,8 @@ namespace AppAutoFactory.View
         {
             dtgProductes.ItemsSource = llistaProductes;
 
-            try
-            {
-                using (UnitOfWork uow = OracleFactory.getUOW())
-                {
-                    // Obtenim els productes de la BBDD
-                    var productesDeLaBD = uow.DAOProducte.ObtenirTots();
+            refreshDtgProductes();
 
-                    foreach (var p in productesDeLaBD)
-                    {
-                        llistaProductes.Add(p);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error en carregar els productes des de la BBDD: \n" + ex.Message,
-                                "Error de Connexió", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
 
 
@@ -107,7 +91,7 @@ namespace AppAutoFactory.View
                 MessageBox.Show("Si us plau, selecciona un producte per eliminar-lo.", "Cap producte seleccionat", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-        
+
         private void dtgProductes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _producteSeleccionat = dtgProductes.SelectedItem as Producte;
@@ -136,12 +120,30 @@ namespace AppAutoFactory.View
 
         private void btnFiltrar_Click(object sender, RoutedEventArgs e)
         {
+            refreshDtgProductes();
+
+        }
+
+        private void refreshDtgProductes()
+        {
             string filtreNom = txtFiltreNom.Text;
             string filtreCodi = txtFiltreCodi.Text;
 
 
-            ObservableCollection<Producte> productesFiltrats = OracleFactory.getUOW().DAOProducte.ObtenirProductesFiltrats(filtreCodi, filtreNom, -1, 10);
-            dtgProductes.ItemsSource = productesFiltrats;
+            try
+            {
+                using (UnitOfWork uow = OracleFactory.getUOW())
+                {
+                    llistaProductes = uow.DAOProducte.ObtenirProductesFiltrats(filtreCodi, filtreNom, -1, 10);
+                    dtgProductes.ItemsSource = llistaProductes;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error en carregar els productes des de la BBDD: \n" + ex.Message,
+                                "Error de Connexió", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
         }
     }
