@@ -1,9 +1,11 @@
 ﻿using AppAutoFactory.ViewModel;
 using DAO;
+using Microsoft.Win32;
 using Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -147,9 +149,9 @@ namespace AppAutoFactory.View
                 sb.Append("El nom no és vàlid (Mínim 1 caracter i màxim 100). \n");
             }
             string desc = txbDesc.Text;
-            if (desc.Length > 255 || desc.Length < 1)
+            if (desc.Length > 255 || desc.Length < 0)
             {
-                sb.Append("La descripció no és vàlida (Mínim 1 caracter i màxim 255). \n");
+                sb.Append("La descripció no és vàlida (Màxim 255 caracters). \n");
             }
             int stock = 0;
             try
@@ -225,6 +227,12 @@ namespace AppAutoFactory.View
             {
                 int quantitat = 1;
                 int.TryParse(txtQuantitatSubcomp.Text, out quantitat);
+                
+                if(_vmProducte.Subcomponents.Any(i=>i.Key.Codi == _selectedNouComponente.Codi))
+                {
+                    MessageBox.Show("Error: Aquest item ja està especificat en el BOM del producte!", "No es pot afegir l'item", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
                 _vmProducte.Subcomponents.Add(_selectedNouComponente, quantitat);
                 RefrescarDtgBOM();
             }
@@ -274,6 +282,11 @@ namespace AppAutoFactory.View
 
 
             }
+            else
+            {
+                return;
+            }
+            //El producte és correcte.
             if (mode == 0)
             {
                 try
@@ -339,12 +352,31 @@ namespace AppAutoFactory.View
 
         private void btnRemoveFoto_Click(object sender, RoutedEventArgs e)
         {
-
+            _vmProducte.Foto = null;
         }
 
         private void btnPujarFoto_Click(object sender, RoutedEventArgs e)
         {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            // Filtramos solo imágenes
+            openFileDialog.Filter = "Imatges|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
 
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    // 1. Llegim el fitxer del disc i el convertim a bytes
+                    byte[] imatgeBytes = File.ReadAllBytes(openFileDialog.FileName);
+
+                    // 2. Assignem els bytes al ViewModel
+                    // En ser PropertyChanged, la imatge es refrescarà sola
+                    _vmProducte.Foto = imatgeBytes;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error en carregar la imatge: " + ex.Message);
+                }
+            }
         }
     }
 }

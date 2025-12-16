@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Model
 {
     public abstract class Item
@@ -27,6 +28,7 @@ namespace Model
             this.Stock = stock;
             this.Foto = foto;
             this.Tipus = tipus;
+            //this.TheImage = loadImage(Foto);
         }
 
         public string Codi { get => codi; private set => codi = value; }
@@ -34,6 +36,11 @@ namespace Model
         public string Descripcio { get => descripcio; private set => descripcio = value; }
         public int Stock { get => stock; set => stock = value; } // Deixem 'set' públic per a Stock
         public byte[] Foto { get => foto; private set => foto = value; }
+
+ 
+
+
+
         public char Tipus { get => tipus; private set => tipus = value; }
 
        
@@ -46,6 +53,8 @@ namespace Model
             } 
             return true;
         }
-        
+
+
+
     }
 }

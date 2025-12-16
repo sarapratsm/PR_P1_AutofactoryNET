@@ -1,12 +1,15 @@
 ﻿using Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace AppAutoFactory.ViewModel
 {
@@ -73,6 +76,12 @@ namespace AppAutoFactory.ViewModel
             }
         }
 
+        public BitmapImage TheImage
+        {
+            get;
+            set;
+        }
+
         // --- CONSTRUCTORS ---
         public VMProducte()
         {
@@ -97,7 +106,7 @@ namespace AppAutoFactory.ViewModel
                 this.Descripcio = p.Descripcio;
                 this.Stock = p.Stock;
                 this.Foto = p.Foto;
-
+                this.TheImage = loadImage(Foto);
                 // NOTA: Assegura't d'haver cridat a DAOProducte.CarregarSubcomponents(p) 
                 // abans de passar-lo a aquest constructor.
                 this.Subcomponents = p.Comps;
@@ -108,5 +117,31 @@ namespace AppAutoFactory.ViewModel
                 this.subcomponents = new Dictionary<Item, Int32>();
             }
         }
+
+        private BitmapImage loadImage(byte[] bytes)
+        {
+            try
+            {
+                BitmapImage image = new BitmapImage();
+                using (MemoryStream mem = new MemoryStream(bytes))
+                {
+                    mem.Position = 0;
+                    image.BeginInit();
+                    image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.UriSource = null;
+                    image.StreamSource = mem;
+                    image.EndInit();
+                }
+                image.Freeze(); // Importante para evitar errores de hilos
+                return image;
+            }
+            catch
+            {
+                return null;
+            }
+
+        }
+
     }
 }

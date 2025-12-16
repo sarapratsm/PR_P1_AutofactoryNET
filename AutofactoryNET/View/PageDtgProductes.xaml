@@ -9,7 +9,11 @@
       Loaded="Page_Loaded"
       Background="{StaticResource WindowBackground}"
       Title="PageDtgProductes">
-
+   
+    <Page.Resources>
+        <local:BytesToImageConverter x:Key="ImageConverter"/>
+    </Page.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -45,6 +49,14 @@
               MouseDoubleClick="dtgProductes_MouseDoubleClick"
               SelectionChanged="dtgProductes_SelectionChanged">
                 <DataGrid.Columns>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding TheImatge, Converter={StaticResource ImageConverter} ,FallbackValue=https://picsum.photos/seed/picsum/50}" Width="50" Height="50" Stretch="UniformToFill"></Image>
+                                <!--<Label Content="&lt;3"></Label>-->
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Header="Codi" Binding="{Binding Codi}" Width="75"/>
                     <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*"/>
                     <DataGridTextColumn Header="Tipus" Binding="{Binding Tipus}" Width="50"/>
@@ -56,3 +68,5 @@
         </Grid>
     </Grid>
 </Page>
+
+

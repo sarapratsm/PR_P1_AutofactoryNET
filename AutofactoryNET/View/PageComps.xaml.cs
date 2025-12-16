@@ -1,11 +1,13 @@
 ﻿using AppAutoFactory.ViewModel;
 using AutofactoryNET;
 using DAO;
+using Microsoft.Win32;
 using Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Eventing.Reader;
+using System.IO;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -294,9 +296,40 @@ namespace AppAutoFactory.View
             RefrescarDataGrid();
         }
 
+        
+
+        private void btnRemoveFoto_Click(object sender, RoutedEventArgs e)
+        {
+            _vmComponente.Foto = null;
+        }
+
+        private void btnPujarFoto_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            // Filtramos solo imágenes
+            openFileDialog.Filter = "Imatges|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    // 1. Llegim el fitxer del disc i el convertim a bytes
+                    byte[] imatgeBytes = File.ReadAllBytes(openFileDialog.FileName);
+
+                    // 2. Assignem els bytes al ViewModel
+                    // En ser PropertyChanged, la imatge es refrescarà sola
+                    _vmComponente.Foto = imatgeBytes;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error en carregar la imatge: " + ex.Message);
+                }
+            }
+        }
+
         private void btnGestioProvs_Click(object sender, RoutedEventArgs e)
         {
-
+            btnEditarProvs_Click(sender, e);
         }
     }
 }

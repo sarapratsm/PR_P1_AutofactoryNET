@@ -33,7 +33,7 @@
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
 
-                
+
 
                 <Button x:Name="btnModificar" Click="btnModificar_Click" Content="✏️" ToolTip="Modificar"
                     Background="Transparent" BorderBrush="Transparent" FontSize="18" Margin="2,0" Cursor="Hand"/>
@@ -115,8 +115,18 @@
                 <Label Margin="10" Padding="5" Content="Stock*" Grid.Row="5"></Label>
                 <Label Margin="10" Padding="5" Content="Unitats*" Grid.Row="6"></Label>
 
-                <Image x:Name="imgComp" Grid.Column="1" Grid.Row="0" Width="50" Height="50" HorizontalAlignment="Right" Source="{Binding Foto}"></Image>
-                <!--Falta la foto aqui-->
+                <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                    <Button x:Name="btnPujarFoto" Click="btnPujarFoto_Click" Content="Upload" ToolTip="Pujar imatge"
+                        Style="{StaticResource FilterButtonStyle}" Margin="5,5,0,0"/>
+                    <Button x:Name="btnRemoveFoto" Click="btnRemoveFoto_Click" Content="Remove" ToolTip="Eliminar imatge"
+                        Style="{StaticResource FilterButtonStyle}" Margin="5,5,0,0"/>
+
+                </StackPanel>
+
+                <Border  BorderBrush="LightGray" Grid.Column="1" Grid.Row="0" BorderThickness="1" Width="100" Height="100" VerticalAlignment="Top" Margin="5,10,10,0">
+                    <Image x:Name="imgComp"  Source="{Binding TheImage}" Stretch="Uniform"/>
+                </Border>
+
                 <TextBox  x:Name="txbNom" Margin="10" Padding="5"   Grid.Column="1" Width="100" Grid.Row="1" Text="{Binding Codi, Mode=TwoWay}" IsEnabled="False"/>
                 <TextBox  Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="2"   Text="{Binding Nom, Mode=TwoWay}"/>
                 <TextBox  Margin="10" Padding="5" Grid.Column="1" Width="100" Grid.Row="3"   Text="{Binding Descripcio, Mode=TwoWay}"/>
