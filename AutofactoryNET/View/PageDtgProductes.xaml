@@ -29,7 +29,7 @@
                     <Label Content="Nom:"></Label>
                     <TextBox x:Name="txtFiltreNom" Width="150" Margin="10,10,10,0"  ToolTip="Filtre Nom" />
 
-                    <Button x:Name="btnFiltrar" Content="Filtrar" Margin="10,10,10,0" Background="LightGray" Click="btnFiltrar_Click"/>
+                    <Button x:Name="btnFiltrar" Content="🔍 Filtrar" Margin="10,10,10,0" Click="btnFiltrar_Click" Style="{StaticResource FilterButtonStyle}"/>
                 </StackPanel>
             </GroupBox>
 

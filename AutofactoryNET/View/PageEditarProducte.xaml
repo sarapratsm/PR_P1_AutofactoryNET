@@ -45,7 +45,8 @@
                         <ComboBoxItem Content="Components" ></ComboBoxItem>
                         <ComboBoxItem Content="Productes"></ComboBoxItem>
                     </ComboBox>
-                    <Button x:Name="btnFiltrar" Content="🔍 Filtrar" Click="btnFiltrar_Click" Style="{StaticResource SecondaryButton}" HorizontalAlignment="Right"/>
+                    <Button x:Name="btnFiltrar" Content="🔍 Filtrar" Click="btnFiltrar_Click" Margin="5,10,0,0" Style="{StaticResource FilterButtonStyle}" HorizontalAlignment="Right"/>
+
                 </StackPanel>
 
                 <DataGrid x:Name="dtgItems" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="dtgItems_SelectionChanged">
@@ -83,9 +84,19 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Border Grid.Column="0" BorderBrush="LightGray" BorderThickness="1" Width="100" Height="100" VerticalAlignment="Top" Margin="0,0,15,0">
-                            <Image x:Name="imgProducte" Source="{Binding Foto}" Stretch="Uniform"/>
-                        </Border>
+                        <StackPanel x:Name="stpFoto" Grid.Column="0">
+                            <Border  BorderBrush="LightGray" BorderThickness="1" Width="100" Height="100" VerticalAlignment="Top" Margin="0,0,15,0">
+                                <Image x:Name="imgProducte" Source="{Binding Foto}" Stretch="Uniform"/>
+                            </Border>
+                            <Button x:Name="btnPujarFoto" Click="btnPujarFoto_Click" Content="Upload" ToolTip="Pujar imatge"
+                                Style="{StaticResource FilterButtonStyle}" Margin="5,5,20,0"/>
+                            <Button x:Name="btnRemoveFoto" Click="btnRemoveFoto_Click" Content="Remove" ToolTip="Eliminar imatge"
+                                Style="{StaticResource FilterButtonStyle}" Margin="5,5,20,0"/>
+
+
+
+
+                        </StackPanel>
 
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
@@ -123,16 +134,15 @@
 
                     <TextBlock Text="Bill of Materials (Contingut)" Style="{StaticResource SubtitleTextStyle}" Grid.Row="0"/>
 
-                    <DataGrid x:Name="dtgBOM" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="dtgSubcomponents_SelectionChanged">
+                    <DataGrid x:Name="dtgBOM" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="dtgBOM_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Quantitat" Binding="{Binding Value}" Width="80"/>
-                            <DataGridTextColumn Header="Unitat" Binding="{Binding Key.Unitat}" Width="80"/>
                             <DataGridTextColumn Header="Codi" Binding="{Binding Key.Codi}" Width="100"/>
                             <DataGridTextColumn Header="Nom" Binding="{Binding Key.Nom}" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <Button x:Name="btnEliminarSubcomp" Click="btnEliminarSubcomp_Click" Content="🗑️ Eliminar Element Seleccionat" HorizontalAlignment="Right" Margin="0,5,0,3" Style="{StaticResource SecondaryButton}" IsEnabled="False"/>
+                    <Button x:Name="btnEliminarSubcomp" Click="btnEliminarSubcomp_Click" Content="🗑️ Retirar Element del BOM" HorizontalAlignment="Right" Margin="0,5,0,3" Style="{StaticResource SecondaryButton}" IsEnabled="False"/>
                 </Grid>
             </Grid>
         </Grid>

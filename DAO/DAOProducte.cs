@@ -17,18 +17,34 @@ using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Text;
+
 namespace DAO
 {
+    /// <summary>
+    /// Classe d'Accés a Dades (DAO) per a la gestió de l'entitat Producte.
+    /// Gestiona les operacions CRUD contra la base de dades utilitzant ADO.NET sobre el context d'EF Core.
+    /// </summary>
     public class DAOProducte : IDAOProducte
     {
         private readonly MyDBContext _context;
 
+        /// <summary>
+        /// Constructor de la classe DAOProducte.
+        /// </summary>
+        /// <param name="context">Context de la base de dades (Entity Framework).</param>
         public DAOProducte(MyDBContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public bool AfegirProducte(Producte producte)
+        /// <summary>
+        /// Afegeix un nou producte a la base de dades.
+        /// Insereix primer a la taula ITEM i després a la taula PRODUCTE dins d'una transacció.
+        /// </summary>
+        /// <param name="producte">Objecte Producte amb les dades a inserir.</param>
+        /// <returns>True si la inserció ha estat correcta, False si ha fallat.</returns>
+        /// <exception cref="InvalidOperationException">Es llança si no hi ha una transacció activa.</exception>
+        public bool InserirProducte(Producte producte)
         {
             var connexio = _context.Database.GetDbConnection();
             if (connexio.State != System.Data.ConnectionState.Open)
@@ -43,6 +59,7 @@ namespace DAO
             try
             {
                 int filesAfectades = 0;
+                // 1. Inserció a la taula pare ITEM
                 using (var cmdItem = connexio.CreateCommand())
                 {
                     string sqlItem = @"INSERT INTO ITEM (it_codi, it_nom, it_desc, it_stock, it_foto, it_tipus)
@@ -58,6 +75,8 @@ namespace DAO
 
                     filesAfectades += cmdItem.ExecuteNonQuery();
                 }
+
+                // 2. Inserció a la taula filla PRODUCTE si l'anterior ha anat bé
                 if (filesAfectades > 0)
                 {
                     using (var cmdProducte = connexio.CreateCommand())
@@ -70,6 +89,8 @@ namespace DAO
                         filesAfectades += cmdProducte.ExecuteNonQuery();
                     }
                 }
+
+                // Verifiquem que s'han inserit les dues files
                 if (filesAfectades == 2)
                 {
                     return true;
@@ -85,10 +106,15 @@ namespace DAO
                 // Si falla qualsevol cosa, fem rollback
                 transaccio.Rollback();
                 throw; // Rellença l'excepció
-                return false;
             }
         }
 
+        /// <summary>
+        /// Modifica les dades d'un producte existent.
+        /// Actualitza la taula ITEM. El codi (PK) no es pot modificar.
+        /// </summary>
+        /// <param name="producte">Objecte Producte amb les dades modificades.</param>
+        /// <returns>True si s'ha modificat correctament, False altrament.</returns>
         public bool ModificarProducte(Producte producte)
         {
             var connexio = _context.Database.GetDbConnection();
@@ -127,9 +153,7 @@ namespace DAO
                     filesAfectades = cmdItem.ExecuteNonQuery();
                 }
 
-                // SQL 2: La taula PRODUCTE no té camps per actualitzar,
-                // només té la clau (pr_it_codi), que no es pot canviar.
-                // Per tant, només comprovem que la fila d'ITEM s'ha actualitzat.
+                // SQL 2: La taula PRODUCTE no té camps per actualitzar, només la PK.
 
                 if (filesAfectades == 1)
                 {
@@ -149,6 +173,12 @@ namespace DAO
             }
         }
 
+        /// <summary>
+        /// Elimina un producte i totes les seves dependències de la base de dades.
+        /// Segueix l'ordre: PROD_ITEM -> PRODUCTE -> ITEM per respectar les FK.
+        /// </summary>
+        /// <param name="codi">Codi del producte a eliminar.</param>
+        /// <returns>True si l'eliminació ha estat completa.</returns>
         public bool EliminarProducte(string codi)
         {
             var connexio = _context.Database.GetDbConnection();
@@ -168,7 +198,6 @@ namespace DAO
                 DbParameter paramCodi = null;
 
                 // 1. Esborrar de PROD_ITEM (on és pare o fill)
-                // (El teu DDL té FKs que ho requereixen)
                 using (var cmd = connexio.CreateCommand())
                 {
                     cmd.CommandText = "DELETE FROM PROD_ITEM WHERE pi_pr_it_codi = :cod OR pi_it_codi = :cod";
@@ -177,7 +206,7 @@ namespace DAO
                     paramCodi.ParameterName = ":cod";
                     paramCodi.Value = codi;
                     cmd.Parameters.Add(paramCodi);
-                    cmd.ExecuteNonQuery(); // Pot ser 0
+                    cmd.ExecuteNonQuery(); // Pot ser 0 si no té subcomponents
                 }
 
                 // 2. Esborrar de PRODUCTE (la fila filla)
@@ -224,25 +253,119 @@ namespace DAO
             }
         }
 
+        /// <summary>
+        /// Mètode no implementat.
+        /// </summary>
         public bool AfegirProveidor(Proveidor p)
         {
             throw new NotImplementedException();
         }
 
-
-
+        /// <summary>
+        /// Mètode no implementat.
+        /// </summary>
         public int EliminarProveidor(int codi_prov)
         {
             throw new NotImplementedException();
         }
 
-        public ObservableCollection<Item> GetItems()
+        /// <summary>
+        /// Carrega els subcomponents (BOM) complets des de la base de dades i els afegeix 
+        /// directament a la propietat 'Comps' de l'objecte Producte passat per paràmetre.
+        /// </summary>
+        /// <param name="p">L'objecte Producte pare que volem omplir.</param>
+        public void CarregarSubcomponents(Producte p)
         {
-            throw new NotImplementedException();
+            if (p == null || string.IsNullOrEmpty(p.Codi)) return;
+
+            var connexio = _context.Database.GetDbConnection();
+            if (connexio.State != System.Data.ConnectionState.Open)
+            {
+                connexio.Open();
+            }
+
+            using (var cmd = connexio.CreateCommand())
+            {
+                // FEM UN LEFT JOIN AMB COMPONENTE!
+                // Així obtenim també el fabricant, la unitat, etc.
+                string sql = @"SELECT 
+                            i.it_codi, i.it_nom, i.it_desc, i.it_stock, i.it_foto, i.it_tipus,
+                            pi.quantitat,
+                            c.cm_codi_fabricant, c.cm_um_codi
+                       FROM ITEM i
+                       JOIN PROD_ITEM pi ON i.it_codi = pi.pi_it_codi
+                       LEFT JOIN COMPONENTE c ON i.it_codi = c.cm_it_codi
+                       WHERE pi.pi_pr_it_codi = :codiPare";
+
+                cmd.CommandText = sql;
+                cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+
+                Utils.CrearParametres(cmd, p.Codi, ":codiPare", DbType.String);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        // 1. Dades comuns (ITEM)
+                        string codi = reader.GetString(reader.GetOrdinal("it_codi"));
+                        string nom = reader.GetString(reader.GetOrdinal("it_nom"));
+                        string desc = reader.IsDBNull(reader.GetOrdinal("it_desc")) ? "" : reader.GetString(reader.GetOrdinal("it_desc"));
+                        int stock = Convert.ToInt32(reader.GetValue(reader.GetOrdinal("it_stock")));
+                        string tipus = reader.GetString(reader.GetOrdinal("it_tipus")); // 'P' o 'C'
+
+                        byte[] fotoBytes = null;
+                        if (reader["it_foto"] != DBNull.Value)
+                        {
+                            fotoBytes = (byte[])reader["it_foto"];
+                        }
+
+                        // 2. Instanciem segons el tipus, omplint els camps específics
+                        Item itemFill;
+
+                        if (tipus == "P")
+                        {
+                            // Si és un sub-producte, no té dades de component
+                            itemFill = new Producte(codi, nom, desc, stock, fotoBytes);
+                        }
+                        else
+                        {
+                            // Si és un COMPONENT, llegim els camps extra de la taula COMPONENTE
+                            string codiFabricant = "";
+                            if (!reader.IsDBNull(reader.GetOrdinal("cm_codi_fabricant")))
+                            {
+                                codiFabricant = reader.GetString(reader.GetOrdinal("cm_codi_fabricant"));
+                            }
+
+                            // Llegim la unitat (int) i la passem a Enum (TipusUnitat)
+                            int unitatId = 1; // Valor per defecte
+                            if (!reader.IsDBNull(reader.GetOrdinal("cm_um_codi")))
+                            {
+                                unitatId = Convert.ToInt32(reader.GetValue(reader.GetOrdinal("cm_um_codi")));
+                            }
+                            TipusUnitat unitatEnum = (TipusUnitat)unitatId;
+
+                            // Creem el component amb TOTS els seus camps
+                            itemFill = new Componente(codi, nom, desc, stock, fotoBytes, 'C', codiFabricant, unitatEnum);
+                        }
+
+                        // 3. Llegim la quantitat del BOM (PROD_ITEM)
+                        int quantitat = Convert.ToInt32(reader.GetValue(reader.GetOrdinal("quantitat")));
+
+                        // 4. Afegim al pare
+                        p.AfegirComponent(itemFill, quantitat);
+                    }
+                }
+            }
         }
 
-        
-
+        /// <summary>
+        /// Obté una llista de productes aplicant filtres de cerca i paginació.
+        /// </summary>
+        /// <param name="codi_filtre">Text per filtrar pel codi del producte (LIKE).</param>
+        /// <param name="nom_filtre">Text per filtrar pel nom del producte (LIKE).</param>
+        /// <param name="offset">Nombre de registres a saltar (per paginació).</param>
+        /// <param name="rows_per_page">Nombre de registres a retornar (per paginació). -1 per tots.</param>
+        /// <returns>Col·lecció observable de productes que compleixen els criteris.</returns>
         public ObservableCollection<Producte> ObtenirProductesFiltrats(string codi_filtre, string nom_filtre, int offset = 0, int rows_per_page = -1) //No passa els tests.
         {
             ObservableCollection<Producte> productes = new ObservableCollection<Producte>();
@@ -298,19 +421,23 @@ namespace DAO
             }
             return productes;
         }
+        
 
 
-
+        /// <summary>
+        /// Recupera un únic producte a partir del seu codi.
+        /// </summary>
+        /// <param name="codi">Codi identificador del producte.</param>
+        /// <returns>L'objecte Producte si es troba, o null si no existeix.</returns>
         public Producte ObtenirProductePerCodi(string codi)
         {
-            // Patró basat en GetProvincia
             Producte producte = null;
 
             string sql = @"SELECT 
                                i.it_codi, i.it_nom, i.it_desc, i.it_stock, i.it_foto, i.it_tipus
                            FROM ITEM i
                            JOIN PRODUCTE p ON i.it_codi = p.pr_it_codi
-                           WHERE i.it_tipus = 'P' AND i.it_codi = :id"; // <-- Afegim WHERE
+                           WHERE i.it_tipus = 'P' AND i.it_codi = :id";
 
             var connexio = _context.Database.GetDbConnection();
             if (connexio.State != ConnectionState.Open)
@@ -327,7 +454,7 @@ namespace DAO
 
                 using (DbDataReader reader = cmd.ExecuteReader())
                 {
-                    if (reader.Read()) // Només esperem un
+                    if (reader.Read())
                     {
                         string nom = reader.GetString(reader.GetOrdinal("it_nom"));
                         string desc = reader.IsDBNull(reader.GetOrdinal("it_desc")) ? null : reader.GetString(reader.GetOrdinal("it_desc"));
@@ -343,19 +470,22 @@ namespace DAO
                     }
                 }
             }
-            return producte; // Retorna l'objecte o null
+            return producte;
         }
 
+        /// <summary>
+        /// Recupera tots els productes existents a la base de dades sense filtres.
+        /// </summary>
+        /// <returns>Col·lecció observable amb tots els productes.</returns>
         public ObservableCollection<Producte> ObtenirTots()
         {
             ObservableCollection<Producte> productes = new ObservableCollection<Producte>();
 
-            // Query adaptada al DDL
             string sql = @"SELECT 
                                i.it_codi, i.it_nom, i.it_desc, i.it_stock, i.it_foto, i.it_tipus
                            FROM ITEM i
                            JOIN PRODUCTE p ON i.it_codi = p.pr_it_codi
-                           WHERE i.it_tipus = 'P'"; //
+                           WHERE i.it_tipus = 'P'";
 
             using (DbConnection conn = _context.Database.GetDbConnection())
             {
@@ -363,7 +493,6 @@ namespace DAO
                 using (DbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = sql;
-                    // Enllaça la comanda amb la transacció del UoW
                     cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
 
                     using (DbDataReader reader = cmd.ExecuteReader())
@@ -374,11 +503,7 @@ namespace DAO
                             string nom = reader.GetString(reader.GetOrdinal("it_nom"));
                             string desc = reader.IsDBNull(reader.GetOrdinal("it_desc")) ? null : reader.GetString(reader.GetOrdinal("it_desc"));
                             int stock = Convert.ToInt32(reader.GetValue(reader.GetOrdinal("it_stock")));
-
-                            // NOTA FOTO: DDL és VARCHAR, Model és byte[]
                             byte[] fotoBytes = null;
-
-                            //char tipus = reader.GetString(reader.GetOrdinal("it_tipus"))[0];
 
                             Producte p = new Producte(codi, nom, desc, stock, fotoBytes);
                             productes.Add(p);
@@ -389,7 +514,16 @@ namespace DAO
             return productes;
         }
 
-        public bool AfegirSubcomponent(Producte p, Item i, int qt)
+        /// <summary>
+        /// Vincula un Item (ja sigui un component o un altre producte) com a subcomponent d'un producte pare.
+        /// Insereix una fila a la taula de relació PROD_ITEM.
+        /// </summary>
+        /// <param name="p">Producte pare al qual s'afegeix el component.</param>
+        /// <param name="i">Item fill (component) que s'afegeix.</param>
+        /// <param name="qt">Quantitat del component necessària.</param>
+        /// <returns>True si la vinculació s'ha creat correctament, False altrament.</returns>
+        /// <exception cref="InvalidOperationException">Si no hi ha transacció activa.</exception>
+        public bool InserirSubcomponent(Producte p, Item i, int qt)
         {
             var connexio = _context.Database.GetDbConnection();
             if (connexio.State != System.Data.ConnectionState.Open)
@@ -406,8 +540,6 @@ namespace DAO
             try
             {
                 int filesAfectades = 0;
-
-                // Obtenim els valors
                 string parentCodi = p.Codi;
                 string childCodi = i.Codi;
                 int quantitat = qt;
@@ -415,36 +547,51 @@ namespace DAO
                 using (var cmdItem = connexio.CreateCommand())
                 {
                     // 1. Definim la SQL amb paràmetres (per seguretat)
-                    // Nota: Si fas servir MySQL, canvia els ':' per '@' si et dona problemes, 
-                    // encara que molts connectors accepten tots dos.
                     string sqlItem = @"INSERT INTO PROD_ITEM (pi_pr_it_codi, pi_it_codi, quantitat) 
-                               VALUES (:PARENT, :CHILD, :QTY)";
+                                       VALUES (:PARENT, :CHILD, :QTY)";
 
                     cmdItem.CommandText = sqlItem;
-
-                    // 2. Vinculem la transacció existent al command
                     cmdItem.Transaction = transaccio.GetDbTransaction();
 
-                    // 3. Afegim els paràmetres (fent servir la teva classe Utils si la tens, o manualment)
                     Utils.CrearParametres(cmdItem, parentCodi, ":PARENT", System.Data.DbType.String);
                     Utils.CrearParametres(cmdItem, childCodi, ":CHILD", System.Data.DbType.String);
                     Utils.CrearParametres(cmdItem, quantitat, ":QTY", System.Data.DbType.Int32);
 
-                    // 4. Executem
                     filesAfectades = cmdItem.ExecuteNonQuery();
                 }
 
-                // Retornem true si s'ha inserit almenys una fila
                 return filesAfectades > 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                // Opcional: Pots fer throw per gestionar l'error a fora
-                // throw new Exception("Error en afegir subcomponent: " + ex.Message);
+                // Gestió d'errors (opcionalment es pot fer log o rellençar)
                 return false;
             }
         }
 
+        // Afegeix això a DAOProducte.cs
+        public void EliminarTotsElsSubcomponents(string codiPare)
+        {
+            var connexio = _context.Database.GetDbConnection();
+            // Nota: No obrim connexió aquí perquè assumim que ja està oberta per la transacció
+
+            var transaccio = _context.Database.CurrentTransaction;
+            if (transaccio == null) throw new InvalidOperationException("Es requereix transacció.");
+
+            using (var cmd = connexio.CreateCommand())
+            {
+                // NOMÉS borrem on el producte és el PARE (pr). 
+                // No toquem on el producte actua com a fill d'un altre.
+                string sql = "DELETE FROM PROD_ITEM WHERE pi_pr_it_codi = :cod";
+
+                cmd.CommandText = sql;
+                cmd.Transaction = transaccio.GetDbTransaction();
+
+                Utils.CrearParametres(cmd, codiPare, ":cod", DbType.String);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
 
 
     }//end DAOProducte

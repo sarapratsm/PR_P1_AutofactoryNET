@@ -6,7 +6,7 @@ namespace DAO
     public interface IDAOProducte    
     {
         // --- Mètodes CRUD bàsics ---
-        bool AfegirProducte(Producte producte);
+        bool InserirProducte(Producte producte);
         bool ModificarProducte(Producte producte);
         bool EliminarProducte(string codi);
 
@@ -25,7 +25,9 @@ namespace DAO
         public int EliminarProveidor(int codi_prov);
 
         //--- Mètodes de gestió de subproductes
-        public ObservableCollection<Item> GetItems();
+        public void CarregarSubcomponents(Producte p);
+        public bool InserirSubcomponent(Producte p, Item i, int qt);
+        public void EliminarTotsElsSubcomponents(string codiPare);
 
     }
 }

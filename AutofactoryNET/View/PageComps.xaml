@@ -11,7 +11,52 @@
       Title="Components">
     <DockPanel LastChildFill="True">
         <!--Toolbar-->
-        <ToolBar  Margin="5" DockPanel.Dock ="Top">
+        <Grid DockPanel.Dock ="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                <!--<TextBlock Text="🔍" VerticalAlignment="Center" Margin="5,0,5,0" Opacity="0.4"/>-->
+                <Label Content="Codi:"></Label>
+                <TextBox x:Name="txtFiltreCodi" Width="80" Margin="5,0" Tag="Codi..."/>
+                <Label Content="Nom:"></Label>
+                <TextBox x:Name="txtFiltreNom" Width="130" Margin="5,0" Tag="Nom..."/>
+
+                <Button x:Name="btnFiltrar" Click="btnFiltrar_Click" Content="🔍 Filtrar"
+                    Style="{StaticResource FilterButtonStyle}"/>
+
+
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+
+                
+
+                <Button x:Name="btnModificar" Click="btnModificar_Click" Content="✏️" ToolTip="Modificar"
+                    Background="Transparent" BorderBrush="Transparent" FontSize="18" Margin="2,0" Cursor="Hand"/>
+
+                <Button x:Name="btnEliminar" Click="btnEliminar_Click" Content="🗑️" ToolTip="Eliminar"
+                    Background="Transparent" BorderBrush="Transparent" FontSize="18" Margin="2,0" Cursor="Hand"/>
+
+                <Button x:Name="btnGestioProvs" Click="btnGestioProvs_Click" Content="🚚" ToolTip="Proveïdors"
+                    Background="Transparent" BorderBrush="Transparent" FontSize="18" Margin="2,0" Cursor="Hand"/>
+
+                <Button x:Name="btnAfegir" Click="btnAfegir_Click" Content="➕ Nou"
+    Background="{StaticResource PrimaryBrush}" Foreground="White" FontWeight="SemiBold"
+    Padding="15,6" Margin="0,0,15,0" BorderThickness="0" Cursor="Hand">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+            </StackPanel>
+        </Grid>
+        <!--<ToolBar  Margin="5" DockPanel.Dock ="Top">
             <Label Content="Codi:"/>
             <TextBox x:Name="txtFiltreCodi" Width="100" Margin="0,0,10,0"/>
             <Label Content="Nom:"/>
@@ -24,7 +69,7 @@
             <Button x:Name="btnModificar" Content="Modificar" Margin="5,0,0,0" Click="btnModificar_Click"/>
             <Button x:Name="btnEliminar" Content="Eliminar" Margin="5,0,0,0" Click="btnEliminar_Click"/>
             <Button x:Name="btnGestioProvs" Content="Gestiona Proveidors" Margin="5,0,0,0" Click="btnGestioProvs_Click"/>
-        </ToolBar>
+        </ToolBar>-->
 
         <Grid Margin="10"  x:Name="grdBotonera" DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>

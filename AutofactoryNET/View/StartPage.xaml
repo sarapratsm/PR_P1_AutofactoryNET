@@ -6,18 +6,76 @@
       xmlns:local="clr-namespace:AppAutoFactory.View"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Background="{StaticResource BackgroundLightBrush}"
+      Background="{StaticResource WindowBackground}"
       Loaded="Page_Loaded"
       Unloaded="Page_Unloaded"
       Title="StartPage">
 
-    <DockPanel LastChildFill="True">
+    
+
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+
+            <StackPanel Margin="0,0,0,40">
+                <TextBlock Text="AutoFactory" 
+                           FontSize="48" 
+                           FontWeight="Bold" 
+                           Foreground="#374151" 
+                           HorizontalAlignment="Center"
+                           FontFamily="Segoe UI"/>
+
+                <TextBlock Text="Sistema de Gestió de Producció" 
+                           FontSize="18" 
+                           Foreground="#6B7280" 
+                           HorizontalAlignment="Center" 
+                           Margin="0,5,0,20"/>
+
+                <Border Background="White" CornerRadius="20" Padding="15,5" HorizontalAlignment="Center" BorderThickness="1" BorderBrush="#E5E7EB">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="10" Height="10" Fill="{Binding Foreground, ElementName=lblServerStatus}" Margin="0,0,10,0"/>
+                        <Label x:Name="lblServerStatus" 
+                               Content="Inicialitzant..." 
+                               FontSize="14" 
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" x:Name="stpBotons">
+
+                <Button x:Name="btnVeureProductes" Click="btnVeureProductes_Click" 
+                        Style="{StaticResource TileButtonStyle}" Width="200" Height="200">
+                    <StackPanel>
+                        <TextBlock Text="📦" FontSize="50" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                        <TextBlock Text="Productes" FontSize="20" FontWeight="Bold" Foreground="#374151" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Gestió d'inventari" FontSize="12" Foreground="#9CA3AF" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnVeureComponents" Click="btnVeureComponents_Click" 
+                        Style="{StaticResource TileButtonStyle}" Width="200" Height="200">
+                    <StackPanel>
+                        <TextBlock Text="⚙️" FontSize="50" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                        <TextBlock Text="Components" FontSize="20" FontWeight="Bold" Foreground="#374151" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Peces i proveïdors" FontSize="12" Foreground="#9CA3AF" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+
+            <TextBlock Text="© 2025 AutoFactory System" FontSize="12" Foreground="#9CA3AF" HorizontalAlignment="Center" Margin="0,50,0,0"/>
+
+        </StackPanel>
+    </Grid>
+    
+    <!--<DockPanel LastChildFill="True">
         <StackPanel Orientation="Horizontal" x:Name="stpBotons" Grid.Column="0" Grid.Row="1" Margin="0,0,0,50" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
             <Button Margin="20,5,20,5" Click="btnVeureProductes_Click" x:Name="btnVeureProductes" Content="Gestió de productes" Width="auto" Cursor="Hand"  />
             <Button Margin="20,5,20,5" Click="btnVeureComponents_Click" x:Name="btnVeureComponents" Content="Gestió de components" Width="auto"  />
         </StackPanel>
-        <!--Aixo s'ha de treure-->
-        <!---->
+        Aixo s'ha de treure
+        
         <Border BorderBrush="{StaticResource AccentBrush}" BorderThickness="10" Margin="50" CornerRadius="10" Background="{StaticResource WindowBackground}">
             <StackPanel Orientation="Vertical" x:Name="stpTitle" Grid.Column="0" Grid.Row="0" Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center" >
             <TextBlock Text="Welcome to" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource SubtitleTextStyle}"/>
@@ -25,5 +83,5 @@
         <Label x:Name="lblServerStatus" DockPanel.Dock="Top" HorizontalAlignment="Center">Estat del servidor</Label>
             </StackPanel>
         </Border>
-    </DockPanel>
+    </DockPanel>-->
 </Page>

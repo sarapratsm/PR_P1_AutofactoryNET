@@ -57,9 +57,10 @@ namespace AppAutoFactory.View
             InitializeComponent();
             this.mode = 1;
             this._producte = p;
+            OracleFactory.getUOW().DAOProducte.CarregarSubcomponents(_producte);
             this._vmProducte = new VMProducte(p);
             DataContext = _vmProducte;
-            _vmProducte.Subcomponents = OracleFactory.getUOW().DAOProducte.obtenirSubcomponents(_producte);
+
 
         }
 
@@ -72,8 +73,9 @@ namespace AppAutoFactory.View
             cmbTipus.SelectedIndex = 0;
             configuracioMode(mode);
             filtraNousSubcomponents();
-            
-            dtgBOM.ItemsSource = _vmProducte.Subcomponents.Keys;
+
+            dtgBOM.DataContext = _vmProducte.Subcomponents;
+            RefrescarDtgBOM();
 
         }
 
@@ -174,29 +176,57 @@ namespace AppAutoFactory.View
 
         private void dtgItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (dtgItems.SelectedItem is Componente)
-                _selectedNouComponente = dtgItems.SelectedItem as Componente;
-            else if (dtgItems.SelectedItem is Producte)
-                _selectedNouComponente = dtgItems.SelectedItem as Producte;
+            _selectedNouComponente = dtgItems.SelectedItem as Item;
 
+            // Activem o desactivem el botó segons el resultat
             btnAfegirSubcomp.IsEnabled = _selectedNouComponente != null;
+        }
+
+        private void dtgBOM_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dtgBOM.SelectedItem != null)
+            {
+                var filaSeleccionada = (KeyValuePair<Item, int>)dtgBOM.SelectedItem;
+                _selectedSubcomponente = filaSeleccionada.Key;
+            }
+            else
+            {
+                _selectedSubcomponente = null;
+            }
+            btnEliminarSubcomp.IsEnabled = _selectedSubcomponente != null;
+
 
         }
 
-        private void dtgSubcomponents_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (dtgBOM.SelectedItem is Componente)
-                _selectedSubcomponente = dtgBOM.SelectedItem as Componente;
-            else if (dtgBOM.SelectedItem is Producte)
-                _selectedSubcomponente = dtgBOM.SelectedItem as Producte;
+        //private void dtgSubcomponents_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    if (dtgBOM.SelectedItem is Componente)
+        //        _selectedSubcomponente = dtgBOM.SelectedItem as Componente;
+        //    else if (dtgBOM.SelectedItem is Producte)
+        //        _selectedSubcomponente = dtgBOM.SelectedItem as Producte;
 
+        //    btnEliminarSubcomp.IsEnabled = _selectedNouComponente != null && _vmProducte.Subcomponents.ContainsKey(_selectedNouComponente);
+
+        //}
+
+
+        /// <summary>
+        /// Mètode per refrescar la taula visualment
+        /// </summary>
+        private void RefrescarDtgBOM()
+        {
+            dtgBOM.ItemsSource = null;
+            dtgBOM.ItemsSource = _vmProducte.Subcomponents.ToList();
         }
 
         private void btnAfegirSubcomp_Click(object sender, RoutedEventArgs e)
         {
             if (_selectedNouComponente != null)
             {
-                _vmProducte.Subcomponents.Add(_selectedNouComponente, Int32.Parse(txtQuantitatSubcomp.Text));
+                int quantitat = 1;
+                int.TryParse(txtQuantitatSubcomp.Text, out quantitat);
+                _vmProducte.Subcomponents.Add(_selectedNouComponente, quantitat);
+                RefrescarDtgBOM();
             }
         }
 
@@ -206,6 +236,7 @@ namespace AppAutoFactory.View
             {
                 _vmProducte.Subcomponents.Remove(_selectedSubcomponente);
             }
+            RefrescarDtgBOM();
         }
 
         private void cmbTipus_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -250,19 +281,23 @@ namespace AppAutoFactory.View
                     using (UnitOfWork uow = OracleFactory.getUOW())
                     {
                         uow.BeginTransaction();
-                        uow.DAOProducte.AfegirProducte(pValidat);
-                        foreach (KeyValuePair i in _vmProducte.Subcomponents)
-                            uow.DAOProducte.AfegirSubcomponent(_producte, i.key, i.value);
+
+                        uow.DAOProducte.InserirProducte(pValidat);
+
+                        foreach (var kvp in _vmProducte.Subcomponents)
+                        {
+                            uow.DAOProducte.InserirSubcomponent(pValidat, kvp.Key, kvp.Value);
+                        }
+
                         uow.Commit();
                     }
-
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("No s'ha pogut guardar el producte: " + ex.Message, "Error en guardar", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("No s'ha pogut guardar el producte: " + ex.Message,
+                                    "Error en guardar", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-
             }
             else if (mode == 1)
             {
@@ -273,6 +308,11 @@ namespace AppAutoFactory.View
                     {
                         uow.BeginTransaction();
                         uow.DAOProducte.ModificarProducte(pValidat);
+                        uow.DAOProducte.EliminarTotsElsSubcomponents(pValidat.Codi);
+                        foreach (var kvp in _vmProducte.Subcomponents)
+                        {
+                            uow.DAOProducte.InserirSubcomponent(pValidat, kvp.Key, kvp.Value);
+                        }
                         uow.Commit();
                     }
                 }
@@ -297,6 +337,14 @@ namespace AppAutoFactory.View
             }
         }
 
+        private void btnRemoveFoto_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
+
+        private void btnPujarFoto_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

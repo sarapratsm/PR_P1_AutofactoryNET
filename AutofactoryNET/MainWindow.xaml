@@ -6,18 +6,19 @@
         xmlns:local="clr-namespace:AutofactoryNET"
         mc:Ignorable="d"
         Loaded="Window_Loaded"
-        Background="{StaticResource BackgroundLightBrush}"
+      Background="{StaticResource WindowBackground}"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         Icon="./Images/image.ico"
         Title="AutoFactory" Height="600" Width="900">
 
     <DockPanel LastChildFill="True">
+        
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Menú">
-                <MenuItem Header="Inici"  x:Name="mnuInici" Click="mnuInici_Click"></MenuItem>
-                <MenuItem Header="Productes" x:Name="mnuProductes" Click="mnuProductes_Click"></MenuItem>
-                <MenuItem Header="Components" x:Name="mnuComponentes" Click="mnuComponentes_Click"></MenuItem>
+            <MenuItem Header="Navegació">
+                <MenuItem Header="🏠 Inici" x:Name="mnuInici" Click="mnuInici_Click"/>
+                <MenuItem Header="📦 Productes" x:Name="mnuProductes" Click="mnuProductes_Click"/>
+                <MenuItem Header="⚙️ Components" x:Name="mnuComponentes" Click="mnuComponentes_Click"/>
             </MenuItem>
             <MenuItem Header="Ajuda">Porfa</MenuItem>
         </Menu>
@@ -28,6 +29,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
+            <!--Old banner--><!--
             <Grid x:Name="Banner" Grid.Row="0" Margin="10">
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Center"
@@ -44,8 +46,58 @@
                                VerticalAlignment="Center" Margin="50,0,0,0"
                                Style="{StaticResource TitleTextStyle}"/>
                 </StackPanel>
+            </Grid>-->
+
+            <Grid x:Name="Banner" Grid.Row="0" Margin="20,20,20,10">
+                <Border Background="White" CornerRadius="20" Padding="15,10">
+                    <Border.Effect>
+                        <DropShadowEffect Color="LightGray" 
+                              BlurRadius="20" 
+                              ShadowDepth="5" 
+                              Opacity="0.2"/>
+                    </Border.Effect>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0" Width="45" Height="45" Margin="5,0,0,0">
+                            <Ellipse Fill="{StaticResource AccentBrush}" Opacity="0.15"/>
+                            <Path Data="M60,25 L45,90 L55,90 L60,75 L75,75 L80,90 L90,90 L75,25 Z"
+                      Fill="{StaticResource PrimaryBrush}" 
+                      Stretch="Uniform" 
+                      Margin="10"/>
+                        </Grid>
+
+                        <TextBlock x:Name="txbTitle"
+                       Grid.Column="1"
+                       Text="AutoFactory"
+                       VerticalAlignment="Center"
+                       Margin="15,0,0,0"
+                       FontSize="26"
+                       FontWeight="SemiBold"
+                       Foreground="#444"
+                       FontFamily="Segoe UI"/>
+
+                    </Grid>
+                </Border>
             </Grid>
-            
+
+            <!--<Grid Margin="20" Grid.Row="1">
+                <Border Background="White" CornerRadius="8" Padding="0">
+                    <Border.Effect>
+                        <DropShadowEffect Color="{StaticResource ColorPrimary}" BlurRadius="5" ShadowDepth="1" Opacity="0.2"/>
+                    </Border.Effect>
+
+                    <Frame x:Name="frmMain" 
+                       NavigationUIVisibility="Hidden" 
+                       ClipToBounds="True"/>
+                </Border>
+            </Grid>-->
             <Frame x:Name="frmMain" Grid.Row="1" NavigationUIVisibility="Hidden"></Frame>
         </Grid>
     </DockPanel>

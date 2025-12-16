@@ -35,8 +35,8 @@
                 <TextBox x:Name="txtCifFiltre"  Margin="5,0,0,0"/>
             </StackPanel>
                 <StackPanel Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Center">
-                    <Button x:Name="filtraCombo" Content="Filtra nous proveidors"  Margin="0,10,0,0" Click="filtraCombo_Click" Background="LightGray"></Button>
-                    <Button x:Name="filtraDtg" Content="Filtra proveidors actuals" Margin="0,10,0,0" Click="filtraDtg_Click"   Background="LightGray"></Button>
+                    <Button x:Name="filtraCombo" Content="Filtra nous proveidors"  Margin="0,10,0,0" Click="filtraCombo_Click"  Style="{StaticResource FilterButtonStyle}"></Button>
+                    <Button x:Name="filtraDtg" Content="Filtra proveidors actuals" Margin="0,10,0,0" Click="filtraDtg_Click"   Style="{StaticResource FilterButtonStyle}"></Button>
                     <Button x:Name="netejaFiltres" Content="Neteja filtres" Margin="0,10,0,0" Click="netejaFiltres_Click" Style="{StaticResource SecondaryButton}"></Button>
                 </StackPanel>
             </Grid>

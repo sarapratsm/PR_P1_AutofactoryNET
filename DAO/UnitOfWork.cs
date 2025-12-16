@@ -8,7 +8,6 @@ namespace DAO
         private readonly MyDBContext _context;
         private bool _disposed = false;
 
-        // Les teves propietats "Lazy Loading" (ESTÀ PERFECTE)
         public IDAOProducte _daoProducte;
         public IDAOProveidor _daoProveidor;
         public IDAOComponente _daoComponente;

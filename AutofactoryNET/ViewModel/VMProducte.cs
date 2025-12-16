@@ -1,8 +1,8 @@
 ﻿using Model;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel; // <-- 1. Importar per a INotifyPropertyChanged
-using System.Runtime.CompilerServices; // <-- 2. Importar per a [CallerMemberName]
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,11 +25,8 @@ namespace AppAutoFactory.ViewModel
         private int stock;
         private byte[]? foto;
         private char tipus;
-        private Dictionary<Item,Int32> subcomponents;
+        private Dictionary<Item, Int32> subcomponents;
         private Producte producte;
-
-
-
 
         public string Codi
         {
@@ -85,7 +82,6 @@ namespace AppAutoFactory.ViewModel
             this.nom = "";
             this.descripcio = "";
             this.subcomponents = new Dictionary<Item, Int32>();
-
         }
 
         public VMProducte(Producte p)
@@ -101,8 +97,15 @@ namespace AppAutoFactory.ViewModel
                 this.Descripcio = p.Descripcio;
                 this.Stock = p.Stock;
                 this.Foto = p.Foto;
-                this.subcomponents= new Dictionary<Item, Int32>();  //Caldrà omplir la llista desde la app.
 
+                // NOTA: Assegura't d'haver cridat a DAOProducte.CarregarSubcomponents(p) 
+                // abans de passar-lo a aquest constructor.
+                this.Subcomponents = p.Comps;
+            }
+            else
+            {
+                // Si per error p és null, inicialitzem buit per evitar errors
+                this.subcomponents = new Dictionary<Item, Int32>();
             }
         }
     }

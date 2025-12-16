@@ -32,7 +32,7 @@ namespace ProvesBD
                 using (UnitOfWork uow = OracleFactory.getUOW())
                 {
                     uow.BeginTransaction();
-                    bool resultat = uow.DAOProducte.AfegirProducte(p);
+                    bool resultat = uow.DAOProducte.InserirProducte(p);
                     Assert.IsTrue(resultat, "El mètode AfegirProducte hauria de retornar true.");
                     uow.Commit();
                 }
