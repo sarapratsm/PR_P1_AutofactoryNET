@@ -319,6 +319,7 @@ namespace AppAutoFactory.View
                     // 2. Assignem els bytes al ViewModel
                     // En ser PropertyChanged, la imatge es refrescarà sola
                     _vmComponente.Foto = imatgeBytes;
+
                 }
                 catch (Exception ex)
                 {

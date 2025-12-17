@@ -146,5 +146,10 @@ namespace AppAutoFactory.View
             }
 
         }
+
+        private void btnBOM_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

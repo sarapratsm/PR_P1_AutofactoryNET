@@ -39,6 +39,7 @@
 
             <StackPanel Orientation="Vertical" x:Name="stpBotons" Grid.Column="0" Grid.Row="1" Margin="20" HorizontalAlignment="center">
                 <Button Margin="10,10,0,0" Click="btnAfegirProducte_Click"  x:Name="btnAfegirProducte" Content="Crear nou producte" Width="auto"  />
+                <!--<Button x:Name="btnBOM" Click="btnBOM_Click" Content="Crear BOM" Margin="10,10,0,0" />-->
                 <Button Margin="10,10,0,0" Click="btnModificar_Click" x:Name="btnModificar" Content="Modificar" Width="auto"/>
                 <Button Style="{StaticResource SecondaryButton}" Margin="10,10,0,0" Click="btnEliminar_Click"  x:Name="btnEliminar" Content="Eliminar" Width="auto" />
             </StackPanel>
@@ -49,18 +50,35 @@
               MouseDoubleClick="dtgProductes_MouseDoubleClick"
               SelectionChanged="dtgProductes_SelectionChanged">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Foto" Width="60">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding TheImatge, Converter={StaticResource ImageConverter} ,FallbackValue=https://picsum.photos/seed/picsum/50}" Width="50" Height="50" Stretch="UniformToFill"></Image>
-                                <!--<Label Content="&lt;3"></Label>-->
+                                <Image Source="{Binding Foto, Converter={StaticResource ImageConverter}}" 
+                       Width="40" Height="40" 
+                       Stretch="UniformToFill"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="Codi" Binding="{Binding Codi}" Width="75"/>
-                    <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*"/>
-                    <DataGridTextColumn Header="Tipus" Binding="{Binding Tipus}" Width="50"/>
-                    <DataGridTextColumn Header="Descripció" Binding="{Binding Descripcio}" Width="250"/>
+                    <DataGridTextColumn Header="Codi" Binding="{Binding Codi}" Width="80" FontWeight="SemiBold"/>
+                    <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*" MinWidth="100"/>
+                    <DataGridTextColumn Header="Tipus" Binding="{Binding Tipus}" Width="50">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Descripció" Binding="{Binding Descripcio}" Width="2*" MinWidth="150">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                <Setter Property="ToolTip" Value="{Binding Descripcio}"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
                     <DataGridTextColumn Header="Stock" Binding="{Binding Stock}" Width="80"/>
 
                 </DataGrid.Columns>

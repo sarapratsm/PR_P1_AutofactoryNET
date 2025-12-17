@@ -19,6 +19,7 @@ namespace AppAutoFactory.View
 
         ObservableCollection<Proveidor> _llistaTotsProv; // Col·lecció és per omplir el ComboBox
         ObservableCollection<VMProveidor> _llistaVMProvs = new ObservableCollection<VMProveidor>(); //llista pel dtg.
+        private VMProveidor? _selectedVMProveidor;
 
         public PageCompProv(VMComponente c)
         {
@@ -166,6 +167,23 @@ namespace AppAutoFactory.View
             cmbProveidors.ItemsSource = _llistaTotsProv;
             dtgCompProv.ItemsSource = _llistaVMProvs;
         }
-        #endregion 
+        #endregion
+
+        private void btnEliminarProveidor_Click(object sender, RoutedEventArgs e)
+        {
+            //Eliminar un proveidor 
+            if (_selectedVMProveidor != null)
+            {
+                _componentActual.Proveidors_preu.Remove(_selectedVMProveidor.Proveidor);
+            }
+        }
+
+        private void dtgCompProv_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(dtgCompProv.SelectedItem != null)
+            {
+                _selectedVMProveidor = dtgCompProv.SelectedItem as VMProveidor;
+            }
+        }
     }
 }

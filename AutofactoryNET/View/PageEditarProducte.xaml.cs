@@ -378,5 +378,30 @@ namespace AppAutoFactory.View
                 }
             }
         }
+
+        private void ImprimirBOM_Click(object sender, RoutedEventArgs e)
+        {
+            if (_producte == null) return;
+
+            // 1. URL CONFIG (Igual que antes)
+            string ip = "10.2.59.102";
+            string servidor = "http://"+ip+":8080/jasperserver";
+            string rutaReporte = "/AutoFactory/Reports/BOM_Producte";
+            string usuario = "jasperadmin";
+            string password = "jasperadmin";
+
+            // Construimos la URL
+            string url = $"{servidor}/flow.html?_flowId=viewReportFlow&reportUnit={rutaReporte}";
+            url += $"&j_username={usuario}&j_password={password}";
+            url += $"&p_CodiProducte={_producte.Codi}";
+
+            // NOTA: Para WebView, mejor NO pongas "&output=pdf" para que se vean los controles de Jasper.
+
+            // 2. NAVEGACIÓN A PÁGINA
+            PageVisorInforme paginaInforme = new PageVisorInforme(url);
+
+            // Navegamos dentro del mismo Frame principal
+            this.NavigationService.Navigate(paginaInforme);
+        }
     }
 }

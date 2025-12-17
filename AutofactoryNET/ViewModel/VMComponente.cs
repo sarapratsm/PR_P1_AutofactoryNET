@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel; // <-- 1. Importar per a INotifyPropertyChanged
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices; // <-- 2. Importar per a [CallerMemberName]
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace AppAutoFactory.ViewModel
 {
@@ -66,7 +68,13 @@ namespace AppAutoFactory.ViewModel
         public byte[]? Foto
         {
             get { return foto; }
-            set { foto = value; OnPropertyChanged(); }
+            set { foto = value; this.TheImage = loadImage(Foto); OnPropertyChanged(); }
+        }
+
+        public BitmapImage TheImage
+        {
+            get;
+            set;
         }
 
         public char Tipus
@@ -123,6 +131,7 @@ namespace AppAutoFactory.ViewModel
                 this.Descripcio = c.Descripcio;
                 this.Stock = c.Stock;
                 this.Foto = c.Foto;
+                this.TheImage = loadImage(Foto);
                 this.CodiFabricant = c.CodiFabricant;
                 this.PreuMig = c.PreuMig;
                 this.Proveidors_preu = c.Proveidors_preu;
@@ -134,6 +143,31 @@ namespace AppAutoFactory.ViewModel
                 // Si 'c' és nul (p.ex. "Afegir Nou"), inicialitzem
                 proveidors_preu = new Dictionary<Proveidor, decimal>();
             }
+        }
+
+        private BitmapImage loadImage(byte[] bytes)
+        {
+            try
+            {
+                BitmapImage image = new BitmapImage();
+                using (MemoryStream mem = new MemoryStream(bytes))
+                {
+                    mem.Position = 0;
+                    image.BeginInit();
+                    image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.UriSource = null;
+                    image.StreamSource = mem;
+                    image.EndInit();
+                }
+                image.Freeze(); // Importante para evitar errores de hilos
+                return image;
+            }
+            catch
+            {
+                return null;
+            }
+
         }
 
         public void save()

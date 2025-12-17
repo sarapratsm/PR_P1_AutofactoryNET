@@ -9,6 +9,11 @@
       Loaded="Page_Loaded"
       Background="{StaticResource WindowBackground}"
       Title="Components">
+
+    <Page.Resources>
+        <local:BytesToImageConverter x:Key="ImageConverter"/>
+    </Page.Resources>
+    
     <DockPanel LastChildFill="True">
         <!--Toolbar-->
         <Grid DockPanel.Dock ="Top">
@@ -124,7 +129,7 @@
                 </StackPanel>
 
                 <Border  BorderBrush="LightGray" Grid.Column="1" Grid.Row="0" BorderThickness="1" Width="100" Height="100" VerticalAlignment="Top" Margin="5,10,10,0">
-                    <Image x:Name="imgComp"  Source="{Binding TheImage}" Stretch="Uniform"/>
+                    <Image x:Name="imgComp" Source="{Binding Foto}" Stretch="Uniform"/>
                 </Border>
 
                 <TextBox  x:Name="txbNom" Margin="10" Padding="5"   Grid.Column="1" Width="100" Grid.Row="1" Text="{Binding Codi, Mode=TwoWay}" IsEnabled="False"/>
@@ -141,12 +146,41 @@
                   SelectionMode="Single"
                       MouseDoubleClick="dtgComps_MouseDoubleClick"
                       SelectionChanged="dtgComps_SelectionChanged">
-                <DataGrid.Columns>
+                <!--<DataGrid.Columns>
                     <DataGridTextColumn Header="Codi" Binding="{Binding Codi}" Width="100"/>
                     <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*"/>
                     <DataGridTextColumn Header="Fabricant" Binding="{Binding CodiFabricant}" Width="100"/>
                     <DataGridTextColumn Header="Unitat" Binding="{Binding Unitat}" Width="80"/>
                     <DataGridTextColumn Header="Stock" Binding="{Binding Stock}" Width="80"/>
+                </DataGrid.Columns>-->
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Foto" Width="50">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Foto, Converter={StaticResource ImageConverter}}" 
+                       Width="40" Height="40" 
+                       Stretch="UniformToFill"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Header="Codi" Binding="{Binding Codi}" Width="70" FontWeight="SemiBold"/>
+
+                    <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*" MinWidth="100"/>
+
+                    <DataGridTextColumn Header="Descripció" Binding="{Binding Descripcio}" Width="2*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                <Setter Property="ToolTip" Value="{Binding Descripcio}"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Preu Mig" Binding="{Binding PreuMig, StringFormat=C}" Width="60"/>
+                    <DataGridTextColumn Header="Fabricant" Binding="{Binding CodiFabricant}" Width="80"/>
+                    <DataGridTextColumn Header="Stock" Binding="{Binding Stock}" Width="70"/>
+                    <DataGridTextColumn Header="Unitat" Binding="{Binding Unitat}" Width="80"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
