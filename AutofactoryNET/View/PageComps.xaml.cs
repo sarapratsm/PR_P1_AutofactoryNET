@@ -70,6 +70,7 @@ namespace AppAutoFactory.View
                 MessageBox.Show("Error en carregar els productes des de la BBDD: \n" + ex.Message,
                                 "Error de Connexió", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            
 
         }
 

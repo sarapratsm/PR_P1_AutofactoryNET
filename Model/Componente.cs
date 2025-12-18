@@ -30,10 +30,28 @@ namespace Model
         }
 
         public string CodiFabricant { get => codiFabricant; private set => codiFabricant = value; }
-        public decimal PreuMig { get => preuMig; private set => preuMig = value; } // EF el podrà omplir
 
-        public Dictionary<Proveidor, decimal> Proveidors_preu { get => proveidors_preu;  set => proveidors_preu = value; }
+        public decimal PreuMig
+        {
+            get => preuMig;
+            set => preuMig = value;
+        }
+
+        public Dictionary<Proveidor, decimal> Proveidors_preu { get => proveidors_preu; set => proveidors_preu = value; }
 
         public TipusUnitat Unitat { get => units; private set => units = value; }
+
+        public void RecalculaPreuMig()
+        {
+            if (this.preuMig == 0 && this.proveidors_preu != null && this.proveidors_preu.Count > 0)
+            {
+                // Calculamos la media (Average) de los valores del diccionario
+                this.PreuMig = this.proveidors_preu.Values.Average();
+            }
+            else
+            {
+                this.PreuMig = 0;
+            }
+        }
     }
 }

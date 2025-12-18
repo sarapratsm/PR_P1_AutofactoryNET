@@ -380,7 +380,16 @@ namespace DAO
                         string codiFabricant = reader.GetString(reader.GetOrdinal("cm_codi_fabricant"));
                         TipusUnitat unitat = (TipusUnitat)Convert.ToInt32(reader.GetValue(reader.GetOrdinal("cm_um_codi")));
 
+                        decimal preuMig = 0;
+                        int ordinalPreu = reader.GetOrdinal("cm_preu_mig");
+                        if (!reader.IsDBNull(ordinalPreu))
+                        {
+                            preuMig = reader.GetDecimal(ordinalPreu);
+                        }
+
                         Componente c = new Componente(codi, nom, descripcio, stock, fotoBytes, tipus, codiFabricant, unitat);
+                        c.PreuMig=preuMig;
+
                         components.Add(c);
                     }
                 }
@@ -608,7 +617,43 @@ namespace DAO
            }
            return 0;
        }
-       
+
+        // En DAOComponente.cs
+
+        public void EliminarProveidorsDeComponent(string codiComponent)
+        {
+            var connexio = _context.Database.GetDbConnection();
+            // Assegurar connexió oberta i transacció activa (igual que els altres mètodes)
+
+            using (var cmd = connexio.CreateCommand())
+            {
+                cmd.CommandText = "DELETE FROM PROV_COMP WHERE pc_cm_it_codi = :cod";
+                cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+
+                Utils.CrearParametres(cmd, codiComponent, ":cod", DbType.String);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void AfegirProveidorAComponent(string codiComponent, int codiProveidor, decimal preu)
+        {
+            var connexio = _context.Database.GetDbConnection();
+
+            using (var cmd = connexio.CreateCommand())
+            {
+                cmd.CommandText = @"INSERT INTO PROV_COMP (pc_cm_it_codi, pc_pv_codi, pc_preu) 
+                            VALUES (:codComp, :codProv, :preu)";
+                cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+
+                Utils.CrearParametres(cmd, codiComponent, ":codComp", DbType.String);
+                Utils.CrearParametres(cmd, codiProveidor, ":codProv", DbType.Int32);
+                Utils.CrearParametres(cmd, preu, ":preu", DbType.Decimal);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
 
         #region metodes que no vull aplicar ara mateix
         /*public ObservableCollection<Componente> ObtenirTotsESBORRAR()

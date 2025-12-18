@@ -79,7 +79,40 @@ namespace AppAutoFactory.View
         private void btnGuardar_Click(object sender, RoutedEventArgs e)
         {
             //Transformar llista vmproveidors a la llista de proveidors, preu
-            this._componentActual.retransformaDiccionari(); //Actualitzem el diccionari
+            //this._componentActual.retransformaDiccionari(); //Actualitzem el diccionari
+            foreach (VMProveidor vmProv in _llistaVMProvs)
+            {
+                if (!_componentActual.Proveidors_preu.ContainsKey(vmProv.Proveidor))
+                {
+                    _componentActual.Proveidors_preu.Add(vmProv.Proveidor, vmProv.Preu);
+                }
+            }
+
+            try
+            {
+                using (UnitOfWork uow = OracleFactory.getUOW())
+                {
+                    uow.BeginTransaction();
+                    uow.DAOComponente.EliminarProveidorsDeComponent(_componentActual.Codi);
+                    foreach (KeyValuePair<Proveidor, decimal> kvp in _componentActual.Proveidors_preu)
+                    {
+                        uow.DAOComponente.AfegirProveidorAComponent(_componentActual.Codi, kvp.Key.Codi, kvp.Value);
+                    }
+                    _componentActual.RecalculaPreuMig();
+                    uow.Commit();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: "+ex.Message, "Error en guardar les dades", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (this.NavigationService.CanGoBack)
+            {
+                this.NavigationService.GoBack();
+            }
 
 
         }

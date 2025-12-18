@@ -95,6 +95,19 @@ namespace AppAutoFactory.ViewModel
             set { preuMig = value; OnPropertyChanged(); }
         }
 
+        public void RecalculaPreuMig()
+        {
+            if (this.preuMig == 0 && this.proveidors_preu != null && this.proveidors_preu.Count > 0)
+            {
+                // Calculamos la media (Average) de los valores del diccionario
+                this.PreuMig = this.proveidors_preu.Values.Average();
+            }
+            else
+            {
+                this.PreuMig = 0;
+            }
+        }
+
         public Dictionary<Proveidor, decimal> Proveidors_preu
         {
             get { return proveidors_preu; }

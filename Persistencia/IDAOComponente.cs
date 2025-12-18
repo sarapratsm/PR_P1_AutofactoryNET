@@ -35,5 +35,10 @@ namespace DAO
 
         //public bool Existeix(string codi);
 
+        public void EliminarProveidorsDeComponent(string codiComponent);
+        public void AfegirProveidorAComponent(string codiComponent, int codiProveidor, decimal preu);
+
+
+
     }
 }

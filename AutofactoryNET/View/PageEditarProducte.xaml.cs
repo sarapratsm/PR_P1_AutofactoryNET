@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,6 +20,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System;
+using System.IO;
+
 
 namespace AppAutoFactory.View
 {
@@ -379,29 +384,76 @@ namespace AppAutoFactory.View
             }
         }
 
-        private void ImprimirBOM_Click(object sender, RoutedEventArgs e)
+        
+
+        public async Task<string> ObtenirInformeProducte(string codiProducte)
+        {
+            string ip = "10.2.192.48";
+            //string ip = "10.2.59.102";
+            string BASE_URL = "http://" + ip + ":8080/jasperserver/rest_v2/reports";
+            string REPORT_PATH = "/AutoFactory/Reports/BOM_Producte/BOMProducte"; 
+            string USER = "jasperadmin";
+            string PASS = "jasperadmin";
+
+            try
+            {
+                string url = $"{BASE_URL}{REPORT_PATH}.pdf?codi_producte={codiProducte}";
+
+                using (HttpClient client = new HttpClient())
+                {
+                    var authValue = new AuthenticationHeaderValue("Basic",
+                        Convert.ToBase64String(Encoding.UTF8.GetBytes($"{USER}:{PASS}")));
+                    client.DefaultRequestHeaders.Authorization = authValue;
+
+                    HttpResponseMessage response = await client.GetAsync(url);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        byte[] pdfBytes = await response.Content.ReadAsByteArrayAsync();
+
+                        // Guardem el fitxer a la carpeta temporal de Windows
+                        string tempFile = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"Fitxa_{codiProducte}_{DateTime.Now.Ticks}.pdf");
+                        File.WriteAllBytes(tempFile, pdfBytes);
+
+                        return tempFile; // Retornem la ruta per al WebView2
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Error Jasper: {response.StatusCode}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+                return null;
+            }
+        }
+
+        // Importante: Añadimos 'async' aquí para poder esperar a la descarga
+        private async void ImprimirBOM_Click(object sender, RoutedEventArgs e)
         {
             if (_producte == null) return;
 
-            // 1. URL CONFIG (Igual que antes)
-            string ip = "10.2.59.102";
-            string servidor = "http://"+ip+":8080/jasperserver";
-            string rutaReporte = "/AutoFactory/Reports/BOM_Producte";
-            string usuario = "jasperadmin";
-            string password = "jasperadmin";
+            // Bloqueamos el botón o mostramos un "Cargando..." opcionalmente aquí
+            btnImprimirBOM.IsEnabled = false;
 
-            // Construimos la URL
-            string url = $"{servidor}/flow.html?_flowId=viewReportFlow&reportUnit={rutaReporte}";
-            url += $"&j_username={usuario}&j_password={password}";
-            url += $"&p_CodiProducte={_producte.Codi}";
+            // 1. Llamamos al método y ESPERAMOS (await) a que devuelva la ruta
+            string rutaPdfLocal = await ObtenirInformeProducte(_producte.Codi);
 
-            // NOTA: Para WebView, mejor NO pongas "&output=pdf" para que se vean los controles de Jasper.
+            // 2. Verificamos que no haya devuelto null (error)
+            if (!string.IsNullOrEmpty(rutaPdfLocal))
+            {
+                // 3. NAVEGACIÓN
+                // WebView2 entiende perfectamente las rutas de disco (C:\Users\...)
+                // No hace falta convertirlo a file://, el 'new Uri()' de PageVisorInforme lo hará solo.
+                PageVisorInforme paginaInforme = new PageVisorInforme(rutaPdfLocal);
 
-            // 2. NAVEGACIÓN A PÁGINA
-            PageVisorInforme paginaInforme = new PageVisorInforme(url);
-
-            // Navegamos dentro del mismo Frame principal
-            this.NavigationService.Navigate(paginaInforme);
+                // Navegamos dentro del mismo Frame principal
+                this.NavigationService.Navigate(paginaInforme);
+            }
+            // Si es null, el propio método ObtenirInformeProducte ya mostró el MessageBox de error
         }
     }
 }

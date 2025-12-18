@@ -15,9 +15,11 @@ using System.Text;
 
 
 
-namespace DAO {
-	//On crearem la connexio amb la base de dades.
-	public class MyDBContext : DbContext {
+namespace DAO
+{
+    //On crearem la connexio amb la base de dades.
+    public class MyDBContext : DbContext
+    {
 
         /// <summary>
         /// Mètode per configurar la connexió a la base de dades Oracle.
@@ -27,7 +29,8 @@ namespace DAO {
             if (!optionBuilder.IsConfigured)
             {
                 //Configuracio de la connexio amb la base de dades.
-                string ip_mv = "10.2.59.102";
+                //string ip_mv = "10.2.59.102";
+                string ip_mv = "10.2.192.48";
                 optionBuilder.UseOracle("User Id=alumne;Password=alumne;Data Source=" + ip_mv + ":1521/XEPDB1;");
             }
         }
