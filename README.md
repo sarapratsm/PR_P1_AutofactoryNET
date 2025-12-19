@@ -47,7 +47,6 @@ Este proyecto implementa una arquitectura por capas (MVVM + DAO), integración c
     * `Oracle.ManagedDataAccess`.
     * `Microsoft.Web.WebView2` (Visor PDF).
     * `Newtonsoft.Json`.
-    * `DependencyPropertyGenerator`.
 
 ---
 
@@ -65,14 +64,14 @@ La lógica de negocio crítica reside en la base de datos para garantizar la int
 
 ### Requisitos
 * Visual Studio 2022.
-* .NET 6.0 SDK.
+* .NET 8.0 SDK.
 * Oracle Database.
 * (Opcional) JasperReports Server para los informes.
 
 ### Pasos
 1.  **Clonar el repositorio:**
     ```bash
-    git clone [https://github.com/tu-usuario/AutoFactory.git](https://github.com/tu-usuario/AutoFactory.git)
+    git clone [https://github.com/kuro-spm/AutoFactory.git](https://github.com/kuro-spm/AutoFactory.git)
     ```
 2.  **Base de Datos:**
     * Ejecuta el script `script_bbdd_autofactory.sql` (ubicado en la carpeta raíz) en tu instancia de Oracle.
@@ -88,5 +87,5 @@ La lógica de negocio crítica reside en la base de datos para garantizar la int
 ## ✒️ Autor
 
 **Sara Prats Morales**
-* [LinkedIn](www.linkedin.com/in/sara-prats-morales)
+* [LinkedIn](https://www.linkedin.com/in/sara-prats-morales)
 * [GitHub](https://github.com/kuro-spm)
