@@ -6,18 +6,18 @@ namespace Model
     {
         public Producte() : base(){}
 
-        private Dictionary<Item, Int32> _comps;
+        private Dictionary<Item, decimal> _comps;
 
         public Producte(string codi, string nom, string desc, int stock, byte[] foto)
             : base(codi, nom, desc, stock, foto, 'P')
         {
-            _comps = new Dictionary<Item, int>();
+            _comps = new Dictionary<Item, decimal>();
         }
 
         // Aquest Dictionary no es pot mapejar a la BD.
         // L'haurem d'ignorar al 'OnModelCreating' de MyDBContext.
-        public Dictionary<Item, int> Comps { get => _comps; private set => _comps = value; }
-        public void AfegirComponent(Item c, int qt)
+        public Dictionary<Item, decimal> Comps { get => _comps; private set => _comps = value; }
+        public void AfegirComponent(Item c, decimal qt)
         {
             // 1. Comprueba si la CLAVE existe
             if (!_comps.ContainsKey(c))

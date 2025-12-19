@@ -1,15 +1,9 @@
 ﻿using AppAutoFactory.ViewModel;
 using DAO;
 using Model;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation; // Necessari per a NavigationEventArgs
 
 namespace AppAutoFactory.View
 {
@@ -17,7 +11,7 @@ namespace AppAutoFactory.View
     {
         private VMComponente _componentActual;
 
-        ObservableCollection<Proveidor> _llistaTotsProv; // Col·lecció és per omplir el ComboBox
+        ObservableCollection<Proveidor> _llistaTotsProv;
         ObservableCollection<VMProveidor> _llistaVMProvs = new ObservableCollection<VMProveidor>(); //llista pel dtg.
         private VMProveidor? _selectedVMProveidor;
 
@@ -39,9 +33,7 @@ namespace AppAutoFactory.View
             //Datagrid:
             inicialitzarLlistaProvsVM();
             dtgCompProv.ItemsSource = _llistaVMProvs;
-
             lblComponent.Text = $"Proveïdors del component: {_componentActual.Nom}";
-            // Carregar els proveïdors del component
 
         }
 
@@ -105,7 +97,7 @@ namespace AppAutoFactory.View
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: "+ex.Message, "Error en guardar les dades", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Error: " + ex.Message, "Error en guardar les dades", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -122,7 +114,14 @@ namespace AppAutoFactory.View
             Proveidor prov = (Proveidor)cmbProveidors.SelectedItem;
             Decimal preu_dec = 0;
             string preu = txtPreu.Text;
-            bool v = Decimal.TryParse(preu, System.Globalization.NumberStyles.Currency, System.Globalization.CultureInfo.CurrentCulture, out preu_dec); //invocacion satanica
+            //bool v = Decimal.TryParse(preu, System.Globalization.NumberStyles.Currency, System.Globalization.CultureInfo.CurrentCulture, out preu_dec); //invocacion satanica
+
+            // En btnAfegirProveidor_Click:
+            string preuNet = txtPreu.Text.Replace(",", ".");
+            bool v = decimal.TryParse(preuNet,
+                                      System.Globalization.NumberStyles.Any,
+                                      System.Globalization.CultureInfo.InvariantCulture,
+                                      out preu_dec);
             if (prov == null)
             {
                 MessageBox.Show("Selecciona un proveïdor vàlid.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -146,11 +145,7 @@ namespace AppAutoFactory.View
                     _llistaVMProvs.Add(vmProv);
                     _componentActual.Proveidors_preu.Add(prov, preu_dec);
                 }
-
             }
-
-
-
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -204,16 +199,21 @@ namespace AppAutoFactory.View
 
         private void btnEliminarProveidor_Click(object sender, RoutedEventArgs e)
         {
-            //Eliminar un proveidor 
             if (_selectedVMProveidor != null)
             {
                 _componentActual.Proveidors_preu.Remove(_selectedVMProveidor.Proveidor);
+                _llistaVMProvs.Remove(_selectedVMProveidor);
+                _selectedVMProveidor = null;
+            }
+            else
+            {
+                MessageBox.Show("Selecciona un proveïdor de la llista per eliminar-lo.", "Atenció", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
         private void dtgCompProv_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(dtgCompProv.SelectedItem != null)
+            if (dtgCompProv.SelectedItem != null)
             {
                 _selectedVMProveidor = dtgCompProv.SelectedItem as VMProveidor;
             }

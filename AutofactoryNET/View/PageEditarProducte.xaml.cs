@@ -1,27 +1,15 @@
 ﻿using AppAutoFactory.ViewModel;
 using DAO;
-using Microsoft.Win32;
 using Model;
-using System;
-using System.Collections.Generic;
+using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System;
-using System.IO;
 
 
 namespace AppAutoFactory.View
@@ -159,14 +147,9 @@ namespace AppAutoFactory.View
                 sb.Append("La descripció no és vàlida (Màxim 255 caracters). \n");
             }
             int stock = 0;
-            try
+            if (!int.TryParse(txbStock.Text, out stock) || stock < 0)
             {
-                stock = Int32.Parse(txbStock.Text);
-
-            }
-            catch (Exception ex)
-            {
-                sb.Append("Stock ha de ser un número enter! \n");
+                sb.Append("L'Stock ha de ser un número enter vàlid i no negatiu.\n");
             }
 
             if (sb.Length > 0)
@@ -193,7 +176,7 @@ namespace AppAutoFactory.View
         {
             if (dtgBOM.SelectedItem != null)
             {
-                var filaSeleccionada = (KeyValuePair<Item, int>)dtgBOM.SelectedItem;
+                var filaSeleccionada = (KeyValuePair<Item, decimal>)dtgBOM.SelectedItem;
                 _selectedSubcomponente = filaSeleccionada.Key;
             }
             else
@@ -205,16 +188,6 @@ namespace AppAutoFactory.View
 
         }
 
-        //private void dtgSubcomponents_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    if (dtgBOM.SelectedItem is Componente)
-        //        _selectedSubcomponente = dtgBOM.SelectedItem as Componente;
-        //    else if (dtgBOM.SelectedItem is Producte)
-        //        _selectedSubcomponente = dtgBOM.SelectedItem as Producte;
-
-        //    btnEliminarSubcomp.IsEnabled = _selectedNouComponente != null && _vmProducte.Subcomponents.ContainsKey(_selectedNouComponente);
-
-        //}
 
 
         /// <summary>
@@ -230,16 +203,33 @@ namespace AppAutoFactory.View
         {
             if (_selectedNouComponente != null)
             {
-                int quantitat = 1;
-                int.TryParse(txtQuantitatSubcomp.Text, out quantitat);
-                
-                if(_vmProducte.Subcomponents.Any(i=>i.Key.Codi == _selectedNouComponente.Codi))
+                string textQuantitat = txtQuantitatSubcomp.Text.Replace(",", ".");
+
+                decimal quantitat = 0;
+
+                // Usamos decimal.TryParse con InvariantCulture
+                bool esValid = decimal.TryParse(textQuantitat,
+                                                System.Globalization.NumberStyles.Any,
+                                                System.Globalization.CultureInfo.InvariantCulture,
+                                                out quantitat);
+
+
+                if (!esValid || quantitat <= 0)
+                {
+                    MessageBox.Show("La quantitat ha de ser un número vàlid i major que 0 (ex: 1.5).", "Error de format", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (_vmProducte.Subcomponents.Any(i => i.Key.Codi == _selectedNouComponente.Codi))
                 {
                     MessageBox.Show("Error: Aquest item ja està especificat en el BOM del producte!", "No es pot afegir l'item", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
                 _vmProducte.Subcomponents.Add(_selectedNouComponente, quantitat);
                 RefrescarDtgBOM();
+
+                txtQuantitatSubcomp.Text = "1"; // Reset
+
             }
         }
 
@@ -384,16 +374,18 @@ namespace AppAutoFactory.View
             }
         }
 
-        
-
         public async Task<string> ObtenirInformeProducte(string codiProducte)
         {
-            string ip = "10.2.192.48";
-            //string ip = "10.2.59.102";
-            string BASE_URL = "http://" + ip + ":8080/jasperserver/rest_v2/reports";
-            string REPORT_PATH = "/AutoFactory/Reports/BOM_Producte/BOMProducte"; 
-            string USER = "jasperadmin";
-            string PASS = "jasperadmin";
+            var config = DAO.MyDBContext.GetJasperConfig();
+
+            if (string.IsNullOrEmpty(config.BaseUrl))
+            {
+                MessageBox.Show("No s'ha pogut llegir la configuració de Jasper al appsettings.json.", "Error de Configuració", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+
+            string BASE_URL = config.BaseUrl + "/rest_v2/reports";
+            string REPORT_PATH = "/AutoFactory/Reports/BOM_Producte/BOMProducte";
 
             try
             {
@@ -402,7 +394,8 @@ namespace AppAutoFactory.View
                 using (HttpClient client = new HttpClient())
                 {
                     var authValue = new AuthenticationHeaderValue("Basic",
-                        Convert.ToBase64String(Encoding.UTF8.GetBytes($"{USER}:{PASS}")));
+                        Convert.ToBase64String(Encoding.UTF8.GetBytes($"{config.User}:{config.Pass}")));
+
                     client.DefaultRequestHeaders.Authorization = authValue;
 
                     HttpResponseMessage response = await client.GetAsync(url);
@@ -411,50 +404,48 @@ namespace AppAutoFactory.View
                     {
                         byte[] pdfBytes = await response.Content.ReadAsByteArrayAsync();
 
-                        // Guardem el fitxer a la carpeta temporal de Windows
                         string tempFile = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"Fitxa_{codiProducte}_{DateTime.Now.Ticks}.pdf");
                         File.WriteAllBytes(tempFile, pdfBytes);
 
-                        return tempFile; // Retornem la ruta per al WebView2
+                        return tempFile;
                     }
                     else
                     {
-                        MessageBox.Show($"Error Jasper: {response.StatusCode}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show($"Error Jasper ({response.StatusCode}): No s'ha pogut generar l'informe.", "Error Servidor", MessageBoxButton.OK, MessageBoxImage.Error);
                         return null;
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show("Error de connexió amb Jasper: " + ex.Message);
                 return null;
             }
+            finally
+            {
+                btnImprimirBOM.IsEnabled = true;
+                lblLoading.Content = "";  
+            }
         }
+
+
 
         // Importante: Añadimos 'async' aquí para poder esperar a la descarga
         private async void ImprimirBOM_Click(object sender, RoutedEventArgs e)
         {
             if (_producte == null) return;
 
-            // Bloqueamos el botón o mostramos un "Cargando..." opcionalmente aquí
             btnImprimirBOM.IsEnabled = false;
             lblLoading.Content = "Carregant informe...";
 
-            // 1. Llamamos al método y ESPERAMOS (await) a que devuelva la ruta
+            //Llamamos al método y ESPERAMOS (await) a que devuelva la ruta
             string rutaPdfLocal = await ObtenirInformeProducte(_producte.Codi);
 
-            // 2. Verificamos que no haya devuelto null (error)
             if (!string.IsNullOrEmpty(rutaPdfLocal))
             {
-                // 3. NAVEGACIÓN
-                // WebView2 entiende perfectamente las rutas de disco (C:\Users\...)
-                // No hace falta convertirlo a file://, el 'new Uri()' de PageVisorInforme lo hará solo.
                 PageVisorInforme paginaInforme = new PageVisorInforme(rutaPdfLocal);
-
-                // Navegamos dentro del mismo Frame principal
                 this.NavigationService.Navigate(paginaInforme);
             }
-            // Si es null, el propio método ObtenirInformeProducte ya mostró el MessageBox de error
         }
     }
 }

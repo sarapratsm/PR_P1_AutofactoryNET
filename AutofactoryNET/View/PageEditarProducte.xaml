@@ -10,7 +10,7 @@
       Loaded="Page_Loaded"
       Title="Gestió de Producte">
 
-    <Grid Margin="15">
+    <Grid Margin="15,15,20,15">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -137,6 +137,7 @@
                     <DataGrid x:Name="dtgBOM" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="dtgBOM_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Quantitat" Binding="{Binding Value}" Width="80"/>
+                            <DataGridTextColumn Header="Unitats" Binding="{Binding Key.Unitat}"/>
                             <DataGridTextColumn Header="Codi" Binding="{Binding Key.Codi}" Width="100"/>
                             <DataGridTextColumn Header="Nom" Binding="{Binding Key.Nom}" Width="*"/>
                         </DataGrid.Columns>

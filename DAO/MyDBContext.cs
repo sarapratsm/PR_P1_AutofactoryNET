@@ -72,13 +72,15 @@ namespace DAO
                 string json = File.ReadAllText("appsettings.json");
                 using (JsonDocument doc = JsonDocument.Parse(json))
                 {
-                    // 1. Leemos la IP
-                    string ip = doc.RootElement.GetProperty("ConfiguracioGlobal").GetProperty("IpServidor").GetString();
+                    var section = doc.RootElement.GetProperty("ConnectionStrings");
 
-                    // 2. Leemos la plantilla de Oracle (que tiene un {0})
-                    string template = doc.RootElement.GetProperty("ConnectionStrings").GetProperty("OracleTemplate").GetString();
+                    // 1. Leemos la IP ESPECÍFICA de Oracle
+                    string ip = section.GetProperty("IpOracle").GetString();
 
-                    // 3. Sustituimos {0} por la IP real
+                    // 2. Leemos la plantilla
+                    string template = section.GetProperty("OracleTemplate").GetString();
+
+                    // 3. Combinamos la plantilla con la IP de Oracle
                     return string.Format(template, ip);
                 }
             }
@@ -88,7 +90,36 @@ namespace DAO
             }
         }
 
-        // DBSETS Afegeix-los per poder consultar amb EF
+        public static (string BaseUrl, string User, string Pass) GetJasperConfig()
+        {
+            try
+            {
+                string json = File.ReadAllText("appsettings.json");
+                using (JsonDocument doc = JsonDocument.Parse(json))
+                {
+                    var section = doc.RootElement.GetProperty("Jasper");
+
+                    // 1. Leemos la IP y la Plantilla
+                    string ip = section.GetProperty("IpJasper").GetString();
+                    string template = section.GetProperty("BaseUrlTemplate").GetString();
+
+                    // 2. Formateamos la URL (http://10.2.192.48:8080/jasperserver)
+                    string baseUrl = string.Format(template, ip);
+
+                    // 3. Leemos credenciales
+                    string user = section.GetProperty("User").GetString();
+                    string pass = section.GetProperty("Pass").GetString();
+
+                    return (baseUrl, user, pass);
+                }
+            }
+            catch (Exception)
+            {
+                // Si falla, devolvemos vacíos
+                return ("", "", "");
+            }
+        }
+
         public DbSet<Item> Items { get; set; }
         public DbSet<Producte> Productes { get; set; }
         public DbSet<Componente> Components { get; set; }

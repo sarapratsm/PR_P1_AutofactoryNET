@@ -44,7 +44,7 @@
                 <Button Style="{StaticResource SecondaryButton}" Margin="10,10,0,0" Click="btnEliminar_Click"  x:Name="btnEliminar" Content="Eliminar" Width="auto" />
             </StackPanel>
         </Grid>
-        <Grid Grid.Column="1" Margin="10,0,0,0">
+        <Grid Grid.Column="1" Margin="10,0,20,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
@@ -71,14 +71,6 @@
 
                     <DataGridTextColumn Header="Codi" Binding="{Binding Codi}" Width="80" FontWeight="SemiBold"/>
                     <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*" MinWidth="100"/>
-                    <DataGridTextColumn Header="Tipus" Binding="{Binding Tipus}" Width="50">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-
                     <DataGridTextColumn Header="Descripció" Binding="{Binding Descripcio}" Width="2*">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">

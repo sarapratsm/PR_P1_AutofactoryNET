@@ -66,7 +66,6 @@ namespace AppAutoFactory.Pages
             {
                 if (ValidarCredenciales(user, pass))
                 {
-                    // Login correcto: Abrimos la ventana principal
                     MainWindow mainWindow = new MainWindow();
                     mainWindow.Show();
                     this.Close();
@@ -85,7 +84,6 @@ namespace AppAutoFactory.Pages
         private bool ValidarCredenciales(string username, string passwordPlana)
         {
             // Creamos una instancia del contexto para comprobar el usuario.
-            // Gracias a tu cambio en MyDBContext, ¡él solito lee el JSON y se conecta!
             using (var context = new MyDBContext())
             {
                 var conn = context.Database.GetDbConnection();
@@ -93,11 +91,11 @@ namespace AppAutoFactory.Pages
 
                 using (var cmd = conn.CreateCommand())
                 {
-                    // CAMBIO: Usamos :usuarioInput en lugar de :user para evitar conflicto con palabras reservadas
+                    // Usamos :usuarioInput en lugar de :user para evitar conflicto con palabras reservadas
                     cmd.CommandText = "SELECT us_password_hash FROM USUARIS WHERE us_username = :usuarioInput";
 
                     var param = cmd.CreateParameter();
-                    param.ParameterName = ":usuarioInput"; // Nombre nuevo
+                    param.ParameterName = ":usuarioInput";
                     param.Value = username;
                     cmd.Parameters.Add(param);
 

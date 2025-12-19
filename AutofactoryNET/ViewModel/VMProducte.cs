@@ -1,14 +1,9 @@
 ﻿using Model;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 namespace AppAutoFactory.ViewModel
@@ -28,7 +23,9 @@ namespace AppAutoFactory.ViewModel
         private int stock;
         private byte[]? foto;
         private char tipus;
-        private Dictionary<Item, Int32> subcomponents;
+
+        // CAMBIO 1: Int32 -> decimal
+        private Dictionary<Item, decimal> subcomponents;
         private Producte producte;
 
         public string Codi
@@ -67,7 +64,8 @@ namespace AppAutoFactory.ViewModel
             set { tipus = value; OnPropertyChanged(); }
         }
 
-        public Dictionary<Item, Int32> Subcomponents
+        // CAMBIO 2: Int32 -> decimal
+        public Dictionary<Item, decimal> Subcomponents
         {
             get { return subcomponents; }
             set
@@ -76,26 +74,21 @@ namespace AppAutoFactory.ViewModel
             }
         }
 
-        public BitmapImage TheImage
-        {
-            get;
-            set;
-        }
+        public BitmapImage TheImage { get; set; }
 
         // --- CONSTRUCTORS ---
         public VMProducte()
         {
-            // Constructor per a "Afegir Nou Producte"
             this.Tipus = 'P';
             this.codi = "";
             this.nom = "";
             this.descripcio = "";
-            this.subcomponents = new Dictionary<Item, Int32>();
+            // CAMBIO 3: Inicializar con decimal
+            this.subcomponents = new Dictionary<Item, decimal>();
         }
 
         public VMProducte(Producte p)
         {
-            // Constructor per a "Modificar Producte Existent"
             this.Tipus = 'P';
 
             if (p != null)
@@ -107,14 +100,13 @@ namespace AppAutoFactory.ViewModel
                 this.Stock = p.Stock;
                 this.Foto = p.Foto;
                 this.TheImage = loadImage(Foto);
-                // NOTA: Assegura't d'haver cridat a DAOProducte.CarregarSubcomponents(p) 
-                // abans de passar-lo a aquest constructor.
+
+                // CAMBIO 4: Ahora sí coinciden los tipos (decimal = decimal)
                 this.Subcomponents = p.Comps;
             }
             else
             {
-                // Si per error p és null, inicialitzem buit per evitar errors
-                this.subcomponents = new Dictionary<Item, Int32>();
+                this.subcomponents = new Dictionary<Item, decimal>();
             }
         }
 
@@ -122,6 +114,7 @@ namespace AppAutoFactory.ViewModel
         {
             try
             {
+                if (bytes == null) return null; // Pequeña protección extra
                 BitmapImage image = new BitmapImage();
                 using (MemoryStream mem = new MemoryStream(bytes))
                 {
@@ -133,15 +126,13 @@ namespace AppAutoFactory.ViewModel
                     image.StreamSource = mem;
                     image.EndInit();
                 }
-                image.Freeze(); // Importante para evitar errores de hilos
+                image.Freeze();
                 return image;
             }
             catch
             {
                 return null;
             }
-
         }
-
     }
 }

@@ -40,8 +40,8 @@
 
 
 
-                <Button x:Name="btnModificar" Click="btnModificar_Click" Content="✏️" ToolTip="Modificar"
-                    Background="Transparent" BorderBrush="Transparent" FontSize="18" Margin="2,0" Cursor="Hand"/>
+                <!--<Button x:Name="btnModificar" Click="btnModificar_Click" Content="✏️" ToolTip="Modificar"
+                    Background="Transparent" BorderBrush="Transparent" FontSize="18" Margin="2,0" Cursor="Hand"/>-->
 
                 <Button x:Name="btnEliminar" Click="btnEliminar_Click" Content="🗑️" ToolTip="Eliminar"
                     Background="Transparent" BorderBrush="Transparent" FontSize="18" Margin="2,0" Cursor="Hand"/>
@@ -92,7 +92,7 @@
 
 
         <!--Es troba al centre del dockpanel-->
-        <Grid x:Name="grdCentral" Margin="10,5,10,0">
+        <Grid x:Name="grdCentral" Margin="10,5,20,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>

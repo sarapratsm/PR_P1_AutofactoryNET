@@ -103,7 +103,9 @@ namespace AppAutoFactory.View
         }
 
         private void NavegaAEditorProducte(int mode)
-        {
+        {    
+            pageEditarProducte = null; 
+
             if (mode == 0)
             {
                 pageEditarProducte = new PageEditarProducte();
@@ -116,10 +118,14 @@ namespace AppAutoFactory.View
                 }
                 else
                 {
-                    MessageBox.Show("Selecciona un producte per modificar-lo!");
+                    MessageBox.Show("Selecciona un producte per modificar-lo!", "Atenció", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
                 }
             }
-            this.NavigationService?.Navigate(pageEditarProducte);
+            if (pageEditarProducte != null)
+            {
+                this.NavigationService?.Navigate(pageEditarProducte);
+            }
         }
 
         private void btnFiltrar_Click(object sender, RoutedEventArgs e)

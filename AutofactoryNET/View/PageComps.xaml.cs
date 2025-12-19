@@ -3,24 +3,11 @@ using AutofactoryNET;
 using DAO;
 using Microsoft.Win32;
 using Model;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace AppAutoFactory.View
 {
@@ -57,28 +44,15 @@ namespace AppAutoFactory.View
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            //llistaComponents = OracleFactory.getUOW().DAOComponente.ObtenirComponentsFiltrats("", "");
-            //dtgComps.ItemsSource = llistaComponents;
+            // Carga de datos inicial (esto ya lo tenías)
             RefrescarDataGrid();
-            //dtgComps.ItemsSource = llistaComponents;
-
             List<TipusUnitat> tipusUnitats = Enum.GetValues(typeof(TipusUnitat)).Cast<TipusUnitat>().ToList();
             cmbUnitats.ItemsSource = tipusUnitats;
-
-            try
-            {
-                RefrescarDataGrid();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error en carregar els productes des de la BBDD: \n" + ex.Message,
-                                "Error de Connexió", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            
-
+            EstablirEstatFormulari(false);
         }
 
-        //private void RefrescarDataGrid()
+
+        //private void RefrescarDataGrid() //Sense paginació
         //{
         //    // Buidem la llista actual
         //    //llistaComponents.Clear();
@@ -108,7 +82,7 @@ namespace AppAutoFactory.View
         //    }
         //}
 
-        private void RefrescarDataGrid()
+        private void RefrescarDataGrid() //Amb paginació
         {
             string codi = txtFiltreCodi.Text;
             string nom = txtFiltreNom.Text;
@@ -166,29 +140,32 @@ namespace AppAutoFactory.View
             btnLast.IsEnabled = _paginaActual < _totalPaginas;
         }
 
-        private void btnModificar_Click(object sender, RoutedEventArgs e)
-        {
-            Componente compSeleccionat = dtgComps.SelectedItem as Componente;
-            if (compSeleccionat == null)
-            {
-                MessageBox.Show("Si us plau, selecciona un component per modificar.", "Cap Selecció", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            if (this.MainWindow != null)
-            {
-                this.MainWindow.NavegarACompProveidor(compSeleccionat);
-            }
-        }
+        //private void btnModificar_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Componente compSeleccionat = dtgComps.SelectedItem as Componente;
+        //    if (compSeleccionat == null)
+        //    {
+        //        MessageBox.Show("Si us plau, selecciona un component per modificar.", "Cap Selecció", MessageBoxButton.OK, MessageBoxImage.Warning);
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        if (this.MainWindow != null)
+        //        {
+        //            this.MainWindow.NavegarACompProveidor(compSeleccionat);
+        //        }
+        //    }
+        //}
 
         private void btnAfegir_Click(object sender, RoutedEventArgs e)
         {
-            //Crear nou component
+            // Crear nou component buit
             _vmComponente = new VMComponente();
             DataContext = _vmComponente;
-            txbNom.IsEnabled = true;
-            mode = 0; //Afegir
-            
+            mode = 0; // Mode Afegir
+
+            EstablirEstatFormulari(true, esNou: true);
+            txbNom.Focus();
         }
 
 
@@ -306,6 +283,16 @@ namespace AppAutoFactory.View
             }
             //Refrescar DataGrid
             RefrescarDataGrid();
+            netejaFormulari();
+            
+
+            dtgComps.SelectedItem = null;
+            EstablirEstatFormulari(false);
+        }
+
+        private void netejaFormulari()
+        {
+            //ToDo
         }
 
         private void netejaFiltres()
@@ -314,7 +301,6 @@ namespace AppAutoFactory.View
             txtFiltreNom.Text = "";
         }
 
-        
 
         private void dtgComps_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -323,11 +309,30 @@ namespace AppAutoFactory.View
 
         private void dtgComps_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _componenteActual = (Componente)dtgComps.SelectedItem;
-            _vmComponente = new VMComponente(_componenteActual);
-            DataContext = _vmComponente;
-            txbNom.IsEnabled = false;
-            mode=1; //Modificar
+            if (dtgComps.SelectedItem != null)
+            {
+                _componenteActual = (Componente)dtgComps.SelectedItem;
+                _vmComponente = new VMComponente(_componenteActual);
+                DataContext = _vmComponente;
+                mode = 1;
+
+                // Activamos formulario en modo EDICIÓN (esNou = false)
+                // Esto activará los botones de eliminar/proveedores
+                EstablirEstatFormulari(true, esNou: false);
+            }
+            else
+            {
+                // Si no hay nada seleccionado, apagamos todo
+                EstablirEstatFormulari(false);
+            }
+            //_componenteActual = (Componente)dtgComps.SelectedItem;
+            //_vmComponente = new VMComponente(_componenteActual);
+            //DataContext = _vmComponente;
+            //txbNom.IsEnabled = false;
+            //mode=1; //Modificar
+
+
+            //EstablirEstatFormulari(true, false);
 
 
         }
@@ -345,13 +350,23 @@ namespace AppAutoFactory.View
 
         }
 
+        //private void btnCancel_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (NavigationService.CanGoBack)
+        //    {
+        //        NavigationService.GoBack();
+        //    }
+
+        //}
+
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-            if (NavigationService.CanGoBack)
-            {
-                NavigationService.GoBack();
-            }
+            dtgComps.SelectedItem = null;
 
+            _vmComponente = new VMComponente();
+            DataContext = _vmComponente;
+
+            EstablirEstatFormulari(false);
         }
 
         private void btnFiltrar_Click(object sender, RoutedEventArgs e)
@@ -369,6 +384,10 @@ namespace AppAutoFactory.View
 
         private void btnPujarFoto_Click(object sender, RoutedEventArgs e)
         {
+            if (_vmComponente == null)
+            {
+                return;
+            }
             OpenFileDialog openFileDialog = new OpenFileDialog();
             // Filtramos solo imágenes
             openFileDialog.Filter = "Imatges|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
@@ -429,5 +448,20 @@ namespace AppAutoFactory.View
             RefrescarDataGrid();
         }
         #endregion
+
+        private void EstablirEstatFormulari(bool actiu, bool esNou = false)
+        {
+            grdCamps.IsEnabled = actiu;
+            btnSave.IsEnabled = actiu;
+            btnCancel.IsEnabled = actiu;
+            txbNom.IsEnabled = actiu && esNou;
+
+            bool hiHaSeleccio = dtgComps.SelectedItem != null;
+
+            btnEliminar.IsEnabled = hiHaSeleccio && !esNou;
+            btnGestioProvs.IsEnabled = hiHaSeleccio && !esNou;
+            btnEditarProvs.IsEnabled = hiHaSeleccio && !esNou;
+            dtgComps.IsEnabled = !esNou;
+        }
     }
 }

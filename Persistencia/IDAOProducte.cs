@@ -26,7 +26,7 @@ namespace DAO
 
         //--- Mètodes de gestió de subproductes
         public void CarregarSubcomponents(Producte p);
-        public bool InserirSubcomponent(Producte p, Item i, int qt);
+        public bool InserirSubcomponent(Producte p, Item i, decimal qt);
         public void EliminarTotsElsSubcomponents(string codiPare);
 
         public int ContarProductesFiltrats(string codi_filtre, string nom_filtre);

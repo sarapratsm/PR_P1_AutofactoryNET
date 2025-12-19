@@ -286,8 +286,6 @@ namespace DAO
 
             using (var cmd = connexio.CreateCommand())
             {
-                // FEM UN LEFT JOIN AMB COMPONENTE!
-                // Així obtenim també el fabricant, la unitat, etc.
                 string sql = @"SELECT 
                             i.it_codi, i.it_nom, i.it_desc, i.it_stock, i.it_foto, i.it_tipus,
                             pi.quantitat,
@@ -349,7 +347,7 @@ namespace DAO
                         }
 
                         // 3. Llegim la quantitat del BOM (PROD_ITEM)
-                        int quantitat = Convert.ToInt32(reader.GetValue(reader.GetOrdinal("quantitat")));
+                        decimal quantitat = Convert.ToDecimal(reader.GetValue(reader.GetOrdinal("quantitat")));
 
                         // 4. Afegim al pare
                         p.AfegirComponent(itemFill, quantitat);
@@ -387,7 +385,8 @@ namespace DAO
 
                 if (rows_per_page > 0)
                 {
-                    consulta.CommandText += $" limit {rows_per_page} offset {offset}";
+                    //consulta.CommandText += $" limit {rows_per_page} offset {offset}"; //Dona error en oracle
+                    sql += $" ORDER BY i.it_codi OFFSET {offset} ROWS FETCH NEXT {rows_per_page} ROWS ONLY";
                 }
 
                 consulta.CommandText = sql;
@@ -523,7 +522,7 @@ namespace DAO
         /// <param name="qt">Quantitat del component necessària.</param>
         /// <returns>True si la vinculació s'ha creat correctament, False altrament.</returns>
         /// <exception cref="InvalidOperationException">Si no hi ha transacció activa.</exception>
-        public bool InserirSubcomponent(Producte p, Item i, int qt)
+        public bool InserirSubcomponent(Producte p, Item i, decimal qt)
         {
             var connexio = _context.Database.GetDbConnection();
             if (connexio.State != System.Data.ConnectionState.Open)
@@ -542,7 +541,7 @@ namespace DAO
                 int filesAfectades = 0;
                 string parentCodi = p.Codi;
                 string childCodi = i.Codi;
-                int quantitat = qt;
+                decimal quantitat = qt;
 
                 using (var cmdItem = connexio.CreateCommand())
                 {
@@ -555,7 +554,7 @@ namespace DAO
 
                     Utils.CrearParametres(cmdItem, parentCodi, ":PARENT", System.Data.DbType.String);
                     Utils.CrearParametres(cmdItem, childCodi, ":CHILD", System.Data.DbType.String);
-                    Utils.CrearParametres(cmdItem, quantitat, ":QTY", System.Data.DbType.Int32);
+                    Utils.CrearParametres(cmdItem, quantitat, ":QTY", System.Data.DbType.Decimal);
 
                     filesAfectades = cmdItem.ExecuteNonQuery();
                 }
@@ -564,12 +563,10 @@ namespace DAO
             }
             catch (Exception)
             {
-                // Gestió d'errors (opcionalment es pot fer log o rellençar)
                 return false;
             }
         }
 
-        // Afegeix això a DAOProducte.cs
         public void EliminarTotsElsSubcomponents(string codiPare)
         {
             var connexio = _context.Database.GetDbConnection();

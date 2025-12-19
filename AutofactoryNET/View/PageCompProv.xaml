@@ -9,7 +9,7 @@
       Background="{StaticResource WindowBackground}"
       Loaded="Page_Loaded" Title="Gestió de Proveïdors per Component">
 
-    <Grid Margin="10">
+    <Grid Margin="10,10,20,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
