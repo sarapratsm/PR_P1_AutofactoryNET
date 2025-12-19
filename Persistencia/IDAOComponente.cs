@@ -37,8 +37,7 @@ namespace DAO
 
         public void EliminarProveidorsDeComponent(string codiComponent);
         public void AfegirProveidorAComponent(string codiComponent, int codiProveidor, decimal preu);
-
-
+        public int ContarComponentsFiltrats(string codi, string nom);
 
     }
 }

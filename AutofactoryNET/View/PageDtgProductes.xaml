@@ -9,11 +9,11 @@
       Loaded="Page_Loaded"
       Background="{StaticResource WindowBackground}"
       Title="PageDtgProductes">
-   
+
     <Page.Resources>
         <local:BytesToImageConverter x:Key="ImageConverter"/>
     </Page.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -44,22 +44,31 @@
                 <Button Style="{StaticResource SecondaryButton}" Margin="10,10,0,0" Click="btnEliminar_Click"  x:Name="btnEliminar" Content="Eliminar" Width="auto" />
             </StackPanel>
         </Grid>
-        <Grid Grid.Column="1">
-            <DataGrid x:Name="dtgProductes" Margin="10"
+        <Grid Grid.Column="1" Margin="10,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <DataGrid x:Name="dtgProductes" Grid.Row="0"
               AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"
               MouseDoubleClick="dtgProductes_MouseDoubleClick"
-              SelectionChanged="dtgProductes_SelectionChanged">
+              SelectionChanged="dtgProductes_SelectionChanged"
+              VerticalScrollBarVisibility="Auto" 
+              HorizontalScrollBarVisibility="Auto">
+
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Foto" Width="60">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Image Source="{Binding Foto, Converter={StaticResource ImageConverter}}" 
-                       Width="40" Height="40" 
-                       Stretch="UniformToFill"
-                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                               Width="40" Height="40" 
+                               Stretch="UniformToFill"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+
                     <DataGridTextColumn Header="Codi" Binding="{Binding Codi}" Width="80" FontWeight="SemiBold"/>
                     <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*" MinWidth="100"/>
                     <DataGridTextColumn Header="Tipus" Binding="{Binding Tipus}" Width="50">
@@ -69,7 +78,8 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Descripció" Binding="{Binding Descripcio}" Width="2*" MinWidth="150">
+
+                    <DataGridTextColumn Header="Descripció" Binding="{Binding Descripcio}" Width="2*">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
@@ -79,10 +89,17 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="Stock" Binding="{Binding Stock}" Width="80"/>
-
+                    <DataGridTextColumn Header="Stock" Binding="{Binding Stock}" Width="70"/>
                 </DataGrid.Columns>
             </DataGrid>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" x:Name="stpPaginacio" HorizontalAlignment="Center" Margin="0,10,0,10">
+                <Button x:Name="btnFirst" Content="&lt;&lt;" Margin="5,0,0,0" Click="btnFirst_Click" Style="{StaticResource TileButtonStyle}" Width="30"/>
+                <Button x:Name="btnPrevious" Content="&lt;" Margin="5,0,0,0" Click="btnPrevious_Click" Style="{StaticResource TileButtonStyle}" Width="30"/>
+                <TextBox x:Name="txtPagina" Width="60" Margin="5,0,0,0" TextAlignment="Center" IsReadOnly="True"/>
+                <Button x:Name="btnNext" Content="&gt;" Margin="5,0,0,0" Click="btnNext_Click" Style="{StaticResource TileButtonStyle}" Width="30"/>
+                <Button x:Name="btnLast" Content="&gt;&gt;" Margin="5,0,0,0" Click="btnLast_Click" Style="{StaticResource TileButtonStyle}" Width="30"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>

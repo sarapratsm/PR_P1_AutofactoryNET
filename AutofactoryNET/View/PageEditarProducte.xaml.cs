@@ -438,6 +438,7 @@ namespace AppAutoFactory.View
 
             // Bloqueamos el botón o mostramos un "Cargando..." opcionalmente aquí
             btnImprimirBOM.IsEnabled = false;
+            lblLoading.Content = "Carregant informe...";
 
             // 1. Llamamos al método y ESPERAMOS (await) a que devuelva la ruta
             string rutaPdfLocal = await ObtenirInformeProducte(_producte.Codi);

@@ -153,6 +153,7 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Label x:Name="lblLoading" VerticalAlignment="Bottom"></Label>
                 <Button x:Name="btnImprimirBOM" Content="Imprimir BOM" Click="ImprimirBOM_Click" HorizontalAlignment="Right" Margin="0,10,10,0" Padding="15,5"/>
                 <Button x:Name="btnGuardar"  Content="Guarda"   Click="btnGuardar_Click" HorizontalAlignment="Right" Margin="0,10,10,0" Padding="15,5"/>
             </StackPanel>

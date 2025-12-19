@@ -335,17 +335,21 @@ namespace DAO
             {
                 // SQL SIMPLIFICAT: Eliminem la part (:VAR = '%%') per evitar duplicar paràmetres
                 string sql = @"SELECT 
-                   i.it_codi, i.it_nom, i.it_desc, i.it_stock, i.it_foto, i.it_tipus,
-                   c.cm_codi_fabricant, c.cm_um_codi, c.cm_preu_mig
-               FROM ITEM i
-               JOIN COMPONENTE c ON i.it_codi = c.cm_it_codi
-               WHERE i.it_tipus = 'C' 
-                 AND UPPER(i.it_codi) LIKE :COD_FILTRE
-                 AND UPPER(i.it_nom) LIKE :NOM_FILTRE";
+                                   i.it_codi, i.it_nom, i.it_desc, i.it_stock, i.it_foto, i.it_tipus,
+                                   c.cm_codi_fabricant, c.cm_um_codi, c.cm_preu_mig
+                               FROM ITEM i
+                               JOIN COMPONENTE c ON i.it_codi = c.cm_it_codi
+                               WHERE i.it_tipus = 'C' 
+                                 AND UPPER(i.it_codi) LIKE :COD_FILTRE
+                                 AND UPPER(i.it_nom) LIKE :NOM_FILTRE";
 
+                //if (rows_per_page > 0)
+                //{
+                //    consulta.CommandText += $" limit {rows_per_page} offset {offset}";
+                //}
                 if (rows_per_page > 0)
                 {
-                    consulta.CommandText += $" limit {rows_per_page} offset {offset}";
+                    sql += $" ORDER BY i.it_codi OFFSET {offset} ROWS FETCH NEXT {rows_per_page} ROWS ONLY";
                 }
 
                 consulta.CommandText = sql;
@@ -654,62 +658,45 @@ namespace DAO
             }
         }
 
-
-        #region metodes que no vull aplicar ara mateix
-        /*public ObservableCollection<Componente> ObtenirTotsESBORRAR()
+        public int ContarComponentsFiltrats(string codi_filtre, string nom_filtre)
         {
-            ObservableCollection<Componente> components = new ObservableCollection<Componente>();
-
-            // Query adaptada al DDL
-            string sql = @"SELECT 
-                               i.it_codi, i.it_nom, i.it_desc, i.it_stock, i.it_foto, i.it_tipus,
-                               c.cm_codi_fabricant, c.cm_um_codi, c.cm_preu_mig
-                           FROM ITEM i
-                           JOIN COMPONENTE c ON i.it_codi = c.cm_it_codi
-                           WHERE i.it_tipus = 'C'"; 
-
-            using (DbConnection conn = _context.Database.GetDbConnection())
+            int total = 0;
+            var connexio = _context.Database.GetDbConnection();
+            if (connexio.State != ConnectionState.Open)
             {
-                conn.Open();
-                using (DbCommand cmd = conn.CreateCommand())
+                connexio.Open();
+            }
+
+            using (DbCommand consulta = connexio.CreateCommand())
+            {
+                // Misma query que el filtro, pero con COUNT(*)
+                string sql = @"SELECT COUNT(*)
+                       FROM ITEM i
+                       WHERE i.it_tipus = 'C' 
+                         AND UPPER(i.it_codi) LIKE :COD_FILTRE
+                         AND UPPER(i.it_nom) LIKE :NOM_FILTRE";
+
+                consulta.CommandText = sql;
+                consulta.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+
+                string codi_param = string.IsNullOrEmpty(codi_filtre) ? "%" : "%" + codi_filtre.ToUpper() + "%";
+                string nom_param = string.IsNullOrEmpty(nom_filtre) ? "%" : "%" + nom_filtre.ToUpper() + "%";
+
+                Utils.CrearParametres(consulta, codi_param, "COD_FILTRE", DbType.String);
+                Utils.CrearParametres(consulta, nom_param, "NOM_FILTRE", DbType.String);
+
+                // ExecuteScalar devuelve la primera columna de la primera fila (el conteo)
+                object result = consulta.ExecuteScalar();
+                if (result != null && result != DBNull.Value)
                 {
-                    cmd.CommandText = sql;
-
-                    // Enllaça la comanda amb la transacció del UoW
-                    cmd.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
-
-                    using (DbDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            string codi = reader.GetString(reader.GetOrdinal("it_codi"));
-                            string nom = reader.GetString(reader.GetOrdinal("it_nom"));
-                            string descripcio = reader.IsDBNull(reader.GetOrdinal("it_desc")) ? null : reader.GetString(reader.GetOrdinal("it_desc"));
-                            int stock = Convert.ToInt32(reader.GetValue(reader.GetOrdinal("it_stock")));
-
-                            // NOTA FOTO: DDL és VARCHAR, Model és byte[]
-                            // string fotoPath = reader.IsDBNull(reader.GetOrdinal("it_foto")) ? null : reader.GetString(reader.GetOrdinal("it_foto"));
-                            byte[] fotoBytes = null; // Passant null al constructor
-
-                            char tipus = reader.GetString(reader.GetOrdinal("it_tipus"))[0];
-                            string codiFabricant = reader.GetString(reader.GetOrdinal("cm_codi_fabricant"));
-                            TipusUnitat unitat = (TipusUnitat)Convert.ToInt32(reader.GetValue(reader.GetOrdinal("cm_um_codi")));
-
-                            // Creem el component
-                            Componente c = new Componente(codi, nom, descripcio, stock, fotoBytes, tipus, codiFabricant, unitat);
-
-                            // TODO: Assignar el preu mig llegit (cm_preu_mig)
-                            // El teu model C# no té un setter públic per a PreuMig.
-                            // Hauries d'afegir-lo o carregar-lo a través de CalculaPreuMig.
-
-                            components.Add(c);
-                        }
-                    }
+                    total = Convert.ToInt32(result);
                 }
             }
-            return components;
-        }*/
-        #endregion
+            return total;
+        }
+
+
+        
 
     }//end DAOComponent
 

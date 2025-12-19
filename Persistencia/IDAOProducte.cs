@@ -29,5 +29,8 @@ namespace DAO
         public bool InserirSubcomponent(Producte p, Item i, int qt);
         public void EliminarTotsElsSubcomponents(string codiPare);
 
+        public int ContarProductesFiltrats(string codi_filtre, string nom_filtre);
+
+
     }
 }

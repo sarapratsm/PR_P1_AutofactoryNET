@@ -35,6 +35,10 @@ namespace AppAutoFactory.View
         private VMComponente _vmComponente;
         int mode = 0; //0:Afegir, 1:Modificar
 
+        private int _paginaActual = 1;
+        private int _elementosPorPagina = 10;
+        private int _totalPaginas = 0;
+
 
         public MainWindow MainWindow { get; }
 
@@ -74,34 +78,92 @@ namespace AppAutoFactory.View
 
         }
 
+        //private void RefrescarDataGrid()
+        //{
+        //    // Buidem la llista actual
+        //    //llistaComponents.Clear();
+        //    string codi = txtFiltreCodi.Text;
+        //    string nom = txtFiltreNom.Text;
+
+        //    if (string.IsNullOrWhiteSpace(codi))
+        //    {
+        //        codi = "";
+        //    }
+        //    if (string.IsNullOrWhiteSpace(nom))
+        //    {
+        //        nom = "";
+        //    }
+
+        //    try
+        //    {
+        //        using (UnitOfWork uow = OracleFactory.getUOW())
+        //        {
+        //            dtgComps.ItemsSource = uow.DAOComponente.ObtenirComponentsFiltrats(codi, nom).ToList();                
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("Error en carregar els components des de la BBDD: \n" + ex.Message,
+        //                        "Error de Connexió", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //}
+
         private void RefrescarDataGrid()
         {
-            // Buidem la llista actual
-            //llistaComponents.Clear();
             string codi = txtFiltreCodi.Text;
             string nom = txtFiltreNom.Text;
 
-            if (string.IsNullOrWhiteSpace(codi))
-            {
-                codi = "";
-            }
-            if (string.IsNullOrWhiteSpace(nom))
-            {
-                nom = "";
-            }
+            if (string.IsNullOrWhiteSpace(codi)) codi = "";
+            if (string.IsNullOrWhiteSpace(nom)) nom = "";
 
             try
             {
                 using (UnitOfWork uow = OracleFactory.getUOW())
                 {
-                    dtgComps.ItemsSource = uow.DAOComponente.ObtenirComponentsFiltrats(codi, nom).ToList();                
+                    // 1. Contar TOTAL de registros (para saber cuántas páginas hay)
+                    int totalRegistros = uow.DAOComponente.ContarComponentsFiltrats(codi, nom);
+
+                    // 2. Calcular número de páginas
+                    if (totalRegistros == 0)
+                    {
+                        _totalPaginas = 1;
+                        _paginaActual = 1;
+                    }
+                    else
+                    {
+                        _totalPaginas = (int)Math.Ceiling((double)totalRegistros / _elementosPorPagina);
+                    }
+
+                    if (_paginaActual > _totalPaginas) _paginaActual = _totalPaginas;
+                    if (_paginaActual < 1) _paginaActual = 1;
+
+                    
+                    int offset = (_paginaActual - 1) * _elementosPorPagina;
+
+                    dtgComps.ItemsSource = uow.DAOComponente.ObtenirComponentsFiltrats(codi, nom, offset, _elementosPorPagina).ToList();
+
+                    ActualizarBotonesPaginacion();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error en carregar els components des de la BBDD: \n" + ex.Message,
-                                "Error de Connexió", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Error en carregar els components: \n" + ex.Message,
+                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+
+
+        private void ActualizarBotonesPaginacion()
+        {
+            txtPagina.Text = $"{_paginaActual} / {_totalPaginas}";
+
+            // Desactivar botones si estamos en los extremos
+            btnFirst.IsEnabled = _paginaActual > 1;
+            btnPrevious.IsEnabled = _paginaActual > 1;
+
+            btnNext.IsEnabled = _paginaActual < _totalPaginas;
+            btnLast.IsEnabled = _paginaActual < _totalPaginas;
         }
 
         private void btnModificar_Click(object sender, RoutedEventArgs e)
@@ -294,6 +356,7 @@ namespace AppAutoFactory.View
 
         private void btnFiltrar_Click(object sender, RoutedEventArgs e)
         {
+            _paginaActual = 1;
             RefrescarDataGrid();
         }
 
@@ -333,5 +396,38 @@ namespace AppAutoFactory.View
         {
             btnEditarProvs_Click(sender, e);
         }
+
+
+        #region Paginacio
+        private void btnFirst_Click(object sender, RoutedEventArgs e)
+        {
+            _paginaActual = 1;
+            RefrescarDataGrid();
+        }
+
+        private void btnPrevious_Click(object sender, RoutedEventArgs e)
+        {
+            if (_paginaActual > 1)
+            {
+                _paginaActual--;
+                RefrescarDataGrid();
+            }
+        }
+
+        private void btnNext_Click(object sender, RoutedEventArgs e)
+        {
+            if (_paginaActual < _totalPaginas)
+            {
+                _paginaActual++;
+                RefrescarDataGrid();
+            }
+        }
+
+        private void btnLast_Click(object sender, RoutedEventArgs e)
+        {
+            _paginaActual = _totalPaginas;
+            RefrescarDataGrid();
+        }
+        #endregion
     }
 }

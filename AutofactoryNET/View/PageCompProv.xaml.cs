@@ -218,5 +218,6 @@ namespace AppAutoFactory.View
                 _selectedVMProveidor = dtgCompProv.SelectedItem as VMProveidor;
             }
         }
+
     }
 }

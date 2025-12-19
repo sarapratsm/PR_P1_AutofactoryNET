@@ -593,6 +593,41 @@ namespace DAO
             }
         }
 
+        public int ContarProductesFiltrats(string codi_filtre, string nom_filtre)
+        {
+            int total = 0;
+            var connexio = _context.Database.GetDbConnection();
+            if (connexio.State != ConnectionState.Open) connexio.Open();
+
+            using (DbCommand consulta = connexio.CreateCommand())
+            {
+                // Query para contar (COUNT)
+                string sql = @"SELECT COUNT(*)
+                       FROM PRODUCTE p
+                       JOIN ITEM i ON p.pr_it_codi = i.it_codi
+                       WHERE (:COD_FILTRE = '%%' OR UPPER(i.it_codi) LIKE :COD_FILTRE)
+                         AND (:NOM_FILTRE = '%%' OR UPPER(i.it_nom) LIKE :NOM_FILTRE)";
+
+                consulta.CommandText = sql;
+                consulta.Transaction = _context.Database.CurrentTransaction?.GetDbTransaction();
+
+                string codi_param = string.IsNullOrEmpty(codi_filtre) ? "%%" : "%" + codi_filtre.ToUpper() + "%";
+                string nom_param = string.IsNullOrEmpty(nom_filtre) ? "%%" : "%" + nom_filtre.ToUpper() + "%";
+
+                Utils.CrearParametres(consulta, codi_param, "COD_FILTRE", DbType.String);
+                Utils.CrearParametres(consulta, codi_param, "COD_FILTRE", DbType.String);
+                Utils.CrearParametres(consulta, nom_param, "NOM_FILTRE", DbType.String);
+                Utils.CrearParametres(consulta, nom_param, "NOM_FILTRE", DbType.String);
+
+                object result = consulta.ExecuteScalar();
+                if (result != null && result != DBNull.Value)
+                {
+                    total = Convert.ToInt32(result);
+                }
+            }
+            return total;
+        }
+
 
     }//end DAOProducte
 
