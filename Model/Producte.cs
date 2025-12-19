@@ -19,23 +19,16 @@ namespace Model
         public Dictionary<Item, decimal> Comps { get => _comps; private set => _comps = value; }
         public void AfegirComponent(Item c, decimal qt)
         {
-            // 1. Comprueba si la CLAVE existe
             if (!_comps.ContainsKey(c))
             {
-                // 2. Añade la CLAVE (c) y un VALOR (p.ej., 1)
                 _comps.Add(c, qt);
             }
-            // Si ya existe, este código no hace nada,
-            // que es lo que tu 'if' original implicaba.
         }
 
-        // CORREGIDO:
         public void EliminarComponent(Item c)
         {
-            // 1. Comprueba si la CLAVE existe
             if (_comps.ContainsKey(c))
             {
-                // 2. Elimina usando la CLAVE
                 _comps.Remove(c);
             }
         }

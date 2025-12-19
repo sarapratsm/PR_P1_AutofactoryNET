@@ -13,7 +13,6 @@ using System.IO;
 using DAO;
 
 namespace DAO {
-    //classe estàtica que retorna les implementacions concretes dels teus DAOs.
     public static class OracleFactory {
 
         public static UnitOfWork getUOW()

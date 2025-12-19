@@ -52,7 +52,7 @@ namespace ProvesBD
         {
             // --- CANVI: Codi més curt ("C-TEST-2" té 8 caràcters) ---
             string codiTest = "C-TEST-2";
-            Componente cOrig = new Componente(codiTest, "Test Modificar Comp", "Desc Orig", 10, null, 'C', "FAB-ORIG", TipusUnitat.Kg);
+            Componente cOrig = new Componente(codiTest, "Test Modificar Comp", "Desc Orig", 10, null, 'C', "FAB-ORIG", TipusUnitat.kg);
 
             try
             {

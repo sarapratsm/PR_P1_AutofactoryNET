@@ -2,23 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel; // <-- 1. Importar per a INotifyPropertyChanged
+using System.ComponentModel; 
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices; // <-- 2. Importar per a [CallerMemberName]
+using System.Runtime.CompilerServices; 
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
 namespace AppAutoFactory.ViewModel
 {
-    // 3. Implementar la interfície
     public class VMComponente : INotifyPropertyChanged
     {
-        // 4. Implementar l'esdeveniment de la interfície
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        // 5. Mètode "Helper" per notificar a la UI
         protected void OnPropertyChanged([CallerMemberName] string? name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -38,8 +35,6 @@ namespace AppAutoFactory.ViewModel
         private TipusUnitat unitat; // Canviat 'units' per 'unitat' per consistència
         private Componente componente;
 
-        // --- PROPIETATS PÚBLIQUES (Per al Binding) ---
-        // Ara, cada 'set' notifica a la UI que ha de refrescar-se
 
         public string Codi
         {
@@ -133,7 +128,6 @@ namespace AppAutoFactory.ViewModel
 
         public VMComponente(Componente c)
         {
-            // Assignem a les PROPIETATS (majúscula)
             this.Tipus = 'C';
 
             if (c != null)
@@ -185,8 +179,6 @@ namespace AppAutoFactory.ViewModel
 
         public void save()
         {
-            //si validacio correcta
-            //si c!=null
             retransformaDiccionari();
         }
 

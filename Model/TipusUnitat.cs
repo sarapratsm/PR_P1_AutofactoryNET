@@ -9,8 +9,8 @@ namespace Model
     public enum TipusUnitat
     {
         Unitats = 1,
-        Ml = 2,
-        Kg = 3,
-        G = 4
+        ml = 2,
+        kg = 3,
+        g = 4
     }
 }

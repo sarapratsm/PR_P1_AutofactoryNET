@@ -69,15 +69,11 @@ namespace DAO
         {
             try
             {
-                // 1. Primer, desa els canvis pendents d'Entity Framework (si n'hi hagués)
                 _context.SaveChanges();
-
-                // 2. Després, confirma la transacció manual a la BBDD
                 _context.Database.CurrentTransaction?.Commit();
             }
             catch
             {
-                // Si falla, fem rollback
                 Rollback();
                 throw; // Rellença l'excepció
             }
@@ -106,7 +102,11 @@ namespace DAO
             GC.SuppressFinalize(this);
         }
 
-        //Metode per comprovar si el servidor està actiu
+        /// <summary>
+        /// Metode per comprovar si el servidor està actiu
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public bool IsServerAlive(out string message)
         {
             try

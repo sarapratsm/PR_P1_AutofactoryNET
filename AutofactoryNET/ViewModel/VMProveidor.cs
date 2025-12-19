@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel; // <-- 1. Importar per a INotifyPropertyChanged
-using System.Runtime.CompilerServices; // <-- 2. Importar per a [CallerMemberName]
+using System.ComponentModel; 
+using System.Runtime.CompilerServices;
 
 namespace AppAutoFactory.ViewModel
 {

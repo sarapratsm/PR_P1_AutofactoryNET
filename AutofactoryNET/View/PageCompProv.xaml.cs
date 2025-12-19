@@ -114,7 +114,6 @@ namespace AppAutoFactory.View
             Proveidor prov = (Proveidor)cmbProveidors.SelectedItem;
             Decimal preu_dec = 0;
             string preu = txtPreu.Text;
-            //bool v = Decimal.TryParse(preu, System.Globalization.NumberStyles.Currency, System.Globalization.CultureInfo.CurrentCulture, out preu_dec); //invocacion satanica
 
             // En btnAfegirProveidor_Click:
             string preuNet = txtPreu.Text.Replace(",", ".");

@@ -39,9 +39,6 @@ namespace AppAutoFactory.View
 
         }
 
-
-
-
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             // Carga de datos inicial (esto ya lo tenías)
@@ -111,7 +108,7 @@ namespace AppAutoFactory.View
                     if (_paginaActual > _totalPaginas) _paginaActual = _totalPaginas;
                     if (_paginaActual < 1) _paginaActual = 1;
 
-                    
+
                     int offset = (_paginaActual - 1) * _elementosPorPagina;
 
                     dtgComps.ItemsSource = uow.DAOComponente.ObtenirComponentsFiltrats(codi, nom, offset, _elementosPorPagina).ToList();
@@ -182,7 +179,7 @@ namespace AppAutoFactory.View
             MessageBoxResult result = MessageBox.Show($"Estàs segur que vols eliminar el component amb codi '{compSeleccionat.Codi}'?",
                                                       "Confirmar Eliminació", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
-                {
+            {
                 try
                 {
                     using (UnitOfWork uow = OracleFactory.getUOW())
@@ -215,7 +212,7 @@ namespace AppAutoFactory.View
                 MessageBox.Show("El nom del component no pot estar buit.", "Dades Invàlides", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            if(cmbUnitats.SelectedItem == null)
+            if (cmbUnitats.SelectedItem == null)
             {
                 MessageBox.Show("Si us plau, selecciona una unitat vàlida.", "Dades Invàlides", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -240,7 +237,7 @@ namespace AppAutoFactory.View
                 }
                 else
                 {
-                    
+
                     try
                     {
                         //Afegir a la BBDD
@@ -260,7 +257,8 @@ namespace AppAutoFactory.View
                     }
                 }
 
-            }else if (mode == 1) //Modificar
+            }
+            else if (mode == 1) //Modificar
             {
                 //Actualitzar a la BBDD
                 try
@@ -284,7 +282,7 @@ namespace AppAutoFactory.View
             //Refrescar DataGrid
             RefrescarDataGrid();
             netejaFormulari();
-            
+
 
             dtgComps.SelectedItem = null;
             EstablirEstatFormulari(false);
@@ -325,21 +323,12 @@ namespace AppAutoFactory.View
                 // Si no hay nada seleccionado, apagamos todo
                 EstablirEstatFormulari(false);
             }
-            //_componenteActual = (Componente)dtgComps.SelectedItem;
-            //_vmComponente = new VMComponente(_componenteActual);
-            //DataContext = _vmComponente;
-            //txbNom.IsEnabled = false;
-            //mode=1; //Modificar
-
-
-            //EstablirEstatFormulari(true, false);
-
 
         }
 
         private void btnEditarProvs_Click(object sender, RoutedEventArgs e)
         {
-            if(_componenteActual == null)
+            if (_componenteActual == null)
             {
                 MessageBox.Show("Si us plau, selecciona un component per gestionar els seus proveïdors.", "Cap Selecció", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -375,7 +364,7 @@ namespace AppAutoFactory.View
             RefrescarDataGrid();
         }
 
-        
+
 
         private void btnRemoveFoto_Click(object sender, RoutedEventArgs e)
         {

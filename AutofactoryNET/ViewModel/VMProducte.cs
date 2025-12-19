@@ -24,7 +24,6 @@ namespace AppAutoFactory.ViewModel
         private byte[]? foto;
         private char tipus;
 
-        // CAMBIO 1: Int32 -> decimal
         private Dictionary<Item, decimal> subcomponents;
         private Producte producte;
 
@@ -64,7 +63,7 @@ namespace AppAutoFactory.ViewModel
             set { tipus = value; OnPropertyChanged(); }
         }
 
-        // CAMBIO 2: Int32 -> decimal
+        // CAMBIO: Int32 -> decimal
         public Dictionary<Item, decimal> Subcomponents
         {
             get { return subcomponents; }
@@ -83,7 +82,6 @@ namespace AppAutoFactory.ViewModel
             this.codi = "";
             this.nom = "";
             this.descripcio = "";
-            // CAMBIO 3: Inicializar con decimal
             this.subcomponents = new Dictionary<Item, decimal>();
         }
 
@@ -101,7 +99,6 @@ namespace AppAutoFactory.ViewModel
                 this.Foto = p.Foto;
                 this.TheImage = loadImage(Foto);
 
-                // CAMBIO 4: Ahora sí coinciden los tipos (decimal = decimal)
                 this.Subcomponents = p.Comps;
             }
             else
@@ -114,7 +111,7 @@ namespace AppAutoFactory.ViewModel
         {
             try
             {
-                if (bytes == null) return null; // Pequeña protección extra
+                if (bytes == null) return null; 
                 BitmapImage image = new BitmapImage();
                 using (MemoryStream mem = new MemoryStream(bytes))
                 {
