@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.Json;
 
 
 
@@ -24,14 +25,66 @@ namespace DAO
         /// <summary>
         /// Mètode per configurar la connexió a la base de dades Oracle.
         /// </summary>
-        protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
+        //{
+        //    if (!optionBuilder.IsConfigured)
+        //    {
+        //        //Configuracio de la connexio amb la base de dades.
+        //        //string ip_mv = "10.2.59.102";
+        //        string ip_mv = "10.2.192.48";
+        //        optionBuilder.UseOracle("User Id=alumne;Password=alumne;Data Source=" + ip_mv + ":1521/XEPDB1;");
+        //    }
+        //}
+
+        /// <summary>
+        /// Mètode per configurar la connexió a la base de dades Oracle.
+        /// </summary>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionBuilder.IsConfigured)
+            if (!optionsBuilder.IsConfigured)
             {
-                //Configuracio de la connexio amb la base de dades.
-                //string ip_mv = "10.2.59.102";
-                string ip_mv = "10.2.192.48";
-                optionBuilder.UseOracle("User Id=alumne;Password=alumne;Data Source=" + ip_mv + ":1521/XEPDB1;");
+                // CAMBIO: Ahora leemos la cadena desde la clase Configuracio
+                string connectionString = GetConnectionString();
+                optionsBuilder.UseOracle(connectionString);
+            }
+        }
+
+        //public static string GetConnectionString()
+        //{
+        //    try
+        //    {
+        //        string json = File.ReadAllText("appsettings.json");
+        //        using (JsonDocument doc = JsonDocument.Parse(json))
+        //        {
+        //            return doc.RootElement.GetProperty("ConnectionStrings").GetProperty("Oracle").GetString();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return "";
+        //    }
+        //}
+
+        public static string GetConnectionString()
+        {
+            try
+            {
+                string json = File.ReadAllText("appsettings.json");
+                using (JsonDocument doc = JsonDocument.Parse(json))
+                {
+                    // 1. Leemos la IP
+                    string ip = doc.RootElement.GetProperty("ConfiguracioGlobal").GetProperty("IpServidor").GetString();
+
+                    // 2. Leemos la plantilla de Oracle (que tiene un {0})
+                    string template = doc.RootElement.GetProperty("ConnectionStrings").GetProperty("OracleTemplate").GetString();
+
+                    // 3. Sustituimos {0} por la IP real
+                    return string.Format(template, ip);
+                }
+            }
+            catch (Exception)
+            {
+                return "";
             }
         }
 
