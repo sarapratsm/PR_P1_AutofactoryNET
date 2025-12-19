@@ -88,5 +88,5 @@ La lógica de negocio crítica reside en la base de datos para garantizar la int
 ## ✒️ Autor
 
 **Sara Prats Morales**
-* [LinkedIn]([https://linkedin.com/in/tu-perfil](https://www.linkedin.com/in/sara-prats-morales/))
+* [LinkedIn](https://linkedin.com/in/tu-perfil](https://www.linkedin.com/in/sara-prats-morales/))
 * [GitHub](https://github.com/kuro-spm)
