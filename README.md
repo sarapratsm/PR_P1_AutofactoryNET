@@ -1,12 +1,12 @@
 # 🏭 AutoFactory - Sistema de Gestión de Producción
 
-![CFGS DAM](https://img.shields.io/badge/CFGS-Desenvolupament%20d%27Aplicacions%20Multiplataforma%20%28DAM%29-green)
-![PR](https://img.shields.io/badge/assignatura-Projecte-blue)
+![CFGS DAM](https://img.shields.io/badge/CFGS-Desenvolupament%20d%27Aplicacions%20Multiplataforma%20%28DAM%29-green?style=for-the-badge)
+![PR](https://img.shields.io/badge/assignatura-Projecte-blue?style=for-the-badge)
 
-![Status](https://img.shields.io/badge/Status-Completed-success)
-![Technology](https://img.shields.io/badge/.NET-8.0-purple)
-![Platform](https://img.shields.io/badge/Platform-WPF-blue)
-![Database](https://img.shields.io/badge/Database-Oracle-red)
+![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
+![Technology](https://img.shields.io/badge/.NET-8.0-purple?style=for-the-badge)
+![Platform](https://img.shields.io/badge/Platform-WPF-blue?style=for-the-badge)
+![Database](https://img.shields.io/badge/Database-Oracle-red?style=for-the-badge)
 
 **AutoFactory** es una aplicación de escritorio completa desarrollada en **WPF (Windows Presentation Foundation)** para la gestión integral de una fábrica de automoción. Permite administrar productos, componentes, proveedores y generar informes de fabricación (BOM).
 
