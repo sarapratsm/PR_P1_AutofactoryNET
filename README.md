@@ -1,7 +1,7 @@
 # 🏭 AutoFactory - Sistema de Gestión de Producción
 
-![CFGS DAM](https://img.shields.io/badge/CFGS-DAM-green)
-![PR](https://img.shields.io/badge/assignatura-PR-blue)
+![CFGS DAM](https://img.shields.io/badge/CFGS-Desenvolupament%20d%27Aplicacions%20Multiplataforma%20%28DAM%29-green)
+![PR](https://img.shields.io/badge/assignatura-Projecte-blue)
 
 ![Status](https://img.shields.io/badge/Status-Completed-success)
 ![Technology](https://img.shields.io/badge/.NET-8.0-purple)
